@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { HeroSlideEntry } from '@/lib/content-types';
 
 const IMAGE_DURATION_MS = 6000;
@@ -13,6 +13,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
   const [reducedMotion, setReducedMotion] = useState(false);
   const [useMobileSrc, setUseMobileSrc] = useState(false);
   const [saveData, setSaveData] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -58,6 +59,29 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
     return () => clearTimeout(timer);
   }, [index, paused, reducedMotion, current]);
 
+  // Changing the `autoPlay` attribute on an already-playing <video> has no
+  // effect — pausing/resuming on hover or focus needs an imperative call via
+  // a ref. Only the active slide's video is ever playing, so only it is wired
+  // to the ref (see `ref={isActive ? videoRef : undefined}` below).
+  useEffect(() => {
+    if (!current || current.type !== 'video') return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (paused || reducedMotion) {
+      video.pause();
+    } else {
+      // play() is specced to return a promise that rejects if the browser
+      // blocks autoplay, but not every environment honors that (older
+      // WebViews, and jsdom's play() stub in tests all return undefined) —
+      // guard before chaining rather than assuming a promise comes back.
+      const playResult = video.play();
+      if (playResult && typeof playResult.catch === 'function') {
+        playResult.catch(() => {});
+      }
+    }
+  }, [paused, reducedMotion, current]);
+
   if (slides.length === 0) {
     return null;
   }
@@ -72,7 +96,11 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <link rel="preload" as="image" href={nextSlide.src} />
+      <link
+        rel="preload"
+        as={nextSlide.type === 'video' ? 'video' : 'image'}
+        href={nextSlide.src}
+      />
       {slides.map((slide, i) => {
         const isActive = i === index;
         const src = useMobileSrc && slide.srcMobile ? slide.srcMobile : slide.src;
@@ -93,21 +121,32 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
           >
             {showVideo ? (
               <video
+                ref={isActive ? videoRef : undefined}
                 className={`h-full w-full object-cover ${kenBurnsClass}`}
-                src={slide.src}
+                src={src}
                 poster={slide.poster}
                 muted
                 autoPlay={isActive && !paused && !reducedMotion}
                 playsInline
                 preload="metadata"
-                onEnded={() => setIndex((prev) => (prev + 1) % slides.length)}
+                onEnded={() => {
+                  if (!paused) {
+                    setIndex((prev) => (prev + 1) % slides.length);
+                  }
+                }}
               />
             ) : (
-              <img src={src} alt="" className={`h-full w-full object-cover ${kenBurnsClass}`} />
+              <img
+                src={slide.type === 'video' ? slide.poster : src}
+                alt=""
+                fetchPriority={isActive ? 'high' : 'auto'}
+                className={`h-full w-full object-cover ${kenBurnsClass}`}
+              />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,20,16,0.45)] to-transparent" />
             <a
               href={`/${locale}${slide.ctaUrl}`}
+              tabIndex={isActive ? 0 : -1}
               className="absolute inset-0 flex flex-col items-start justify-end p-8 md:p-16"
             >
               <p className="font-mono text-label uppercase text-paper">{slide.eyebrow}</p>
