@@ -17,7 +17,8 @@ export async function generateMetadata({
   const { locale } = await params;
 
   return buildMetadata({
-    title: 'Beranda',
+    title:
+      'Environesia Company Group — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',
     description:
       'Environesia Company Group menaungi empat entitas layanan lingkungan dan satu unit penunjang.',
     locale,
