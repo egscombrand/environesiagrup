@@ -1,6 +1,7 @@
 import { getCollection } from '@/lib/content';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { EntityCard } from '@/components/entitas/entity-card';
 import type { EntityEntry } from '@/lib/content-types';
 
 export function EntityCards({ locale }: { locale: string }) {
@@ -32,22 +33,5 @@ export function EntityCards({ locale }: { locale: string }) {
         ) : null}
       </Reveal>
     </Section>
-  );
-}
-
-function EntityCard({ entity, locale }: { entity: EntityEntry; locale: string }) {
-  return (
-    <a
-      href={`/${locale}/entitas/${entity.slug}`}
-      className="block rounded-[14px] border border-line p-6 transition-shadow hover:shadow-sm"
-    >
-      <span
-        className="inline-block h-2 w-2 rounded-full"
-        style={{ backgroundColor: entity.warnaAksen }}
-        aria-hidden="true"
-      />
-      <p className="mt-3 font-display text-h3 text-ink">{entity.nama}</p>
-      <p className="mt-1 text-small text-slate">{entity.deskripsi}</p>
-    </a>
   );
 }

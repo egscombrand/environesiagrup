@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getCollection } from '@/lib/content';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { GroupStructureDiagram } from '@/components/entitas/group-structure-diagram';
+import { EntityCard } from '@/components/entitas/entity-card';
 import type { EntityEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
@@ -17,7 +17,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Entitas Kami',
     description:
-      'Empat entitas layanan lingkungan yang membentuk satu rantai terpadu, ditambah satu unit penunjang.',
+      'Empat entitas layanan lingkungan yang membentuk satu rantai berurutan, ditambah satu unit penunjang.',
     locale,
     path: '/entitas',
   });
@@ -61,7 +61,7 @@ export default async function EntitasPage({
           <h2 className="font-display text-h2 text-ink">Lini Inti</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             {core.map((entity) => (
-              <EntityRow key={entity.slug} entity={entity} locale={locale} />
+              <EntityCard key={entity.slug} entity={entity} locale={locale} />
             ))}
           </div>
 
@@ -70,7 +70,7 @@ export default async function EntitasPage({
               <p className="font-mono text-label uppercase text-slate">Unit Penunjang</p>
               <div className="mt-6 grid gap-6 md:grid-cols-2">
                 {supporting.map((entity) => (
-                  <EntityRow key={entity.slug} entity={entity} locale={locale} />
+                  <EntityCard key={entity.slug} entity={entity} locale={locale} />
                 ))}
               </div>
             </div>
@@ -78,23 +78,5 @@ export default async function EntitasPage({
         </Reveal>
       </Section>
     </>
-  );
-}
-
-function EntityRow({ entity, locale }: { entity: EntityEntry; locale: string }) {
-  return (
-    <Link
-      href={`/${locale}/entitas/${entity.slug}`}
-      className="block rounded-[14px] border border-line p-6 transition-shadow hover:shadow-sm"
-      aria-label={entity.nama}
-    >
-      <span
-        className="inline-block h-2 w-2 rounded-full"
-        style={{ backgroundColor: entity.warnaAksen }}
-        aria-hidden="true"
-      />
-      <p className="mt-3 font-display text-h3 text-ink">{entity.nama}</p>
-      <p className="mt-1 text-small text-slate">{entity.deskripsi}</p>
-    </Link>
   );
 }
