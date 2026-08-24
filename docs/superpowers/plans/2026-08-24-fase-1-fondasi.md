@@ -219,7 +219,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  return { locale };
+  return {
+    locale,
+    messages: (await import(`../../messages/${locale}.json`)).default,
+  };
 });
 ```
 
