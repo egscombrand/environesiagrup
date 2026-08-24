@@ -50,4 +50,34 @@ describe('CountryMap', () => {
     await user.click(document.body);
     expect(screen.queryByText('Proyek Uji')).not.toBeInTheDocument();
   });
+
+  it('lets hovering a different pin override a pinned tooltip', async () => {
+    const user = userEvent.setup();
+    render(
+      <CountryMap
+        pins={[
+          { judul: 'Proyek A', negara: 'Negara A', koordinat: [106.8, -6.2] },
+          { judul: 'Proyek B', negara: 'Negara B', koordinat: [-58.4, -34.6] },
+        ]}
+      />
+    );
+
+    const pinA = screen.getByRole('button', { name: 'Proyek A, Negara A' });
+    const pinB = screen.getByRole('button', { name: 'Proyek B, Negara B' });
+
+    await user.click(pinA);
+    await user.keyboard('{Enter}'); // pin A open
+    expect(screen.getByText('Proyek A')).toBeInTheDocument();
+
+    await user.hover(pinB);
+
+    // Hovering B must win over A's pin, not keep showing A's tooltip underneath it.
+    expect(screen.getByText('Proyek B')).toBeInTheDocument();
+    expect(screen.queryByText('Proyek A')).not.toBeInTheDocument();
+
+    await user.unhover(pinB);
+
+    // Once nothing is actively hovered/focused, the pinned tooltip (A) resurfaces.
+    expect(screen.getByText('Proyek A')).toBeInTheDocument();
+  });
 });

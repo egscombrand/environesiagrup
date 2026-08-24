@@ -12,7 +12,7 @@ function project([lng, lat]: [number, number]) {
 export function CountryMap({ pins }: { pins: ProjectPin[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
-  const shownIndex = pinnedIndex ?? activeIndex;
+  const shownIndex = activeIndex ?? pinnedIndex;
 
   if (pins.length === 0) {
     return (
@@ -48,6 +48,7 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
               }}
               tabIndex={0}
               role="button"
+              aria-pressed={pinnedIndex === index}
               aria-label={`${pin.judul}, ${pin.negara}`}
             />
           );
