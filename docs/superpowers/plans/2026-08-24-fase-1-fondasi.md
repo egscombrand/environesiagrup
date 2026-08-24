@@ -35,18 +35,11 @@
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: npm scripts `dev`, `build`, `start`, `lint`; `tsconfig.json` with `strict: true` and the `@/*` path alias resolving to `src/*`; a git repository with an initial commit
+- Produces: npm scripts `dev`, `build`, `start`, `lint`; `tsconfig.json` with `strict: true` and the `@/*` path alias resolving to `src/*`
 
-- [ ] **Step 1: Initialize git (repo doesn't exist yet)**
+The git repository already exists (initial commit `06c17b5`, branch `master`, containing `project.md` and `docs/`) — do not run `git init`.
 
-```bash
-cd /home/doly/company-profile-egc
-git init
-git add project.md docs
-git commit -m "chore: add project spec and plans directory"
-```
-
-- [ ] **Step 2: Scaffold Next.js without Tailwind (v4 is wired manually in Task 2)**
+- [ ] **Step 1: Scaffold Next.js without Tailwind (v4 is wired manually in Task 2)**
 
 ```bash
 npx create-next-app@latest . \
@@ -61,16 +54,16 @@ npx create-next-app@latest . \
 
 When prompted about the non-empty directory (it contains `project.md` and `docs/`), confirm continuing.
 
-- [ ] **Step 3: Verify the scaffold builds**
+- [ ] **Step 2: Verify the scaffold builds**
 
 Run: `npm run build`
 Expected: build succeeds, ends with a route summary listing `/` as a static page.
 
-- [ ] **Step 4: Verify strict mode and the path alias are set**
+- [ ] **Step 3: Verify strict mode and the path alias are set**
 
 Open `tsconfig.json` and confirm `"strict": true` and `"paths": { "@/*": ["./src/*"] }` are present (create-next-app sets both by default with the flags above — if either is missing, add it).
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
 git add -A
