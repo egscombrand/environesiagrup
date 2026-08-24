@@ -25,4 +25,29 @@ describe('CountryMap', () => {
     expect(screen.getByText('Proyek Uji')).toBeInTheDocument();
     expect(screen.getByText('Negara Uji')).toBeInTheDocument();
   });
+
+  it('pins the tooltip open on Enter so it survives losing focus, and un-pins it on a second Enter', async () => {
+    const user = userEvent.setup();
+    render(
+      <CountryMap
+        pins={[{ judul: 'Proyek Uji', negara: 'Negara Uji', koordinat: [106.8, -6.2] }]}
+      />
+    );
+
+    const pin = screen.getByRole('button', { name: 'Proyek Uji, Negara Uji' });
+
+    await user.click(pin);
+    await user.keyboard('{Enter}');
+    expect(screen.getByText('Proyek Uji')).toBeInTheDocument();
+
+    // Blur the pin: a *pinned* tooltip must survive losing focus.
+    await user.click(document.body);
+    expect(screen.getByText('Proyek Uji')).toBeInTheDocument();
+
+    // Re-focus, un-pin, and blur again: without a pin the tooltip is gone.
+    await user.click(pin);
+    await user.keyboard('{Enter}');
+    await user.click(document.body);
+    expect(screen.queryByText('Proyek Uji')).not.toBeInTheDocument();
+  });
 });

@@ -11,6 +11,8 @@ function project([lng, lat]: [number, number]) {
 
 export function CountryMap({ pins }: { pins: ProjectPin[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
+  const shownIndex = pinnedIndex ?? activeIndex;
 
   if (pins.length === 0) {
     return (
@@ -24,7 +26,7 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
 
   return (
     <div className="relative min-h-[280px] overflow-hidden rounded-[14px] border border-line bg-stone">
-      <svg viewBox="0 0 100 60" className="h-full w-full" role="img" aria-label="Peta jejak proyek">
+      <svg viewBox="0 0 100 60" className="h-full w-full" role="group" aria-label="Peta jejak proyek">
         {pins.map((pin, index) => {
           const { x, y } = project(pin.koordinat);
           return (
@@ -33,11 +35,17 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
               cx={x}
               cy={y}
               r={1.2}
-              className="cursor-pointer fill-forest"
+              className="cursor-pointer fill-forest focus-visible:outline-2 focus-visible:outline-forest focus-visible:[outline-offset:2px]"
               onMouseEnter={() => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
               onFocus={() => setActiveIndex(index)}
               onBlur={() => setActiveIndex(null)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  setPinnedIndex((prev) => (prev === index ? null : index));
+                }
+              }}
               tabIndex={0}
               role="button"
               aria-label={`${pin.judul}, ${pin.negara}`}
@@ -45,10 +53,10 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
           );
         })}
       </svg>
-      {activeIndex !== null ? (
+      {shownIndex !== null ? (
         <div className="absolute bottom-4 left-4 rounded border border-line bg-paper px-3 py-2 text-small text-ink shadow-sm">
-          <p className="font-medium">{pins[activeIndex].judul}</p>
-          <p className="text-slate">{pins[activeIndex].negara}</p>
+          <p className="font-medium">{pins[shownIndex].judul}</p>
+          <p className="text-slate">{pins[shownIndex].negara}</p>
         </div>
       ) : null}
     </div>
