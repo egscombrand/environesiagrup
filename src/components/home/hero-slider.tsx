@@ -122,7 +122,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
           </div>
         );
       })}
-      {slides.length > 1 && !reducedMotion ? (
+      {slides.length > 1 ? (
         <div className="absolute bottom-0 left-0 right-0 flex gap-2 p-4">
           {slides.map((slide, i) => (
             <button
@@ -133,7 +133,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
               className="h-1 flex-1 rounded-full bg-paper/40"
             >
               <span
-                className="block h-full rounded-full bg-paper transition-all"
+                className={`block h-full rounded-full bg-paper ${reducedMotion ? '' : 'transition-all'}`}
                 style={{ width: i <= index ? '100%' : '0%' }}
               />
             </button>

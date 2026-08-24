@@ -1,8 +1,26 @@
-import { act } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { HeroSlider } from './hero-slider';
+
+function mockReducedMotion() {
+  const original = window.matchMedia;
+  window.matchMedia = ((query: string) =>
+    ({
+      matches: query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList) as typeof window.matchMedia;
+  return () => {
+    window.matchMedia = original;
+  };
+}
 
 const slides = [
   {
@@ -82,5 +100,46 @@ describe('HeroSlider', () => {
       'false'
     );
     vi.useRealTimers();
+  });
+
+  it('keeps manual slide controls under prefers-reduced-motion and never auto-advances', () => {
+    const restoreMatchMedia = mockReducedMotion();
+    vi.useFakeTimers();
+
+    render(<HeroSlider slides={slides} locale="id" />);
+
+    // Manual navigation affordance must still be present for reduced-motion users —
+    // they are not stranded on slide 1 with no way to reach the rest.
+    const jumpToSlideTwo = screen.getByRole('button', { name: 'Slide 2' });
+    expect(jumpToSlideTwo).toBeInTheDocument();
+
+    // Automatic rotation must be disabled: advancing well past the 6s image
+    // duration must NOT change the active slide.
+    act(() => {
+      vi.advanceTimersByTime(6000);
+    });
+    expect(screen.getByText('Headline Satu').closest('[aria-hidden]')).toHaveAttribute(
+      'aria-hidden',
+      'false'
+    );
+    expect(screen.getByText('Headline Dua').closest('[aria-hidden]')).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+    // Manual click must still work: reduced motion disables automatic motion,
+    // not user-initiated navigation.
+    fireEvent.click(jumpToSlideTwo);
+    expect(screen.getByText('Headline Dua').closest('[aria-hidden]')).toHaveAttribute(
+      'aria-hidden',
+      'false'
+    );
+    expect(screen.getByText('Headline Satu').closest('[aria-hidden]')).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+    vi.useRealTimers();
+    restoreMatchMedia();
   });
 });
