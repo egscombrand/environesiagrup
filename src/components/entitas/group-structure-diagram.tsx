@@ -33,7 +33,7 @@ export function GroupStructureDiagram({ entities }: { entities: EntityEntry[] })
       />
 
       {supporting.map((entity) => (
-        <div key={entity.slug}>
+        <div key={entity.slug} className="flex flex-col items-center">
           <p className="font-mono text-label uppercase text-slate">Unit Penunjang</p>
           <ul className="mt-2 grid grid-cols-1">
             <li
