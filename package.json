@@ -13,6 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "framer-motion": "^13.1.1",
     "gray-matter": "^4.0.3",
     "next": "15.5.23",
     "next-intl": "^4.13.7",
