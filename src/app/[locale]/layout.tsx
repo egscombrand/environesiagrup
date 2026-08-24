@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
@@ -30,6 +30,8 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale);
+
   const messages = await getMessages();
 
   return (
@@ -38,9 +40,15 @@ export default async function LocaleLayout({
       className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}
     >
       <body className="font-body antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-forest focus:px-4 focus:py-2 focus:text-paper"
+        >
+          Lewati ke konten utama
+        </a>
         <NextIntlClientProvider messages={messages}>
           <Header locale={locale} />
-          {children}
+          <main id="main-content">{children}</main>
           <Footer locale={locale} />
         </NextIntlClientProvider>
       </body>

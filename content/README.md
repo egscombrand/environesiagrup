@@ -35,3 +35,14 @@ Collections are populated starting Fase 2 (`stats`, `entities`) and
 Fase 3/5 (`projects`, `leadership`, `posts`, `milestones`, `pillars`,
 `jobs`, `documents`). Fase 1 only wires the reader (`getCollection`)
 and this convention — no collection folders are created yet.
+
+## Locale convention (decided, not yet implemented)
+
+Routes are locale-prefixed (`/id/...`, `/en/...`) from Fase 1, but
+`getCollection` itself is currently locale-blind — it just reads
+`content/<collection>/*.mdx`. When English content starts landing (Fase 6+),
+the convention is: `content/<collection>/<slug>.<locale>.mdx` (e.g.
+`content/entities/greenlab.id.mdx`, `content/entities/greenlab.en.mdx`), with
+`id` as the fallback when a locale-specific file is missing. `getCollection`
+will need a locale parameter and fallback logic at that point — not needed
+until real English content exists.

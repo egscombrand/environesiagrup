@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Environesia Company Group — Company Profile
 
-## Getting Started
+Corporate website for Environesia Company Group, a group of five
+environmental-services entities. Built with Next.js 15 (App Router),
+Tailwind CSS v4, and next-intl for `id`/`en` locale routing.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 15** (App Router, Turbopack)
+- **Tailwind CSS v4** (`@theme` design tokens in `src/app/globals.css`)
+- **next-intl** for locale-prefixed routing (`/id/...`, `/en/...`, `id` default)
+- **MDX-in-repo** content collections, read at build time via `getCollection`
+  (`src/lib/content.ts`) — no external CMS
+- **Vitest** + Testing Library for unit/component tests
+
+## Getting started
+
+Requires Node `^20.19.0` or `>=22.12.0` (see `engines` in `package.json`).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # start the dev server
+npm run build   # production build
+npm run test    # run the Vitest suite
+npm run lint    # eslint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Route structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Every route lives under `src/app/[locale]/`, statically generated for both
+`id` (default) and `en` (scaffolded, not yet fully translated) via
+`generateStaticParams()` in `src/app/[locale]/layout.tsx`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Further reading
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `project.md` — product/design brief for the site
+- `docs/superpowers/plans/2026-08-24-fase-1-fondasi.md` — Fase 1 implementation plan
+- `content/README.md` — content collection conventions
