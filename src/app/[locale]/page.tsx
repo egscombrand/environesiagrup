@@ -16,6 +16,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
 
+  // Deliberately a complete title, not the layout's %s template: Next skips
+  // template propagation when layout and page share a folder (as here), and
+  // a site root should lead with the brand, not the word "Beranda".
   return buildMetadata({
     title:
       'Environesia Company Group — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',

@@ -39,4 +39,17 @@ describe('buildMetadata', () => {
     expect(meta.openGraph?.title).toBe('T');
     expect(meta.openGraph?.description).toBe('D');
   });
+
+  it('formats openGraph.locale as an underscore-region tag', () => {
+    const id = buildMetadata({ title: 'T', description: 'D', locale: 'id', path: '/entitas' });
+    const en = buildMetadata({ title: 'T', description: 'D', locale: 'en', path: '/entitas' });
+
+    expect(id.openGraph?.locale).toBe('id_ID');
+    expect(en.openGraph?.locale).toBe('en_US');
+  });
+
+  it('falls back to the raw locale for openGraph.locale when unmapped', () => {
+    const meta = buildMetadata({ title: 'T', description: 'D', locale: 'fr', path: '/entitas' });
+    expect(meta.openGraph?.locale).toBe('fr');
+  });
 });

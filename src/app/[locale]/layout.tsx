@@ -5,7 +5,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
-import { SITE_NAME } from '@/lib/metadata';
+import { SITE_NAME, ogLocale } from '@/lib/metadata';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import '../globals.css';
@@ -26,7 +26,7 @@ export async function generateMetadata({
       'Grup layanan lingkungan terintegrasi: konsultasi, pengujian, pelatihan, dan sertifikasi.',
     openGraph: {
       siteName: SITE_NAME,
-      locale,
+      locale: ogLocale(locale),
       type: 'website',
     },
   };
