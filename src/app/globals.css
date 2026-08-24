@@ -1,42 +1,41 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #10221C;
+  --color-forest: #0F4C3A;
+  --color-moss: #2F7D5E;
+  --color-paper: #FBFBF9;
+  --color-stone: #EDEEEA;
+  --color-slate: #5C635E;
+  --color-line: rgba(16, 34, 28, 0.10);
+
+  --font-display: var(--font-display-src), ui-sans-serif, sans-serif;
+  --font-body: var(--font-body-src), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono-src), ui-monospace, monospace;
+
+  --text-display: 56px;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-h2: 36px;
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.01em;
+
+  --text-h3: 24px;
+  --text-h3--line-height: 1.3;
+
+  --text-body: 16px;
+  --text-body--line-height: 1.7;
+
+  --text-small: 14px;
+  --text-small--line-height: 1.6;
+
+  --text-label: 12px;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.08em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+  background-color: var(--color-paper);
+  color: var(--color-ink);
 }
