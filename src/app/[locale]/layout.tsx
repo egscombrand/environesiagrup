@@ -5,13 +5,32 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
+import { SITE_NAME } from '@/lib/metadata';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import '../globals.css';
 
-export const metadata: Metadata = {
-  title: 'Environesia Company Group',
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  return {
+    title: {
+      default: SITE_NAME,
+      template: `%s — ${SITE_NAME}`,
+    },
+    description:
+      'Grup layanan lingkungan terintegrasi: konsultasi, pengujian, pelatihan, dan sertifikasi.',
+    openGraph: {
+      siteName: SITE_NAME,
+      locale,
+      type: 'website',
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
