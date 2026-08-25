@@ -617,6 +617,8 @@ git commit -m "feat: add tentang kami overview page"
 ### Task 4: The six Tentang Kami sub-pages
 
 **Files:**
+- Create: `src/lib/tentang-kami-routes.ts`
+- Test: `src/lib/tentang-kami-routes.test.ts`
 - Create: `src/app/[locale]/tentang-kami/sejarah/page.tsx`
 - Create: `src/app/[locale]/tentang-kami/visi-misi/page.tsx`
 - Create: `src/app/[locale]/tentang-kami/makna-logo/page.tsx`
@@ -624,14 +626,150 @@ git commit -m "feat: add tentang kami overview page"
 - Create: `src/app/[locale]/tentang-kami/green-business/page.tsx`
 - Create: `src/app/[locale]/tentang-kami/penghargaan/page.tsx`
 - Test: `src/app/[locale]/tentang-kami/sub-pages.test.tsx`
+- Modify: `src/app/sitemap.ts` (consume the registry instead of hardcoding the six sub-paths)
+- Modify: `src/app/[locale]/tentang-kami/page.tsx` (consume the registry instead of its local `SUB_PAGES`)
 
 **Interfaces:**
 - Consumes: `PendingContent` (Task 2), `buildMetadata`, `GroupStructureDiagram` (Fase 3 Task 2), `getCollection`
-- Produces: six routes under `/[locale]/tentang-kami/`
+- Produces: `TENTANG_KAMI_ROUTES` from `@/lib/tentang-kami-routes` — a single ordered list of `{ slug, label, deskripsi, metaDescription }`; six routes under `/[locale]/tentang-kami/`
 
 Five of these are pure `PendingContent` scaffolds — none of that copy exists (project.md §10). `struktur-organisasi` is the exception: the *group* structure is a confirmed fact and already has a tested diagram from Fase 3, so that page renders the real diagram above a pending note explaining that the personnel-level org chart is still to come. That distinction matters — showing a real diagram is honest; implying it depicts staffing would not be.
 
-- [ ] **Step 1: Write the failing test**
+**Route registry (added after the Task 2/3 review).** The six sub-page paths were already listed twice — in `sitemap.ts`'s `STATIC_PATHS` and in the overview page's local `SUB_PAGES` — and this task would otherwise add a third copy of each label and description, one per scaffold file. A single registry removes that: each scaffold reads its own title and description from the shared list rather than restating them, so a copy change lands in one place instead of three.
+
+- [ ] **Step 1: Write the failing registry test**
+
+```ts
+// src/lib/tentang-kami-routes.test.ts
+import { describe, expect, it } from 'vitest';
+import { TENTANG_KAMI_ROUTES, findTentangKamiRoute } from './tentang-kami-routes';
+
+describe('TENTANG_KAMI_ROUTES', () => {
+  it('lists the six sub-pages in sitemap order', () => {
+    expect(TENTANG_KAMI_ROUTES.map((route) => route.slug)).toEqual([
+      'sejarah',
+      'visi-misi',
+      'makna-logo',
+      'struktur-organisasi',
+      'green-business',
+      'penghargaan',
+    ]);
+  });
+
+  it('gives every route a label, a card description, and a meta description', () => {
+    for (const route of TENTANG_KAMI_ROUTES) {
+      expect(route.label.length).toBeGreaterThan(0);
+      expect(route.deskripsi.length).toBeGreaterThan(0);
+      expect(route.metaDescription.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('looks a route up by slug and throws on an unknown one', () => {
+    expect(findTentangKamiRoute('sejarah').label).toBe('Sejarah');
+    expect(() => findTentangKamiRoute('tidak-ada')).toThrow();
+  });
+});
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `npx vitest run src/lib/tentang-kami-routes.test.ts`
+Expected: FAIL — `Cannot find module './tentang-kami-routes'`.
+
+- [ ] **Step 3: Implement the registry**
+
+```ts
+// src/lib/tentang-kami-routes.ts
+
+// Single source of truth for the /tentang-kami sub-pages. Consumed by the
+// sitemap, the section overview page, and each scaffold's own metadata, so a
+// label or description change lands in one place rather than three.
+export type TentangKamiRoute = {
+  slug: string;
+  label: string;
+  deskripsi: string;
+  metaDescription: string;
+};
+
+export const TENTANG_KAMI_ROUTES: readonly TentangKamiRoute[] = [
+  {
+    slug: 'sejarah',
+    label: 'Sejarah',
+    deskripsi: 'Perjalanan grup dari tahun ke tahun.',
+    metaDescription: 'Perjalanan Environesia Company Group dari tahun ke tahun.',
+  },
+  {
+    slug: 'visi-misi',
+    label: 'Visi & Misi',
+    deskripsi: 'Arah dan komitmen jangka panjang.',
+    metaDescription: 'Arah dan komitmen jangka panjang Environesia Company Group.',
+  },
+  {
+    slug: 'makna-logo',
+    label: 'Makna Logo',
+    deskripsi: 'Filosofi di balik identitas visual grup.',
+    metaDescription: 'Filosofi di balik identitas visual Environesia Company Group.',
+  },
+  {
+    slug: 'struktur-organisasi',
+    label: 'Struktur Organisasi',
+    deskripsi: 'Susunan organisasi grup.',
+    metaDescription: 'Susunan Environesia Company Group dan entitas di bawahnya.',
+  },
+  {
+    slug: 'green-business',
+    label: 'Green Business',
+    deskripsi: 'Manifesto keberlanjutan grup.',
+    metaDescription: 'Manifesto keberlanjutan Environesia Company Group.',
+  },
+  {
+    slug: 'penghargaan',
+    label: 'Penghargaan',
+    deskripsi: 'Pengakuan dan apresiasi untuk grup.',
+    metaDescription: 'Pengakuan dan apresiasi untuk Environesia Company Group.',
+  },
+] as const;
+
+export function findTentangKamiRoute(slug: string): TentangKamiRoute {
+  const route = TENTANG_KAMI_ROUTES.find((candidate) => candidate.slug === slug);
+
+  if (!route) {
+    throw new Error(`Unknown tentang-kami route: ${slug}`);
+  }
+
+  return route;
+}
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `npx vitest run src/lib/tentang-kami-routes.test.ts`
+Expected: PASS (3 tests).
+
+- [ ] **Step 5: Point the sitemap at the registry**
+
+In `src/app/sitemap.ts`, add `import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';`, then replace the six literal `'/tentang-kami/...'` entries in `STATIC_PATHS` with a spread. `STATIC_PATHS` becomes:
+
+```ts
+const STATIC_PATHS = [
+  '/',
+  '/entitas',
+  '/bisnis',
+  '/tentang-kami',
+  ...TENTANG_KAMI_ROUTES.map((route) => `/tentang-kami/${route.slug}`),
+  '/pimpinan',
+  '/pimpinan/direksi',
+  '/pimpinan/komisaris',
+];
+```
+
+The existing sitemap tests must still pass unchanged — the emitted URLs are identical.
+
+- [ ] **Step 6: Point the overview page at the registry**
+
+In `src/app/[locale]/tentang-kami/page.tsx`, delete the local `SUB_PAGES` constant, add `import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';`, and map over it instead — `page.href` becomes `` `/tentang-kami/${route.slug}` `` and `page.label`/`page.deskripsi` become `route.label`/`route.deskripsi`. The existing page tests must still pass unchanged.
+
+- [ ] **Step 7: Write the failing sub-pages test**
 
 ```tsx
 // src/app/[locale]/tentang-kami/sub-pages.test.tsx
@@ -682,12 +820,12 @@ describe('Tentang Kami sub-pages', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 8: Run test to verify it fails**
 
 Run: `npx vitest run "src/app/[locale]/tentang-kami/sub-pages.test.tsx"`
 Expected: FAIL — the six page modules are missing.
 
-- [ ] **Step 3: Implement the five pending scaffolds**
+- [ ] **Step 9: Implement the five pending scaffolds**
 
 Each follows the identical shape. `sejarah/page.tsx`:
 
@@ -737,7 +875,7 @@ export default async function SejarahPage() {
 - metadata title `'Penghargaan'`, description `'Pengakuan dan apresiasi untuk Environesia Company Group.'`, path `'/tentang-kami/penghargaan'`
 - `eyebrow="Tentang Kami"`, `title="Penghargaan"`, `description="Pengakuan dan apresiasi untuk grup."`
 
-- [ ] **Step 4: Implement the org structure page**
+- [ ] **Step 10: Implement the org structure page**
 
 ```tsx
 // src/app/[locale]/tentang-kami/struktur-organisasi/page.tsx
@@ -805,12 +943,12 @@ export default async function StrukturOrganisasiPage({
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [ ] **Step 11: Run test to verify it passes**
 
 Run: `npx vitest run "src/app/[locale]/tentang-kami/sub-pages.test.tsx"`
 Expected: PASS (3 tests).
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 12: Commit**
 
 ```bash
 git add -A
