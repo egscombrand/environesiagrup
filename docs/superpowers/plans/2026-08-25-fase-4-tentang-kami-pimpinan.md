@@ -520,7 +520,7 @@ const SUB_PAGES = [
   { label: 'Makna Logo', href: '/tentang-kami/makna-logo', deskripsi: 'Filosofi di balik identitas visual grup.' },
   { label: 'Struktur Organisasi', href: '/tentang-kami/struktur-organisasi', deskripsi: 'Susunan organisasi grup.' },
   { label: 'Green Business', href: '/tentang-kami/green-business', deskripsi: 'Manifesto keberlanjutan grup.' },
-  { label: 'Penghargaan', href: '/tentang-kami/penghargaan', deskripsi: 'Pengakuan dan apresiasi yang diterima.' },
+  { label: 'Penghargaan', href: '/tentang-kami/penghargaan', deskripsi: 'Pengakuan dan apresiasi untuk grup.' },
 ] as const;
 
 export async function generateMetadata({
@@ -734,8 +734,8 @@ export default async function SejarahPage() {
 - `eyebrow="Tentang Kami"`, `title="Green Business"`, `description="Manifesto keberlanjutan grup."`
 
 `penghargaan/page.tsx` — same shape, with:
-- metadata title `'Penghargaan'`, description `'Pengakuan dan apresiasi yang diterima Environesia Company Group.'`, path `'/tentang-kami/penghargaan'`
-- `eyebrow="Tentang Kami"`, `title="Penghargaan"`, `description="Pengakuan dan apresiasi yang diterima."`
+- metadata title `'Penghargaan'`, description `'Pengakuan dan apresiasi untuk Environesia Company Group.'`, path `'/tentang-kami/penghargaan'`
+- `eyebrow="Tentang Kami"`, `title="Penghargaan"`, `description="Pengakuan dan apresiasi untuk grup."`
 
 - [ ] **Step 4: Implement the org structure page**
 
