@@ -58,3 +58,23 @@ export type PostSummary = {
   tanggal: string;
   ringkasan: string;
 };
+
+export type LeadershipTipe = 'direksi' | 'komisaris';
+
+export type LeadershipEntry = {
+  nama: string;
+  jabatan: string;
+  entitas?: string;
+  foto?: string;
+  bio?: string;
+  tipe: LeadershipTipe;
+  urutan: number;
+};
+
+export type MilestoneEntry = {
+  tahun: number;
+  judul: string;
+  deskripsi: string;
+  gambar?: string;
+  urutan: number;
+};
