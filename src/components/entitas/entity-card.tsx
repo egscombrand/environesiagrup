@@ -10,10 +10,15 @@ export function EntityCard({
   locale: string;
   className?: string;
 }) {
+  // `className` is additive only — it cannot override the utilities hardcoded below.
+  // Tailwind emits utilities of the same property in ascending scale order in the
+  // compiled stylesheet, so at equal specificity the later-emitted rule always wins
+  // regardless of where a class appears in this string. A caller passing e.g. `p-4`
+  // will not shrink the `p-6` below; it will simply have no visible effect.
   return (
     <Link
       href={`/${locale}/entitas/${entity.slug}`}
-      className={`block rounded-[14px] border border-line p-6 transition-shadow hover:shadow-sm ${className}`.trim()}
+      className={`block rounded-[14px] border border-line bg-paper p-6 transition-shadow hover:shadow-sm ${className}`.trim()}
       aria-label={entity.nama}
     >
       <span
