@@ -4,16 +4,8 @@ import { getCollection } from '@/lib/content';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
 import type { EntityEntry } from '@/lib/content-types';
-
-const SUB_PAGES = [
-  { label: 'Sejarah', href: '/tentang-kami/sejarah', deskripsi: 'Perjalanan grup dari tahun ke tahun.' },
-  { label: 'Visi & Misi', href: '/tentang-kami/visi-misi', deskripsi: 'Arah dan komitmen jangka panjang.' },
-  { label: 'Makna Logo', href: '/tentang-kami/makna-logo', deskripsi: 'Filosofi di balik identitas visual grup.' },
-  { label: 'Struktur Organisasi', href: '/tentang-kami/struktur-organisasi', deskripsi: 'Susunan organisasi grup.' },
-  { label: 'Green Business', href: '/tentang-kami/green-business', deskripsi: 'Manifesto keberlanjutan grup.' },
-  { label: 'Penghargaan', href: '/tentang-kami/penghargaan', deskripsi: 'Pengakuan dan apresiasi untuk grup.' },
-] as const;
 
 export async function generateMetadata({
   params,
@@ -74,14 +66,14 @@ export default async function TentangKamiPage({
         <Reveal>
           <h2 className="font-display text-h2 text-ink">Selengkapnya</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {SUB_PAGES.map((page) => (
+            {TENTANG_KAMI_ROUTES.map((route) => (
               <Link
-                key={page.href}
-                href={`/${locale}${page.href}`}
+                key={route.slug}
+                href={`/${locale}/tentang-kami/${route.slug}`}
                 className="block rounded-[14px] border border-line bg-paper p-6 transition-shadow hover:shadow-sm"
               >
-                <p className="font-display text-h3 text-ink">{page.label}</p>
-                <p className="mt-1 text-small text-slate">{page.deskripsi}</p>
+                <p className="font-display text-h3 text-ink">{route.label}</p>
+                <p className="mt-1 text-small text-slate">{route.deskripsi}</p>
               </Link>
             ))}
           </div>
