@@ -12,7 +12,7 @@ const SUB_PAGES = [
   { label: 'Makna Logo', href: '/tentang-kami/makna-logo', deskripsi: 'Filosofi di balik identitas visual grup.' },
   { label: 'Struktur Organisasi', href: '/tentang-kami/struktur-organisasi', deskripsi: 'Susunan organisasi grup.' },
   { label: 'Green Business', href: '/tentang-kami/green-business', deskripsi: 'Manifesto keberlanjutan grup.' },
-  { label: 'Penghargaan', href: '/tentang-kami/penghargaan', deskripsi: 'Pengakuan dan apresiasi yang diterima.' },
+  { label: 'Penghargaan', href: '/tentang-kami/penghargaan', deskripsi: 'Pengakuan dan apresiasi untuk grup.' },
 ] as const;
 
 export async function generateMetadata({
