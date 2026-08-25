@@ -10,3 +10,13 @@ export const OFFICE_ADDRESS = {
   postalCode: '55284',
   addressCountry: 'ID',
 } as const;
+
+// The address as rendered to humans, derived from the structured OFFICE_ADDRESS
+// above so the footer, the contact page, and the JSON-LD can never disagree.
+export const OFFICE_ADDRESS_LINES = [
+  'Jl. Jati Mataram No. 284B, Karangjati',
+  'Sinduadi, Mlati, Sleman',
+  'Daerah Istimewa Yogyakarta 55284',
+] as const;
+
+export const OFFICE_BUILDING = 'Grha Environesia (Lantai 2)';

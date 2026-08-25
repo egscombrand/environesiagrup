@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
 
 const FOOTER_LINKS = [
   { label: 'Entitas', href: '/entitas' },
@@ -18,13 +19,13 @@ export function Footer({ locale }: { locale: string }) {
         <div className="grid gap-8 md:grid-cols-3">
           <div>
             <p className="font-display text-h3 font-semibold text-forest">Environesia Group</p>
-            <p className="mt-3 font-mono text-label uppercase text-slate">Grha Environesia (Lantai 2)</p>
+            <p className="mt-3 font-mono text-label uppercase text-slate">{OFFICE_BUILDING}</p>
             <address className="mt-1 text-small not-italic text-slate">
-              Jl. Jati Mataram No. 284B, Karangjati
-              <br />
-              Sinduadi, Mlati, Sleman
-              <br />
-              Daerah Istimewa Yogyakarta 55284
+              {OFFICE_ADDRESS_LINES.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </address>
           </div>
           <nav aria-label="Navigasi footer">
