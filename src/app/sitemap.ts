@@ -14,6 +14,12 @@ const STATIC_PATHS = [
   '/pimpinan',
   '/pimpinan/direksi',
   '/pimpinan/komisaris',
+  '/proyek',
+  '/berita',
+  '/karier',
+  '/kontak',
+  '/unduhan',
+  '/kebijakan-privasi',
 ];
 
 function priorityFor(path: string) {

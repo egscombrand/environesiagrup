@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
 
-const FOOTER_LINKS = [
+export const FOOTER_LINKS = [
   { label: 'Entitas', href: '/entitas' },
   { label: 'Proyek', href: '/proyek' },
   { label: 'Berita', href: '/berita' },
   { label: 'Karier', href: '/karier' },
   { label: 'Unduhan', href: '/unduhan' },
   { label: 'Kontak', href: '/kontak' },
+  { label: 'Kebijakan Privasi', href: '/kebijakan-privasi' },
 ] as const;
 
 export function Footer({ locale }: { locale: string }) {

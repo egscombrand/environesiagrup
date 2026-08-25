@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MobileNav } from './header-mobile-nav';
 
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { label: 'Beranda', href: '/' },
   { label: 'Entitas', href: '/entitas' },
   { label: 'Pimpinan', href: '/pimpinan' },
