@@ -14,6 +14,12 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: 'Kontak' })).toHaveAttribute('href', '/en/kontak');
   });
 
+  it('renders every footer link', () => {
+    render(<Footer locale="id" />);
+    const nav = screen.getByRole('navigation', { name: 'Navigasi footer' });
+    expect(nav.querySelectorAll('a')).toHaveLength(7);
+  });
+
   it('renders the current year in the copyright line', () => {
     render(<Footer locale="id" />);
     const year = new Date().getFullYear().toString();
