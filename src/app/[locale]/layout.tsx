@@ -8,6 +8,7 @@ import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
 import { SITE_NAME, ogLocale } from '@/lib/metadata';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { OrganizationJsonLd } from '@/components/seo/organization-jsonld';
 import '../globals.css';
 
 export async function generateMetadata({
@@ -59,6 +60,7 @@ export default async function LocaleLayout({
       className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}
     >
       <body className="font-body antialiased">
+        <OrganizationJsonLd locale={locale} />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-forest focus:px-4 focus:py-2 focus:text-paper"
