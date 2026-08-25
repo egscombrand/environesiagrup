@@ -13,6 +13,7 @@ const TEMPLATED_COLLECTIONS = [
   'jobs',
   'documents',
   'entities',
+  'pillars',
 ];
 
 describe('content templates', () => {
@@ -25,8 +26,9 @@ describe('content templates', () => {
 
   it('never surfaces a template through getCollection', () => {
     for (const collection of TEMPLATED_COLLECTIONS) {
-      const slugs = getCollection(collection).map((entry) => entry.slug);
-      expect(slugs, `template leaked into ${collection}`).not.toContain('_TEMPLATE');
+      const entries = getCollection(collection);
+      const leaked = entries.filter((entry) => /^_TEMPLATE/.test(entry.slug));
+      expect(leaked, `template leaked into ${collection}`).toEqual([]);
     }
   });
 

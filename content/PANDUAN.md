@@ -19,6 +19,11 @@ kode.
 File `_TEMPLATE.md` tidak pernah tampil di website karena bukan berekstensi
 `.mdx`. Biarkan saja di tempatnya sebagai rujukan.
 
+Untuk sekarang, semua file memakai nama polos `<slug>.mdx` (bahasa Indonesia).
+Begitu versi Inggris mulai dikerjakan, namanya berubah jadi
+`<slug>.id.mdx` / `<slug>.en.mdx` — belum perlu dipikirkan sampai konten
+Inggris benar-benar ada.
+
 ## Daftar folder
 
 | Folder | Isinya | Tampil di halaman | Status |
