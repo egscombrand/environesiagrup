@@ -18,7 +18,7 @@ Chinese.
 
 | Question | Decision | Why |
 |---|---|---|
-| Scope | UI strings now, content later | Content lives in Supabase with no locale column; adding one changes the schema, every query, and the admin forms Lutfi just shipped. Splitting keeps this phase deliverable. |
+| Scope | UI strings **and navigation labels** now, other content later | Content lives in Supabase with no locale column; adding one changes the schema, every query, and the admin forms Lutfi just shipped. Splitting keeps this phase deliverable. |
 | Chinese variant | Simplified, `zh-CN`, routed as `/zh` | Mainland China and Singapore. Traditional would be a separate locale, doubling translation work. |
 | Translation source | Drafted here, reviewed by the owner | These are short functional labels, not brand narrative. Low risk, and the site becomes trilingual today rather than waiting. |
 | Brand tagline | Not translated | "The World-Class Integrated Green Ecosystem" is English in the official logo artwork. Brand taglines conventionally survive untranslated. |
@@ -127,9 +127,27 @@ on `/id/entitas/greenlab` belongs on `/en/entitas/greenlab`, not the homepage.
 - Existing tests updated where they assert Indonesian strings that now come from
   the dictionary.
 
+## Navigation labels — added to scope after a mid-design finding
+
+The merge from `fitur-lutfi` moved navigation into Supabase. `NAV_ITEMS` no
+longer exists; `getPublishedNavigation('header')` reads `navigation_items`, with
+no hardcoded fallback. Navigation labels are therefore content, not UI strings,
+and the original scope would have left the header — the most visible element on
+every page — in Indonesian while everything around it was Chinese. That reads as
+half-finished rather than as "content pending".
+
+`navigation_items` gets two additive columns, `label_en` and `label_zh`, both
+nullable. Existing rows stay valid; a null falls back to `label`, so an
+untranslated item degrades to Indonesian rather than rendering blank. The admin
+navigation form gains an input per language, and `getPublishedNavigation` takes
+a locale and resolves the right column.
+
+This is deliberately one table, not the content model. Entities, pillars, posts,
+projects, documents, and jobs are untouched.
+
 ## Out of scope
 
-- **Content translation.** Entities, pillars, posts, projects, documents, and
+- **Content translation** (except navigation labels, above). Entities, pillars, posts, projects, documents, and
   jobs come from Supabase, whose schema has no locale column. Making content
   multilingual means schema changes, query changes, and admin form changes.
   It is a separate phase and should be coordinated with whoever owns the admin
