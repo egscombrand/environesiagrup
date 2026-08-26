@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import PimpinanPage from './page';
-import DireksiPage from './direksi/page';
-import KomisarisPage from './komisaris/page';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/cms/leadership', () => ({
+  getPublishedLeadership: vi.fn().mockResolvedValue([]),
+}));
+
+const { default: PimpinanPage } = await import('./page');
+const { default: DireksiPage } = await import('./direksi/page');
+const { default: KomisarisPage } = await import('./komisaris/page');
 
 const params = Promise.resolve({ locale: 'id' });
 

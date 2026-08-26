@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import type { ProjectPin } from '@/lib/content-types';
+import type { ProjectPin } from '@/lib/cms/projects';
 
-function project([lng, lat]: [number, number]) {
+function project(lat: number, lng: number) {
   const x = ((lng + 180) / 360) * 100;
   const y = ((90 - lat) / 180) * 60;
   return { x, y };
@@ -28,10 +28,10 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
     <div className="relative min-h-[280px] overflow-hidden rounded-[14px] border border-line bg-stone">
       <svg viewBox="0 0 100 60" className="h-full w-full" role="group" aria-label="Peta jejak proyek">
         {pins.map((pin, index) => {
-          const { x, y } = project(pin.koordinat);
+          const { x, y } = project(pin.latitude ?? 0, pin.longitude ?? 0);
           return (
             <circle
-              key={`${pin.negara}-${index}`}
+              key={pin.id}
               cx={x}
               cy={y}
               r={1.2}
@@ -49,15 +49,15 @@ export function CountryMap({ pins }: { pins: ProjectPin[] }) {
               tabIndex={0}
               role="button"
               aria-pressed={pinnedIndex === index}
-              aria-label={`${pin.judul}, ${pin.negara}`}
+              aria-label={`${pin.title}, ${pin.country ?? ''}`}
             />
           );
         })}
       </svg>
       {shownIndex !== null ? (
         <div className="absolute bottom-4 left-4 rounded border border-line bg-paper px-3 py-2 text-small text-ink shadow-sm">
-          <p className="font-medium">{pins[shownIndex].judul}</p>
-          <p className="text-slate">{pins[shownIndex].negara}</p>
+          <p className="font-medium">{pins[shownIndex].title}</p>
+          <p className="text-slate">{pins[shownIndex].country}</p>
         </div>
       ) : null}
     </div>

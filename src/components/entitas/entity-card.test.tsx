@@ -1,18 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { EntityCard } from './entity-card';
-import type { EntityEntry } from '@/lib/content-types';
+import { makeEntity } from '@/lib/cms/fixtures';
 
-const entity: EntityEntry = {
-  nama: 'GreenLab',
+const entity = makeEntity({
+  name: 'GreenLab',
   slug: 'greenlab',
-  lini: 'inti',
-  warnaAksen: '#1E7A6B',
-  deskripsi: 'Laboratorium & sampling.',
-  layanan: [],
-  legalitas: [],
-  urutan: 2,
-};
+  short_description: 'Laboratorium & sampling.',
+});
 
 describe('EntityCard', () => {
   it('renders the entity name and description', () => {

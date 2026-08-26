@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { CountryMap } from './country-map';
+import { makeProjectPin } from '@/lib/cms/fixtures';
 
 describe('CountryMap', () => {
   it('renders an honest empty state when there are no pins', () => {
@@ -15,7 +16,7 @@ describe('CountryMap', () => {
     const user = userEvent.setup();
     render(
       <CountryMap
-        pins={[{ judul: 'Proyek Uji', negara: 'Negara Uji', koordinat: [106.8, -6.2] }]}
+        pins={[makeProjectPin({ title: 'Proyek Uji', country: 'Negara Uji', latitude: -6.2, longitude: 106.8 })]}
       />
     );
 
@@ -30,7 +31,7 @@ describe('CountryMap', () => {
     const user = userEvent.setup();
     render(
       <CountryMap
-        pins={[{ judul: 'Proyek Uji', negara: 'Negara Uji', koordinat: [106.8, -6.2] }]}
+        pins={[makeProjectPin({ title: 'Proyek Uji', country: 'Negara Uji', latitude: -6.2, longitude: 106.8 })]}
       />
     );
 
@@ -56,8 +57,8 @@ describe('CountryMap', () => {
     render(
       <CountryMap
         pins={[
-          { judul: 'Proyek A', negara: 'Negara A', koordinat: [106.8, -6.2] },
-          { judul: 'Proyek B', negara: 'Negara B', koordinat: [-58.4, -34.6] },
+          makeProjectPin({ title: 'Proyek A', country: 'Negara A', latitude: -6.2, longitude: 106.8 }),
+          makeProjectPin({ title: 'Proyek B', country: 'Negara B', latitude: -34.6, longitude: -58.4 }),
         ]}
       />
     );

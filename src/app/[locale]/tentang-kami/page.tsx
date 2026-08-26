@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getCollection } from '@/lib/content';
+import { getPublishedEntities } from '@/lib/cms/entities';
+import { getPublishedStats } from '@/lib/cms/stats';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { BrandTagline } from '@/components/layout/brand-tagline';
 import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
-import type { EntityEntry, StatEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
   params,
@@ -30,10 +30,7 @@ export default async function TentangKamiPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const entities = getCollection<EntityEntry>('entities').map((entry) => entry.data);
-  const stats = getCollection<StatEntry>('stats')
-    .map((entry) => entry.data)
-    .sort((a, b) => a.urutan - b.urutan);
+  const [entities, stats] = await Promise.all([getPublishedEntities(), getPublishedStats()]);
   const leadStat = stats[0];
 
   return (
@@ -61,8 +58,9 @@ export default async function TentangKamiPage({
             {leadStat ? (
               <div className="rounded-[14px] border border-line bg-paper p-8">
                 <p className="font-display text-display text-forest">
-                  {leadStat.nilai}
-                  {leadStat.satuan}
+                  {leadStat.prefix}
+                  {leadStat.value}
+                  {leadStat.suffix}
                 </p>
                 <p className="mt-2 font-mono text-label uppercase text-slate">{leadStat.label}</p>
               </div>

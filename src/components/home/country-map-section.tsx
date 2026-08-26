@@ -1,16 +1,15 @@
-import { getCollection } from '@/lib/content';
+import { getPublishedProjectPins } from '@/lib/cms/projects';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { CountryMap } from './country-map';
-import type { ProjectPin } from '@/lib/content-types';
 
-export function CountryMapSection() {
-  const pins = getCollection<ProjectPin>('projects').map((entry) => entry.data);
+export async function CountryMapSection({ title = 'Jejak di 10 Negara' }: { title?: string } = {}) {
+  const pins = await getPublishedProjectPins();
 
   return (
     <Section>
       <Reveal>
-        <h2 className="font-display text-h2 text-ink">Jejak di 10 Negara</h2>
+        <h2 className="font-display text-h2 text-ink">{title}</h2>
         <div className="mt-8">
           <CountryMap pins={pins} />
         </div>

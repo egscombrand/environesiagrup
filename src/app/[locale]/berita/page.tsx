@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
-import { getCollection } from '@/lib/content';
+import Link from 'next/link';
+import { getPublishedPosts } from '@/lib/cms/posts';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
-import type { PostSummary } from '@/lib/content-types';
+
+const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
 
 export async function generateMetadata({
   params,
@@ -25,8 +27,8 @@ export default async function BeritaPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await params;
-  const posts = getCollection<PostSummary>('posts').map((entry) => entry.data);
+  const { locale } = await params;
+  const posts = await getPublishedPosts();
 
   return (
     <>
@@ -48,9 +50,13 @@ export default async function BeritaPage({
             <ul>
               {posts.map((post) => (
                 <li key={post.slug} className="border-b border-line py-4">
-                  <p className="font-mono text-label uppercase text-slate">{post.tanggal}</p>
-                  <p className="mt-1 font-display text-h3 text-ink">{post.judul}</p>
-                  <p className="mt-1 text-small text-slate">{post.ringkasan}</p>
+                  <Link href={`/${locale}/berita/${post.slug}`} className="block hover:opacity-80">
+                    <p className="font-mono text-label uppercase text-slate">
+                      {post.published_at ? dateFormatter.format(new Date(post.published_at)) : ''}
+                    </p>
+                    <p className="mt-1 font-display text-h3 text-ink">{post.title}</p>
+                    <p className="mt-1 text-small text-slate">{post.excerpt}</p>
+                  </Link>
                 </li>
               ))}
             </ul>

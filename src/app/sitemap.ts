@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
-import { getCollection } from '@/lib/content';
+import { getPublishedEntitySlugs } from '@/lib/cms/entities';
+import { getPublishedPillarSlugs } from '@/lib/cms/pillars';
+import { getPublishedPostSlugs } from '@/lib/cms/posts';
+import { getPublishedProjectSlugs } from '@/lib/cms/projects';
 import { SITE_URL } from '@/lib/site';
 import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
-import type { EntityEntry, PillarEntry } from '@/lib/content-types';
 
 const STATIC_PATHS = [
   '/',
@@ -28,14 +30,20 @@ function priorityFor(path: string) {
   return 0.6;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const entitySlugs = getCollection<EntityEntry>('entities').map((entry) => entry.data.slug);
-  const pillarSlugs = getCollection<PillarEntry>('pillars').map((entry) => entry.data.slug);
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [entitySlugs, pillarSlugs, postSlugs, projectSlugs] = await Promise.all([
+    getPublishedEntitySlugs(),
+    getPublishedPillarSlugs(),
+    getPublishedPostSlugs(),
+    getPublishedProjectSlugs(),
+  ]);
 
   const paths = [
     ...STATIC_PATHS,
     ...entitySlugs.map((slug) => `/entitas/${slug}`),
     ...pillarSlugs.map((slug) => `/bisnis/${slug}`),
+    ...postSlugs.map((slug) => `/berita/${slug}`),
+    ...projectSlugs.map((slug) => `/proyek/${slug}`),
   ];
 
   return routing.locales.flatMap((locale) =>

@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import BeritaPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/cms/posts', () => ({
+  getPublishedPosts: vi.fn().mockResolvedValue([]),
+}));
+
+const { default: BeritaPage } = await import('./page');
 
 describe('BeritaPage', () => {
   it('renders the heading', async () => {

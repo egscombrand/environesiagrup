@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import ProyekPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/cms/projects', () => ({
+  getPublishedProjects: vi.fn().mockResolvedValue([]),
+  getPublishedProjectPins: vi.fn().mockResolvedValue([]),
+}));
+
+const { default: ProyekPage } = await import('./page');
 
 describe('ProyekPage', () => {
   it('renders the heading and the map', async () => {

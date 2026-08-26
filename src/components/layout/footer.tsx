@@ -1,19 +1,14 @@
 import Image from 'next/image';
-import { BrandTagline } from '@/components/layout/brand-tagline';
 import Link from 'next/link';
-import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
+import { BrandTagline } from '@/components/layout/brand-tagline';
+import { getPublishedNavigation } from '@/lib/cms/navigation';
+import { getSiteSettings } from '@/lib/cms/settings';
 
-export const FOOTER_LINKS = [
-  { label: 'Entitas', href: '/entitas' },
-  { label: 'Proyek', href: '/proyek' },
-  { label: 'Berita', href: '/berita' },
-  { label: 'Karier', href: '/karier' },
-  { label: 'Unduhan', href: '/unduhan' },
-  { label: 'Kontak', href: '/kontak' },
-  { label: 'Kebijakan Privasi', href: '/kebijakan-privasi' },
-] as const;
-
-export function Footer({ locale }: { locale: string }) {
+export async function Footer({ locale }: { locale: string }) {
+  const [footerItems, settings] = await Promise.all([
+    getPublishedNavigation('footer'),
+    getSiteSettings(),
+  ]);
   const year = new Date().getFullYear();
 
   return (
@@ -22,27 +17,33 @@ export function Footer({ locale }: { locale: string }) {
         <div className="grid gap-8 md:grid-cols-3">
           <div>
             <Image
-              src="/brand/environesia-group.png"
-              alt="Environesia Company Group"
+              src={settings.logoUrl ?? '/brand/environesia-group.png'}
+              alt={settings.site_name}
               width={191}
               height={40}
               className="h-10 w-auto"
             />
             <BrandTagline className="mt-2 text-small text-slate" />
-            <p className="mt-3 font-mono text-label uppercase text-slate">{OFFICE_BUILDING}</p>
-            <address className="mt-1 text-small not-italic text-slate">
-              {OFFICE_ADDRESS_LINES.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </address>
+            {settings.address ? (
+              <address className="mt-3 text-small not-italic text-slate">
+                {settings.address.split('\n').map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </address>
+            ) : null}
           </div>
           <nav aria-label="Navigasi footer">
             <ul className="flex flex-col gap-2">
-              {FOOTER_LINKS.map((item) => (
-                <li key={item.href}>
-                  <Link href={`/${locale}${item.href}`} className="text-small text-ink hover:text-forest">
+              {footerItems.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={item.url.startsWith('http') ? item.url : `/${locale}${item.url}`}
+                    target={item.open_new_tab ? '_blank' : undefined}
+                    rel={item.open_new_tab ? 'noreferrer' : undefined}
+                    className="text-small text-ink hover:text-forest"
+                  >
                     {item.label}
                   </Link>
                 </li>
@@ -51,7 +52,7 @@ export function Footer({ locale }: { locale: string }) {
           </nav>
         </div>
         <p className="mt-12 font-mono text-label uppercase text-slate">
-          © {year} Environesia Company Group
+          {settings.footer_copyright || `© ${year} ${settings.site_name}`}
         </p>
       </div>
     </footer>

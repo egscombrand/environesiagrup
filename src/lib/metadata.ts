@@ -23,24 +23,25 @@ export function buildMetadata({
   path,
 }: {
   title: string;
-  description: string;
+  description?: string | null;
   locale: string;
   path: string;
 }): Metadata {
   const languages = Object.fromEntries(
     routing.locales.map((candidate) => [candidate, localePath(candidate, path)])
   );
+  const resolvedDescription = description ?? undefined;
 
   return {
     title,
-    description,
+    description: resolvedDescription,
     alternates: {
       canonical: localePath(locale, path),
       languages,
     },
     openGraph: {
       title,
-      description,
+      description: resolvedDescription,
       siteName: SITE_NAME,
       locale: ogLocale(locale),
       type: 'website',

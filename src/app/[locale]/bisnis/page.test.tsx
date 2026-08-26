@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import BisnisPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+import { PILLARS } from '@/lib/cms/__fixtures__/site-content';
+
+vi.mock('@/lib/cms/pillars', () => ({
+  getPublishedPillars: vi.fn().mockResolvedValue(PILLARS),
+}));
+
+const { default: BisnisPage } = await import('./page');
 
 describe('BisnisPage', () => {
   it('renders all four pillars in chain order with numbered labels', async () => {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
-import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
+import { getSiteSettings } from '@/lib/cms/settings';
 
 export async function generateMetadata({
   params,
@@ -25,6 +25,9 @@ export default async function KontakPage({
   params: Promise<{ locale: string }>;
 }) {
   await params;
+  const settings = await getSiteSettings();
+  const addressLines = settings.address?.split('\n') ?? [];
+  const [officeBuilding, ...restAddressLines] = addressLines;
 
   return (
     <>
@@ -44,14 +47,16 @@ export default async function KontakPage({
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-[14px] border border-line bg-paper p-8">
               <p className="font-mono text-label uppercase text-slate">Kantor Pusat</p>
-              <p className="mt-3 font-display text-h3 text-ink">{OFFICE_BUILDING}</p>
+              <p className="mt-3 font-display text-h3 text-ink">{officeBuilding}</p>
               <address className="mt-2 text-small not-italic text-slate">
-                {OFFICE_ADDRESS_LINES.map((line) => (
+                {restAddressLines.map((line) => (
                   <span key={line} className="block">
                     {line}
                   </span>
                 ))}
               </address>
+              {settings.phone ? <p className="mt-4 text-small text-slate">{settings.phone}</p> : null}
+              {settings.email ? <p className="mt-1 text-small text-slate">{settings.email}</p> : null}
             </div>
 
             <div className="rounded-[14px] border border-line bg-paper p-8">

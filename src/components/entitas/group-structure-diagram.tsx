@@ -1,14 +1,14 @@
-import type { EntityEntry } from '@/lib/content-types';
+import type { Entity } from '@/lib/cms/entities';
 import { EntityCard } from '@/components/entitas/entity-card';
 
 export function GroupStructureDiagram({
   entities,
   locale,
 }: {
-  entities: EntityEntry[];
+  entities: Entity[];
   locale: string;
 }) {
-  const ordered = [...entities].sort((a, b) => a.urutan - b.urutan);
+  const ordered = [...entities].sort((a, b) => a.sort_order - b.sort_order);
 
   return (
     <figure>

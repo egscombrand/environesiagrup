@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { HeroSlider } from './hero-slider';
+import { makeHeroSlide } from '@/lib/cms/fixtures';
 
 function mockReducedMotion() {
   const original = window.matchMedia;
@@ -52,40 +53,40 @@ function mockMobileSaveData() {
 }
 
 const slides = [
-  {
-    type: 'image' as const,
-    src: '/hero/slide-1.svg',
+  makeHeroSlide({
+    type: 'image',
+    desktopImageUrl: '/hero/slide-1.svg',
     eyebrow: 'Eyebrow Satu',
-    headline: 'Headline Satu',
-    subheadline: 'Sub satu',
-    ctaLabel: 'CTA Satu',
-    ctaUrl: '/entitas',
-    urutan: 1,
-  },
-  {
-    type: 'image' as const,
-    src: '/hero/slide-2.svg',
+    title: 'Headline Satu',
+    description: 'Sub satu',
+    cta_label: 'CTA Satu',
+    cta_url: '/entitas',
+    sort_order: 1,
+  }),
+  makeHeroSlide({
+    type: 'image',
+    desktopImageUrl: '/hero/slide-2.svg',
     eyebrow: 'Eyebrow Dua',
-    headline: 'Headline Dua',
-    subheadline: 'Sub dua',
-    ctaLabel: 'CTA Dua',
-    ctaUrl: '/proyek',
-    urutan: 2,
-  },
+    title: 'Headline Dua',
+    description: 'Sub dua',
+    cta_label: 'CTA Dua',
+    cta_url: '/proyek',
+    sort_order: 2,
+  }),
 ];
 
-const videoSlide = {
-  type: 'video' as const,
-  src: '/hero/video-1.mp4',
-  srcMobile: '/hero/video-1-mobile.mp4',
-  poster: '/hero/poster-1.svg',
+const videoSlide = makeHeroSlide({
+  type: 'video',
+  video_url: '/hero/video-1.mp4',
+  mobileImageUrl: '/hero/video-1-mobile.mp4',
+  videoPosterUrl: '/hero/poster-1.svg',
   eyebrow: 'Eyebrow Video',
-  headline: 'Headline Video',
-  subheadline: 'Sub video',
-  ctaLabel: 'CTA Video',
-  ctaUrl: '/video',
-  urutan: 1,
-};
+  title: 'Headline Video',
+  description: 'Sub video',
+  cta_label: 'CTA Video',
+  cta_url: '/video',
+  sort_order: 1,
+});
 
 // Mocks that mutate global browser state (window.matchMedia, navigator.connection,
 // fake timers) are restored here rather than at the end of each test body — a
@@ -203,9 +204,9 @@ describe('HeroSlider', () => {
     // "img" (it's correctly treated as decorative) — getByRole('img') would
     // never find it, so query the DOM directly instead.
     const image = container.querySelector('img');
-    expect(image).toHaveAttribute('src', videoSlide.poster);
-    expect(image).not.toHaveAttribute('src', videoSlide.src);
-    expect(image).not.toHaveAttribute('src', videoSlide.srcMobile);
+    expect(image).toHaveAttribute('src', videoSlide.videoPosterUrl);
+    expect(image).not.toHaveAttribute('src', videoSlide.video_url ?? undefined);
+    expect(image).not.toHaveAttribute('src', videoSlide.mobileImageUrl);
   });
 
   it('does not advance when the active video ends while the slider is paused', () => {

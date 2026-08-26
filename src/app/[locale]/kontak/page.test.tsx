@@ -1,6 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import KontakPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/cms/settings', () => ({
+  getSiteSettings: vi.fn().mockResolvedValue({
+    address:
+      'Grha Environesia (Lantai 2)\nJl. Jati Mataram No. 284B, Karangjati\nSinduadi, Mlati, Sleman\nDaerah Istimewa Yogyakarta 55284',
+    phone: null,
+    email: null,
+  }),
+}));
+
+const { default: KontakPage } = await import('./page');
 
 describe('KontakPage', () => {
   it('renders the heading and the confirmed office address', async () => {

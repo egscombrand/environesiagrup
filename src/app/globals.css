@@ -9,6 +9,16 @@
   --color-slate: #5C635E;
   --color-line: rgba(16, 34, 28, 0.10);
 
+  /* Semantic status colors for wp-admin — deliberately reuse the same hues
+     already assigned to entity accents elsewhere on the site (project.md §2)
+     rather than inventing a new palette: success=Environesia forest,
+     warning=GreenSkill gold, info=LSP indigo, danger=Bikin Indonesia
+     terracotta. Ties admin chrome back to the one brand palette. */
+  --color-success: #0F4C3A;
+  --color-warning: #B07C25;
+  --color-info: #454A85;
+  --color-danger: #A8482D;
+
   --font-display: var(--font-display-src), ui-sans-serif, sans-serif;
   --font-body: var(--font-body-src), ui-sans-serif, sans-serif;
   --font-mono: var(--font-mono-src), ui-monospace, monospace;

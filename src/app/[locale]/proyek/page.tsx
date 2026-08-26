@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { getCollection } from '@/lib/content';
+import Link from 'next/link';
+import { getPublishedProjects, getPublishedProjectPins } from '@/lib/cms/projects';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { CountryMap } from '@/components/home/country-map';
-import type { ProjectPin } from '@/lib/content-types';
 
 export async function generateMetadata({
   params,
@@ -26,8 +26,8 @@ export default async function ProyekPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await params;
-  const pins = getCollection<ProjectPin>('projects').map((entry) => entry.data);
+  const { locale } = await params;
+  const [projects, pins] = await Promise.all([getPublishedProjects(), getPublishedProjectPins()]);
 
   return (
     <>
@@ -50,16 +50,19 @@ export default async function ProyekPage({
       <Section>
         <Reveal>
           <h2 className="font-display text-h2 text-ink">Daftar Proyek</h2>
-          {pins.length === 0 ? (
+          {projects.length === 0 ? (
             <p className="mt-6 text-small text-slate">Daftar proyek sedang disiapkan.</p>
           ) : (
             <ul className="mt-8">
-              {pins.map((pin) => (
-                <li key={`${pin.negara}-${pin.judul}`} className="border-b border-line py-4">
-                  <p className="font-display text-h3 text-ink">{pin.judul}</p>
-                  <p className="mt-1 font-mono text-label uppercase text-slate">
-                    {pin.kota ? `${pin.kota}, ${pin.negara}` : pin.negara}
-                  </p>
+              {projects.map((project) => (
+                <li key={project.id} className="border-b border-line py-4">
+                  <Link href={`/${locale}/proyek/${project.slug}`} className="block hover:opacity-80">
+                    <p className="font-display text-h3 text-ink">{project.title}</p>
+                    <p className="mt-1 font-mono text-label uppercase text-slate">
+                      {[project.city, project.country].filter(Boolean).join(', ')}
+                      {project.year ? ` · ${project.year}` : ''}
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -1,12 +1,10 @@
-import { getCollection } from '@/lib/content';
-import { SITE_URL, OFFICE_ADDRESS, BRAND_TAGLINE } from '@/lib/site';
+import { getPublishedEntities } from '@/lib/cms/entities';
+import { SITE_URL, BRAND_TAGLINE } from '@/lib/site';
 import { SITE_NAME } from '@/lib/metadata';
-import type { EntityEntry } from '@/lib/content-types';
+import { getSiteSettings } from '@/lib/cms/settings';
 
-export function OrganizationJsonLd({ locale }: { locale: string }) {
-  const entities = getCollection<EntityEntry>('entities')
-    .map((entry) => entry.data)
-    .sort((a, b) => a.urutan - b.urutan);
+export async function OrganizationJsonLd({ locale }: { locale: string }) {
+  const [entities, settings] = await Promise.all([getPublishedEntities(), getSiteSettings()]);
 
   const payload = {
     '@context': 'https://schema.org',
@@ -14,14 +12,19 @@ export function OrganizationJsonLd({ locale }: { locale: string }) {
     name: SITE_NAME,
     slogan: BRAND_TAGLINE,
     url: `${SITE_URL}/${locale}`,
-    address: {
-      '@type': 'PostalAddress',
-      ...OFFICE_ADDRESS,
-    },
+    ...(settings.address
+      ? {
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: settings.address,
+            addressCountry: 'ID',
+          },
+        }
+      : {}),
     subOrganization: entities.map((entity) => ({
       '@type': 'Organization',
-      name: entity.nama,
-      description: entity.deskripsi,
+      name: entity.name,
+      description: entity.short_description,
       url: `${SITE_URL}/${locale}/entitas/${entity.slug}`,
     })),
   };

@@ -1,13 +1,10 @@
-import { getCollection } from '@/lib/content';
+import { getPublishedStats } from '@/lib/cms/stats';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { KeyStatsCounters } from './key-stats-counters';
-import type { StatEntry } from '@/lib/content-types';
 
-export function KeyStatsSection() {
-  const stats = getCollection<StatEntry>('stats')
-    .map((entry) => entry.data)
-    .sort((a, b) => a.urutan - b.urutan);
+export async function KeyStatsSection() {
+  const stats = await getPublishedStats();
 
   if (stats.length === 0) {
     return null;

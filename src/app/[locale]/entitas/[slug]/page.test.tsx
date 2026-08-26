@@ -1,10 +1,19 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import EntityDetailPage, { generateStaticParams } from './page';
+import { describe, expect, it, vi } from 'vitest';
+import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
+
+vi.mock('@/lib/cms/entities', () => ({
+  getPublishedEntities: vi.fn().mockResolvedValue(ENTITIES),
+  getPublishedEntityBySlug: vi.fn((slug: string) =>
+    Promise.resolve(ENTITIES.find((e) => e.slug === slug) ?? null)
+  ),
+}));
+
+const { default: EntityDetailPage, generateStaticParams } = await import('./page');
 
 describe('generateStaticParams', () => {
-  it('returns a param set for every entity in both locales', () => {
-    const params = generateStaticParams();
+  it('returns a param set for every entity in both locales', async () => {
+    const params = await generateStaticParams();
     expect(params).toHaveLength(10);
     expect(params).toContainEqual({ locale: 'id', slug: 'greenlab' });
     expect(params).toContainEqual({ locale: 'en', slug: 'bikin-indonesia-berdaya' });

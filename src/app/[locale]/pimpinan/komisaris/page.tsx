@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { getCollection } from '@/lib/content';
+import { getPublishedLeadership } from '@/lib/cms/leadership';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { LeadershipGrid } from '@/components/pimpinan/leadership-grid';
-import type { LeadershipEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
   params,
@@ -26,9 +25,7 @@ export default async function KomisarisPage({
   params: Promise<{ locale: string }>;
 }) {
   await params;
-  const people = getCollection<LeadershipEntry>('leadership')
-    .map((entry) => entry.data)
-    .filter((person) => person.tipe === 'komisaris');
+  const people = await getPublishedLeadership('komisaris');
 
   return (
     <>

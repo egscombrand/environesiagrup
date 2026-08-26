@@ -1,13 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { HeroSlideEntry } from '@/lib/content-types';
+import type { HeroSlide } from '@/lib/cms/hero';
 
 const IMAGE_DURATION_MS = 6000;
 const MAX_VIDEO_DURATION_MS = 15000;
 const CROSSFADE_MS = 800;
 
-export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; locale: string }) {
+function slideSrc(slide: HeroSlide, useMobileSrc: boolean): string | undefined {
+  if (slide.type === 'video') return slide.video_url ?? undefined;
+  return (useMobileSrc && slide.mobileImageUrl) || slide.desktopImageUrl;
+}
+
+export function HeroSlider({ slides, locale }: { slides: HeroSlide[]; locale: string }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -99,18 +104,18 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
       <link
         rel="preload"
         as={nextSlide.type === 'video' ? 'video' : 'image'}
-        href={nextSlide.src}
+        href={slideSrc(nextSlide, useMobileSrc)}
       />
       {slides.map((slide, i) => {
         const isActive = i === index;
-        const src = useMobileSrc && slide.srcMobile ? slide.srcMobile : slide.src;
+        const src = slideSrc(slide, useMobileSrc);
         const showVideo = slide.type === 'video' && !(useMobileSrc && saveData);
         const kenBurnsClass =
           !reducedMotion && isActive ? 'animate-[kenburns_6s_ease-out_forwards]' : '';
 
         return (
           <div
-            key={slide.headline}
+            key={slide.id}
             className="absolute inset-0 transition-opacity"
             style={{
               opacity: isActive ? 1 : 0,
@@ -124,7 +129,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
                 ref={isActive ? videoRef : undefined}
                 className={`h-full w-full object-cover ${kenBurnsClass}`}
                 src={src}
-                poster={slide.poster}
+                poster={slide.videoPosterUrl}
                 muted
                 autoPlay={isActive && !paused && !reducedMotion}
                 playsInline
@@ -137,7 +142,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
               />
             ) : (
               <img
-                src={slide.type === 'video' ? slide.poster : src}
+                src={slide.type === 'video' ? slide.videoPosterUrl : src}
                 alt=""
                 fetchPriority={isActive ? 'high' : 'auto'}
                 className={`h-full w-full object-cover ${kenBurnsClass}`}
@@ -145,17 +150,17 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,20,16,0.45)] to-transparent" />
             <a
-              href={`/${locale}${slide.ctaUrl}`}
+              href={`/${locale}${slide.cta_url ?? ''}`}
               tabIndex={isActive ? 0 : -1}
               className="absolute inset-0 flex flex-col items-start justify-end p-8 md:p-16"
             >
               <p className="font-mono text-label uppercase text-paper">{slide.eyebrow}</p>
               <h1 className="mt-3 max-w-2xl font-display text-display text-paper">
-                {slide.headline}
+                {slide.title}
               </h1>
-              <p className="mt-3 max-w-xl text-body text-paper/90">{slide.subheadline}</p>
+              <p className="mt-3 max-w-xl text-body text-paper/90">{slide.description}</p>
               <span className="mt-6 inline-block rounded-[14px] bg-paper px-6 py-3 text-small font-medium text-forest">
-                {slide.ctaLabel}
+                {slide.cta_label}
               </span>
             </a>
           </div>
@@ -165,7 +170,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlideEntry[]; local
         <div className="absolute bottom-0 left-0 right-0 flex gap-2 p-4">
           {slides.map((slide, i) => (
             <button
-              key={slide.headline}
+              key={slide.id}
               type="button"
               aria-label={`Slide ${i + 1}`}
               onClick={() => setIndex(i)}

@@ -1,0 +1,72 @@
+import { z } from 'zod';
+import type { ResourceConfig } from './types';
+
+const STATUS_OPTIONS = [
+  { value: 'draft', label: 'Draft' },
+  { value: 'published', label: 'Published' },
+  { value: 'archived', label: 'Archived' },
+];
+
+export const heroResource: ResourceConfig = {
+  slug: 'hero',
+  table: 'hero_slides',
+  title: 'Hero Slides',
+  singular: 'Hero Slide',
+  titleField: 'title',
+  hasStatus: true,
+  hasSortOrder: true,
+  softDelete: false,
+  authorScoped: false,
+  defaultSort: { column: 'sort_order', ascending: true },
+  columns: [
+    { key: 'desktop_image_path', label: '', kind: 'image' },
+    { key: 'title', label: 'Judul' },
+    { key: 'type', label: 'Tipe' },
+    { key: 'status', label: 'Status', kind: 'status' },
+    { key: 'sort_order', label: 'Urutan' },
+  ],
+  fields: [
+    {
+      name: 'type',
+      label: 'Tipe',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'image', label: 'Image' },
+        { value: 'video', label: 'Video' },
+      ],
+      section: 'Basic Information',
+    },
+    { name: 'eyebrow', label: 'Eyebrow', type: 'text', section: 'Basic Information' },
+    { name: 'title', label: 'Headline', type: 'text', required: true, section: 'Basic Information' },
+    { name: 'description', label: 'Subheadline', type: 'textarea', section: 'Basic Information' },
+    { name: 'desktop_image_path', label: 'Gambar Desktop', type: 'image', mediaFolder: 'hero', section: 'Media' },
+    { name: 'mobile_image_path', label: 'Gambar Mobile (9:16)', type: 'image', mediaFolder: 'hero', section: 'Media' },
+    { name: 'video_url', label: 'URL Video', type: 'url', section: 'Media' },
+    { name: 'video_poster_path', label: 'Poster Video', type: 'image', mediaFolder: 'hero', section: 'Media' },
+    { name: 'cta_label', label: 'Label CTA', type: 'text', section: 'Call to Action' },
+    { name: 'cta_url', label: 'URL CTA', type: 'text', section: 'Call to Action' },
+    { name: 'secondary_cta_label', label: 'Label CTA Sekunder', type: 'text', section: 'Call to Action' },
+    { name: 'secondary_cta_url', label: 'URL CTA Sekunder', type: 'text', section: 'Call to Action' },
+    { name: 'accent_color', label: 'Warna Aksen', type: 'color', section: 'Call to Action' },
+    { name: 'status', label: 'Status', type: 'select', options: STATUS_OPTIONS, required: true, section: 'Publishing' },
+    { name: 'sort_order', label: 'Urutan', type: 'number', section: 'Publishing' },
+  ],
+  schema: z.object({
+    type: z.enum(['image', 'video']),
+    eyebrow: z.string().optional().nullable(),
+    title: z.string().min(1),
+    description: z.string().optional().nullable(),
+    desktop_image_path: z.string().optional().nullable(),
+    mobile_image_path: z.string().optional().nullable(),
+    video_url: z.string().optional().nullable(),
+    video_poster_path: z.string().optional().nullable(),
+    cta_label: z.string().optional().nullable(),
+    cta_url: z.string().optional().nullable(),
+    secondary_cta_label: z.string().optional().nullable(),
+    secondary_cta_url: z.string().optional().nullable(),
+    accent_color: z.string().optional().nullable(),
+    status: z.enum(['draft', 'published', 'archived']),
+    sort_order: z.coerce.number().int().default(0),
+  }),
+};

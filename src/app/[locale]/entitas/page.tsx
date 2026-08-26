@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { getCollection } from '@/lib/content';
+import { getPublishedEntities } from '@/lib/cms/entities';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { GroupStructureDiagram } from '@/components/entitas/group-structure-diagram';
-import type { EntityEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
   params,
@@ -28,9 +27,7 @@ export default async function EntitasPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const entities = getCollection<EntityEntry>('entities')
-    .map((entry) => entry.data)
-    .sort((a, b) => a.urutan - b.urutan);
+  const entities = await getPublishedEntities();
 
   return (
     <>

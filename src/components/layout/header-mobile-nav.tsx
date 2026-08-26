@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import type { NavigationNode } from '@/lib/cms/navigation';
 
-type NavItem = { label: string; href: string };
-
-export function MobileNav({ locale, items }: { locale: string; items: readonly NavItem[] }) {
+export function MobileNav({ locale, items }: { locale: string; items: readonly NavigationNode[] }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,9 +26,11 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
         >
           <ul className="flex flex-col gap-4">
             {items.map((item) => (
-              <li key={item.href}>
+              <li key={item.id}>
                 <Link
-                  href={`/${locale}${item.href === '/' ? '' : item.href}`}
+                  href={item.url.startsWith('http') ? item.url : `/${locale}${item.url === '/' ? '' : item.url}`}
+                  target={item.open_new_tab ? '_blank' : undefined}
+                  rel={item.open_new_tab ? 'noreferrer' : undefined}
                   className="text-small text-ink hover:text-forest"
                   onClick={() => setOpen(false)}
                 >

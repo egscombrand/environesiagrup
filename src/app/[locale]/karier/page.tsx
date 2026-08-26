@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
-import { PendingContent } from '@/components/layout/pending-content';
+import { getOpenPublishedJobs } from '@/lib/cms/jobs';
 import { buildMetadata } from '@/lib/metadata';
+import { Section } from '@/components/layout/section';
+import { Reveal } from '@/components/motion/reveal';
+import { PendingContent } from '@/components/layout/pending-content';
 
 export async function generateMetadata({
   params,
@@ -16,12 +19,51 @@ export async function generateMetadata({
   });
 }
 
+const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
+
 export default async function KarierPage() {
+  const jobs = await getOpenPublishedJobs();
+
+  if (jobs.length === 0) {
+    return (
+      <PendingContent
+        eyebrow="Karier"
+        title="Karier"
+        description="Peluang berkarier bersama grup."
+        note="Belum ada lowongan yang dibuka saat ini."
+      />
+    );
+  }
+
   return (
-    <PendingContent
-      eyebrow="Karier"
-      title="Karier"
-      description="Peluang berkarier bersama grup."
-    />
+    <>
+      <Section>
+        <Reveal>
+          <p className="font-mono text-label uppercase text-slate">Karier</p>
+          <h1 className="mt-4 font-display text-display text-ink">Karier</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">Peluang berkarier bersama grup.</p>
+        </Reveal>
+      </Section>
+
+      <Section className="bg-stone">
+        <Reveal>
+          <ul>
+            {jobs.map((job) => (
+              <li key={job.id} className="border-b border-line py-4">
+                <p className="font-display text-h3 text-ink">{job.title}</p>
+                <p className="mt-1 font-mono text-label uppercase text-slate">
+                  {[job.location, job.employment_type].filter(Boolean).join(' · ')}
+                </p>
+                {job.deadline ? (
+                  <p className="mt-1 text-small text-slate">
+                    Batas lamaran: {dateFormatter.format(new Date(job.deadline))}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </Section>
+    </>
   );
 }

@@ -1,11 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import SejarahPage from './sejarah/page';
-import VisiMisiPage from './visi-misi/page';
-import MaknaLogoPage from './makna-logo/page';
-import StrukturOrganisasiPage from './struktur-organisasi/page';
-import GreenBusinessPage from './green-business/page';
-import PenghargaanPage from './penghargaan/page';
+import { describe, expect, it, vi } from 'vitest';
+import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
+
+vi.mock('@/lib/cms/entities', () => ({
+  getPublishedEntities: vi.fn().mockResolvedValue(ENTITIES),
+}));
+
+const { default: SejarahPage } = await import('./sejarah/page');
+const { default: VisiMisiPage } = await import('./visi-misi/page');
+const { default: MaknaLogoPage } = await import('./makna-logo/page');
+const { default: StrukturOrganisasiPage } = await import('./struktur-organisasi/page');
+const { default: GreenBusinessPage } = await import('./green-business/page');
+const { default: PenghargaanPage } = await import('./penghargaan/page');
 
 const params = Promise.resolve({ locale: 'id' });
 

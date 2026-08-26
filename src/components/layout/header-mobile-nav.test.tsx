@@ -2,11 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { MobileNav } from './header-mobile-nav';
+import { makeNavigationNode } from '@/lib/cms/fixtures';
 
 const items = [
-  { label: 'Beranda', href: '/' },
-  { label: 'Kontak', href: '/kontak' },
-] as const;
+  makeNavigationNode({ label: 'Beranda', url: '/' }),
+  makeNavigationNode({ label: 'Kontak', url: '/kontak' }),
+];
 
 describe('MobileNav', () => {
   it('hides the menu until the toggle is clicked', () => {

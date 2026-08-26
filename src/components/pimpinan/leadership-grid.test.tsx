@@ -1,15 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { LeadershipGrid } from './leadership-grid';
-import type { LeadershipEntry } from '@/lib/content-types';
+import { makeLeadershipMember } from '@/lib/cms/fixtures';
 
-const people: LeadershipEntry[] = [
-  { nama: 'Contoh Satu', jabatan: 'Direktur Utama', tipe: 'direksi', urutan: 1 },
-  { nama: 'Contoh Dua', jabatan: 'Direktur Operasional', tipe: 'direksi', urutan: 2 },
+const people = [
+  makeLeadershipMember({ name: 'Contoh Satu', position: 'Direktur Utama', sort_order: 1 }),
+  makeLeadershipMember({ name: 'Contoh Dua', position: 'Direktur Operasional', sort_order: 2 }),
 ];
 
 describe('LeadershipGrid', () => {
-  it('renders a card per person, ordered by urutan', () => {
+  it('renders a card per person, ordered by sort_order', () => {
     render(<LeadershipGrid people={people} emptyLabel="Belum ada data." />);
 
     expect(screen.getByText('Contoh Satu')).toBeInTheDocument();

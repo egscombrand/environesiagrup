@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { GroupStructureDiagram } from './group-structure-diagram';
-import type { EntityEntry } from '@/lib/content-types';
+import { makeEntity } from '@/lib/cms/fixtures';
 
-const entities: EntityEntry[] = [
-  { nama: 'Environesia', slug: 'environesia', lini: 'inti', warnaAksen: '#0F4C3A', deskripsi: 'Konsultasi lingkungan.', layanan: [], legalitas: [], urutan: 1 },
-  { nama: 'GreenLab', slug: 'greenlab', lini: 'inti', warnaAksen: '#1E7A6B', deskripsi: 'Laboratorium & sampling.', layanan: [], legalitas: [], urutan: 2 },
-  { nama: 'GreenSkill', slug: 'greenskill', lini: 'inti', warnaAksen: '#B07C25', deskripsi: 'Pelatihan kompetensi.', layanan: [], legalitas: [], urutan: 3 },
-  { nama: 'LSP Praktisi Lingkungan Indonesia', slug: 'lsp-praktisi-lingkungan', lini: 'inti', warnaAksen: '#454A85', deskripsi: 'Sertifikasi profesi.', layanan: [], legalitas: [], urutan: 4 },
-  { nama: 'Bikin Indonesia Berdaya', slug: 'bikin-indonesia-berdaya', lini: 'penunjang', warnaAksen: '#A8482D', deskripsi: 'Konveksi custom apparel.', layanan: [], legalitas: [], urutan: 5 },
+const entities = [
+  makeEntity({ name: 'Environesia', slug: 'environesia', accent_color: '#0F4C3A', short_description: 'Konsultasi lingkungan.', sort_order: 1 }),
+  makeEntity({ name: 'GreenLab', slug: 'greenlab', accent_color: '#1E7A6B', short_description: 'Laboratorium & sampling.', sort_order: 2 }),
+  makeEntity({ name: 'GreenSkill', slug: 'greenskill', accent_color: '#B07C25', short_description: 'Pelatihan kompetensi.', sort_order: 3 }),
+  makeEntity({ name: 'LSP Praktisi Lingkungan Indonesia', slug: 'lsp-praktisi-lingkungan', accent_color: '#454A85', short_description: 'Sertifikasi profesi.', sort_order: 4 }),
+  makeEntity({ name: 'Bikin Indonesia Berdaya', slug: 'bikin-indonesia-berdaya', lini: 'penunjang', accent_color: '#A8482D', short_description: 'Konveksi custom apparel.', sort_order: 5 }),
 ];
 
 describe('GroupStructureDiagram', () => {
@@ -16,7 +16,7 @@ describe('GroupStructureDiagram', () => {
     render(<GroupStructureDiagram entities={entities} locale="id" />);
     expect(screen.getByText('Environesia Group')).toBeInTheDocument();
     entities.forEach((entity) => {
-      expect(screen.getByRole('link', { name: entity.nama })).toHaveAttribute(
+      expect(screen.getByRole('link', { name: entity.name })).toHaveAttribute(
         'href',
         `/id/entitas/${entity.slug}`
       );
@@ -26,8 +26,8 @@ describe('GroupStructureDiagram', () => {
   it('exposes each entity name and description to screen readers', () => {
     render(<GroupStructureDiagram entities={entities} locale="id" />);
     entities.forEach((entity) => {
-      expect(screen.getByRole('link', { name: entity.nama })).toBeInTheDocument();
-      expect(screen.getByText(entity.deskripsi)).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: entity.name })).toBeInTheDocument();
+      expect(screen.getByText(entity.short_description!)).toBeInTheDocument();
     });
   });
 

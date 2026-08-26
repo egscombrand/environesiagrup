@@ -3,23 +3,9 @@
 // must not ship to production unreplaced.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.invalid';
 
-export const OFFICE_ADDRESS = {
-  streetAddress: 'Grha Environesia (Lantai 2), Jl. Jati Mataram No. 284B, Karangjati',
-  addressLocality: 'Sinduadi, Mlati, Sleman',
-  addressRegion: 'Daerah Istimewa Yogyakarta',
-  postalCode: '55284',
-  addressCountry: 'ID',
-} as const;
-
-// The address as rendered to humans, derived from the structured OFFICE_ADDRESS
-// above so the footer, the contact page, and the JSON-LD can never disagree.
-export const OFFICE_ADDRESS_LINES = [
-  'Jl. Jati Mataram No. 284B, Karangjati',
-  'Sinduadi, Mlati, Sleman',
-  'Daerah Istimewa Yogyakarta 55284',
-] as const;
-
-export const OFFICE_BUILDING = 'Grha Environesia (Lantai 2)';
+// Office address moved to site_settings.address (managed from
+// /wp-admin/site/settings) — see src/lib/cms/settings.ts. Header, footer,
+// the contact page, and JSON-LD all read it from there now.
 
 // Tagline as it appears beneath the wordmark in the official logo artwork.
 // Kept as text rather than baked into the image so it stays legible at small

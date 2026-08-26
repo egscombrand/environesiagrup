@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import EntitasPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
+
+vi.mock('@/lib/cms/entities', () => ({
+  getPublishedEntities: vi.fn().mockResolvedValue(ENTITIES),
+}));
+
+const { default: EntitasPage } = await import('./page');
 
 describe('EntitasPage', () => {
   it('renders the heading, the diagram, and all five entities', async () => {

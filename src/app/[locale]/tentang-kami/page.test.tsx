@@ -1,6 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import TentangKamiPage from './page';
+import { describe, expect, it, vi } from 'vitest';
+import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
+import { makeStat } from '@/lib/cms/fixtures';
+
+vi.mock('@/lib/cms/entities', () => ({
+  getPublishedEntities: vi.fn().mockResolvedValue(ENTITIES),
+}));
+
+vi.mock('@/lib/cms/stats', () => ({
+  getPublishedStats: vi.fn().mockResolvedValue([makeStat({ label: 'Tahun Pengalaman', value: 10, suffix: '+' })]),
+}));
+
+const { default: TentangKamiPage } = await import('./page');
 
 describe('TentangKamiPage', () => {
   it('renders the heading and the group summary', async () => {

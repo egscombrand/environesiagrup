@@ -1,8 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import KarierPage from './karier/page';
-import UnduhanPage from './unduhan/page';
-import KebijakanPrivasiPage from './kebijakan-privasi/page';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/cms/jobs', () => ({
+  getOpenPublishedJobs: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock('@/lib/cms/documents', () => ({
+  getPublishedDocuments: vi.fn().mockResolvedValue([]),
+}));
+
+const { default: KarierPage } = await import('./karier/page');
+const { default: UnduhanPage } = await import('./unduhan/page');
+const { default: KebijakanPrivasiPage } = await import('./kebijakan-privasi/page');
 
 describe('Pelengkap pages', () => {
   it('renders each page with its own h1 and the pending notice', async () => {

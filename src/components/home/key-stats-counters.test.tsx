@@ -1,11 +1,11 @@
-import { act } from '@testing-library/react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { KeyStatsCounters } from './key-stats-counters';
+import { makeStat } from '@/lib/cms/fixtures';
 
 const stats = [
-  { label: 'Tahun Pengalaman', nilai: 10, satuan: '+', urutan: 1 },
-  { label: 'Negara', nilai: 10, satuan: '', urutan: 2 },
+  makeStat({ label: 'Tahun Pengalaman', value: 10, suffix: '+' }),
+  makeStat({ label: 'Negara', value: 10, suffix: '' }),
 ];
 
 describe('KeyStatsCounters', () => {
