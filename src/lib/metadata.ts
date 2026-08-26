@@ -6,6 +6,7 @@ export const SITE_NAME = 'Environesia Company Group';
 const OG_LOCALES: Record<string, string> = {
   id: 'id_ID',
   en: 'en_US',
+  zh: 'zh_CN',
 };
 
 export function ogLocale(locale: string) {

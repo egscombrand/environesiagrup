@@ -23,12 +23,14 @@ describe('sitemap', () => {
     const urls = (await sitemap()).map((entry) => entry.url);
     expect(urls).toContain('https://example.invalid/id');
     expect(urls).toContain('https://example.invalid/en');
+    expect(urls).toContain('https://example.invalid/zh');
   });
 
   it('includes every entity detail page in both locales', async () => {
     const urls = (await sitemap()).map((entry) => entry.url);
     expect(urls).toContain('https://example.invalid/id/entitas/greenlab');
     expect(urls).toContain('https://example.invalid/en/entitas/bikin-indonesia-berdaya');
+    expect(urls).toContain('https://example.invalid/zh/entitas/greenlab');
   });
 
   it('includes every pillar detail page in both locales', async () => {

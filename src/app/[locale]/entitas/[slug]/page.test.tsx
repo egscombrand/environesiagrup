@@ -12,11 +12,12 @@ vi.mock('@/lib/cms/entities', () => ({
 const { default: EntityDetailPage, generateStaticParams } = await import('./page');
 
 describe('generateStaticParams', () => {
-  it('returns a param set for every entity in both locales', async () => {
+  it('returns a param set for every entity in every locale', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(10);
+    expect(params).toHaveLength(15);
     expect(params).toContainEqual({ locale: 'id', slug: 'greenlab' });
     expect(params).toContainEqual({ locale: 'en', slug: 'bikin-indonesia-berdaya' });
+    expect(params).toContainEqual({ locale: 'zh', slug: 'greenlab' });
   });
 });
 

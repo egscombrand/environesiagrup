@@ -16,11 +16,12 @@ vi.mock('@/lib/cms/entities', () => ({
 const { default: PillarDetailPage, generateStaticParams } = await import('./page');
 
 describe('generateStaticParams', () => {
-  it('returns a param set for every pillar in both locales', async () => {
+  it('returns a param set for every pillar in every locale', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(8);
+    expect(params).toHaveLength(12);
     expect(params).toContainEqual({ locale: 'id', pilar: 'konsultasi' });
     expect(params).toContainEqual({ locale: 'en', pilar: 'sertifikasi-profesi' });
+    expect(params).toContainEqual({ locale: 'zh', pilar: 'pengujian-sampling' });
   });
 });
 

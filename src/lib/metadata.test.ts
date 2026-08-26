@@ -15,7 +15,7 @@ describe('buildMetadata', () => {
     expect(meta.alternates?.canonical).toBe('/id/entitas');
   });
 
-  it('lists both locales as hreflang alternates for the same path', () => {
+  it('lists every locale as hreflang alternates for the same path', () => {
     const meta = buildMetadata({
       title: 'T',
       description: 'D',
@@ -26,6 +26,7 @@ describe('buildMetadata', () => {
     expect(meta.alternates?.languages).toEqual({
       id: '/id/bisnis',
       en: '/en/bisnis',
+      zh: '/zh/bisnis',
     });
   });
 
@@ -43,9 +44,11 @@ describe('buildMetadata', () => {
   it('formats openGraph.locale as an underscore-region tag', () => {
     const id = buildMetadata({ title: 'T', description: 'D', locale: 'id', path: '/entitas' });
     const en = buildMetadata({ title: 'T', description: 'D', locale: 'en', path: '/entitas' });
+    const zh = buildMetadata({ title: 'T', description: 'D', locale: 'zh', path: '/entitas' });
 
     expect(id.openGraph?.locale).toBe('id_ID');
     expect(en.openGraph?.locale).toBe('en_US');
+    expect(zh.openGraph?.locale).toBe('zh_CN');
   });
 
   it('falls back to the raw locale for openGraph.locale when unmapped', () => {
