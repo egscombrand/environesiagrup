@@ -9,28 +9,15 @@ export function EntityCards({ locale }: { locale: string }) {
     .map((entry) => entry.data)
     .sort((a, b) => a.urutan - b.urutan);
 
-  const core = entities.filter((entity) => entity.lini === 'inti');
-  const supporting = entities.filter((entity) => entity.lini === 'penunjang');
-
   return (
     <Section>
       <Reveal>
         <h2 className="font-display text-h2 text-ink">Entitas Kami</h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {core.map((entity) => (
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          {entities.map((entity) => (
             <EntityCard key={entity.slug} entity={entity} locale={locale} />
           ))}
         </div>
-        {supporting.length > 0 ? (
-          <div className="mt-6 border-t border-line pt-6">
-            <p className="font-mono text-label uppercase text-slate">Unit Penunjang</p>
-            <div className="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {supporting.map((entity) => (
-                <EntityCard key={entity.slug} entity={entity} locale={locale} />
-              ))}
-            </div>
-          </div>
-        ) : null}
       </Reveal>
     </Section>
   );

@@ -25,8 +25,11 @@ describe('EntitasPage', () => {
     expect(link).toHaveAttribute('href', '/en/entitas/greenlab');
   });
 
-  it('separates the supporting unit from the four core entities', async () => {
+  it('lists every entity at the same level, with no supporting-unit heading', async () => {
     render(await EntitasPage({ params: Promise.resolve({ locale: 'id' }) }));
-    expect(screen.getAllByText('Unit Penunjang').length).toBeGreaterThan(0);
+
+    expect(screen.queryByText('Unit Penunjang')).not.toBeInTheDocument();
+    expect(screen.queryByText('Lini Inti')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'Semua Entitas' })).toBeInTheDocument();
   });
 });

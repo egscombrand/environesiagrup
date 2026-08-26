@@ -23,7 +23,7 @@ export async function generateMetadata({
     title:
       'Environesia Company Group — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',
     description:
-      'Environesia Company Group menaungi empat entitas layanan lingkungan dan satu unit penunjang.',
+      'Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.',
     locale,
     path: '/',
   });

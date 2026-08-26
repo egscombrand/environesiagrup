@@ -5,7 +5,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
-import type { EntityEntry } from '@/lib/content-types';
+import type { EntityEntry, StatEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
   params,
@@ -17,7 +17,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Tentang Kami',
     description:
-      'Environesia Company Group menaungi empat lini layanan lingkungan dan satu unit penunjang.',
+      'Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.',
     locale,
     path: '/tentang-kami',
   });
@@ -30,7 +30,10 @@ export default async function TentangKamiPage({
 }) {
   const { locale } = await params;
   const entities = getCollection<EntityEntry>('entities').map((entry) => entry.data);
-  const coreCount = entities.filter((entity) => entity.lini === 'inti').length;
+  const stats = getCollection<StatEntry>('stats')
+    .map((entry) => entry.data)
+    .sort((a, b) => a.urutan - b.urutan);
+  const leadStat = stats[0];
 
   return (
     <>
@@ -39,10 +42,9 @@ export default async function TentangKamiPage({
           <p className="font-mono text-label uppercase text-slate">Profil</p>
           <h1 className="mt-4 font-display text-display text-ink">Tentang Kami</h1>
           <p className="mt-6 max-w-2xl text-body text-slate">
-            Environesia Company Group adalah holding yang membawahi empat lini layanan lingkungan
-            dan satu unit manufaktur apparel. Keempat lini lingkungan bekerja sebagai satu rantai
-            berurutan — konsultasi, pengujian dan sampling, pelatihan kompetensi, lalu sertifikasi
-            profesi — sementara unit penunjang menopang kebutuhan operasional grup.
+            Environesia Company Group adalah holding yang membawahi lima entitas: konsultasi
+            lingkungan, pengujian dan sampling, pelatihan kompetensi, sertifikasi profesi, serta
+            konveksi custom apparel.
           </p>
         </Reveal>
       </Section>
@@ -54,10 +56,15 @@ export default async function TentangKamiPage({
               <p className="font-display text-display text-forest">{entities.length}</p>
               <p className="mt-2 font-mono text-label uppercase text-slate">Entitas dalam grup</p>
             </div>
-            <div className="rounded-[14px] border border-line bg-paper p-8">
-              <p className="font-display text-display text-forest">{coreCount}</p>
-              <p className="mt-2 font-mono text-label uppercase text-slate">Lini layanan lingkungan</p>
-            </div>
+            {leadStat ? (
+              <div className="rounded-[14px] border border-line bg-paper p-8">
+                <p className="font-display text-display text-forest">
+                  {leadStat.nilai}
+                  {leadStat.satuan}
+                </p>
+                <p className="mt-2 font-mono text-label uppercase text-slate">{leadStat.label}</p>
+              </div>
+            ) : null}
           </div>
         </Reveal>
       </Section>

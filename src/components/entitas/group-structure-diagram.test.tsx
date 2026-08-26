@@ -28,15 +28,19 @@ describe('GroupStructureDiagram', () => {
     });
   });
 
-  it('connects the supporting entity with a dashed line, unlike the core entities', () => {
+  it('presents every entity at the same level, with no supporting-unit singling-out', () => {
     const { container } = render(<GroupStructureDiagram entities={entities} />);
-    const dashed = container.querySelectorAll('.border-dashed');
-    expect(dashed).toHaveLength(1);
+
+    expect(screen.queryByText('Unit Penunjang')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('.border-dashed')).toHaveLength(0);
   });
 
-  it('labels the supporting entity as a supporting unit', () => {
-    render(<GroupStructureDiagram entities={entities} />);
-    expect(screen.getByText('Unit Penunjang')).toBeInTheDocument();
+  it('renders all five entities as siblings in a single list', () => {
+    const { container } = render(<GroupStructureDiagram entities={entities} />);
+
+    const lists = container.querySelectorAll('ul');
+    expect(lists).toHaveLength(1);
+    expect(lists[0].querySelectorAll('li')).toHaveLength(5);
   });
 
   it('renders a long entity name in full instead of truncating or overflowing it', () => {

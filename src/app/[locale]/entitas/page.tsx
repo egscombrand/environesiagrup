@@ -17,7 +17,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Entitas Kami',
     description:
-      'Empat entitas layanan lingkungan yang membentuk satu rantai berurutan, ditambah satu unit penunjang.',
+      'Lima entitas Environesia Company Group di bidang lingkungan dan manufaktur apparel.',
     locale,
     path: '/entitas',
   });
@@ -33,9 +33,6 @@ export default async function EntitasPage({
     .map((entry) => entry.data)
     .sort((a, b) => a.urutan - b.urutan);
 
-  const core = entities.filter((entity) => entity.lini === 'inti');
-  const supporting = entities.filter((entity) => entity.lini === 'penunjang');
-
   return (
     <>
       <Section>
@@ -43,9 +40,8 @@ export default async function EntitasPage({
           <p className="font-mono text-label uppercase text-slate">Struktur Grup</p>
           <h1 className="mt-4 font-display text-display text-ink">Entitas Kami</h1>
           <p className="mt-4 max-w-2xl text-body text-slate">
-            Empat entitas layanan lingkungan membentuk satu rantai berurutan: konsultasi, pengujian
-            dan sampling, pelatihan kompetensi, lalu sertifikasi profesi. Satu unit penunjang
-            menopang kebutuhan operasional grup.
+            Lima entitas yang bergerak di konsultasi lingkungan, pengujian dan sampling,
+            pelatihan kompetensi, sertifikasi profesi, serta konveksi custom apparel.
           </p>
         </Reveal>
       </Section>
@@ -58,23 +54,12 @@ export default async function EntitasPage({
 
       <Section>
         <Reveal>
-          <h2 className="font-display text-h2 text-ink">Lini Inti</h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {core.map((entity) => (
+          <h2 className="font-display text-h2 text-ink">Semua Entitas</h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {entities.map((entity) => (
               <EntityCard key={entity.slug} entity={entity} locale={locale} />
             ))}
           </div>
-
-          {supporting.length > 0 ? (
-            <div className="mt-12 border-t border-line pt-8">
-              <p className="font-mono text-label uppercase text-slate">Unit Penunjang</p>
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                {supporting.map((entity) => (
-                  <EntityCard key={entity.slug} entity={entity} locale={locale} />
-                ))}
-              </div>
-            </div>
-          ) : null}
         </Reveal>
       </Section>
     </>

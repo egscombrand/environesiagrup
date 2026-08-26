@@ -1,6 +1,6 @@
 1. Ringkasan proyek
 
-Website korporat untuk Environesia Company Group — holding yang membawahi empat lini layanan lingkungan dan satu unit manufaktur apparel.
+Website korporat untuk Environesia Company Group — holding yang membawahi lima entitas: empat di layanan lingkungan, satu di manufaktur apparel.
 
 Tujuan utama, berurutan prioritas:
 
@@ -20,20 +20,17 @@ Calon peserta pelatihan & sertifikasi	Jadwal, skema, biaya	GreenSkill, LSP PLI
 Calon karyawan & mitra	Budaya, skala, kredibilitas	Tentang Kami, Karier
 Klien konveksi	Produk, bahan, MOQ, proses order	Bikin Indonesia Berdaya
 2. Struktur grup
-                    Environesia Group
-                           │
-      ┌──────────┬─────────┴────────┬──────────────┐
-  Environesia  GreenLab        GreenSkill        LSP PLI
-  konsultasi   pengujian       pelatihan         sertifikasi
-                           ┊
-              Bikin Indonesia Berdaya
-              konveksi custom apparel  (unit penunjang)
+                         Environesia Group
+                                 │
+   ┌────────────┬────────────┬────────────┬────────────┐
+Environesia  GreenLab   GreenSkill   LSP PLI   Bikin Indonesia Berdaya
+konsultasi   pengujian  pelatihan    sertifikasi   konveksi apparel
 
-Lini inti (layanan lingkungan) — empat entitas yang membentuk satu rantai berurutan: konsultasi → pengujian & sampling → pelatihan kompetensi → sertifikasi profesi.
+Lima entitas, ditampilkan sejajar. Empat bergerak di layanan lingkungan dan secara alami membentuk urutan kerja — konsultasi → pengujian & sampling → pelatihan kompetensi → sertifikasi profesi. Satu bergerak di konveksi custom apparel: wearpack dan seragam lapangan tim sampling, apparel peserta pelatihan dan sertifikasi, serta merchandise korporat klien.
 
-Unit penunjang — Bikin Indonesia Berdaya, konveksi custom apparel. Diposisikan sebagai penopang operasional grup: wearpack dan seragam lapangan tim sampling, apparel peserta pelatihan dan sertifikasi, serta merchandise korporat klien.
+Aturan penulisan (direvisi 2026-08-25 atas keputusan pemilik): tampilkan kelima entitas sejajar di setiap halaman — satu deret, satu perlakuan visual, tanpa label "unit penunjang", tanpa heading "lini inti", dan tanpa konektor yang memisahkan salah satunya. Urutan kerja keempat lini lingkungan boleh dijelaskan sebagai fakta operasional, tapi jangan dipakai untuk menurunkan derajat entitas kelima.
 
-Aturan penulisan: jangan pernah menempatkan Bikin Indonesia Berdaya sejajar dalam satu deret dengan empat entitas lingkungan, dan jangan mengarang narasi "rantai terpadu" yang memaksa konveksi masuk ke dalamnya. Pembaca korporat cepat mencium narasi yang dibuat-buat. Di halaman entitasnya sendiri, Bikin Indonesia Berdaya berdiri penuh sebagai bisnis konveksi dengan konten khasnya.
+Catatan atas revisi ini: versi sebelumnya melarang keras menempatkan Bikin Indonesia Berdaya sejajar dengan empat entitas lingkungan, dengan alasan pembaca korporat cepat mencium narasi yang dibuat-buat. Alasan itu dicatat di sini agar tidak hilang — risikonya nyata kalau nanti muncul klaim bahwa konveksi adalah bagian dari rantai layanan lingkungan. Yang dilarang tetap mengarang narasi "rantai terpadu" yang memaksa konveksi masuk ke dalamnya; yang berubah hanya perlakuan visualnya, dari terpisah menjadi sejajar. Di halaman entitasnya sendiri, Bikin Indonesia Berdaya tetap berdiri penuh sebagai bisnis konveksi dengan konten khasnya.
 
 Data per entitas
 Entitas	Lini	Warna aksen	Legalitas / akreditasi	Website
@@ -83,7 +80,7 @@ This is Green Business → dari menu Pimpinan ke /tentang-kami/green-business, d
 Struktur beranda (urutan section)
 Hero — slider foto/video, autoplay, seluruh slide clickable
 Angka kunci — 4 metrik, count-up saat masuk viewport
-Entitas kami — 5 kartu (4 inti + 1 penunjang, dipisah secara visual)
+Entitas kami — 5 kartu sejajar, satu deret, tanpa pemisahan visual
 Pilar bisnis — 4 pilar layanan lingkungan
 Jejak di 10 negara — peta SVG dengan pin
 Split: manifesto Green Business ‖ kutipan pesan CEO
@@ -221,7 +218,7 @@ Rekomendasi: Payload CMS kalau ada akses VPS dan tim internal yang akan mengelol
 
 7. Content model
 Collection	Field utama
-entities	nama, slug, tagline, lini (inti/penunjang), warna aksen, deskripsi, layanan[], legalitas[], website, logo, urutan
+entities	nama, slug, tagline, lini (inti/penunjang — metadata internal sejak revisi 2026-08-25, tidak lagi memengaruhi tampilan), warna aksen, deskripsi, layanan[], legalitas[], website, logo, urutan
 projects	judul, slug, entitas[], sektor, negara, kota, tahun, klien (opsional), ringkasan, isi, galeri[], koordinat
 leadership	nama, jabatan, entitas, foto, bio, urutan, tipe (direksi/komisaris)
 posts	judul, slug, kategori, tanggal, penulis, cover, ringkasan, isi
