@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpDown, PenLine, Search, Inbox } from 'lucide-react';
 import type { ColumnConfig } from '@/lib/admin/resources/types';
+import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { StatusBadge } from './status-badge';
 import { StatusSelect } from './status-select';
 import { DeleteButton } from './delete-button';
@@ -29,6 +30,12 @@ function renderCell(kind: ColumnConfig['kind'], value: unknown) {
   switch (kind) {
     case 'status':
       return <StatusBadge status={String(value)} />;
+    case 'icon':
+      return (
+        <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-stone" title={String(value)}>
+          <DynamicIcon name={String(value)} className="h-4 w-4 text-forest" strokeWidth={1.75} />
+        </span>
+      );
     case 'image':
       return typeof value === 'string' && value.startsWith('http') ? (
         <Image src={value} alt="" width={40} height={40} className="h-10 w-10 rounded-[8px] object-cover" />

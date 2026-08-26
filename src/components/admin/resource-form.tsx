@@ -4,6 +4,7 @@ import { useActionState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import type { FieldConfig } from '@/lib/admin/resources/types';
 import { ImageUploadField } from './image-upload-field';
+import { IconPicker } from './icon-picker';
 import { useToast } from './toast-provider';
 
 type FormState = { error?: string };
@@ -153,6 +154,8 @@ function Field({
         </div>
       );
     }
+    case 'icon':
+      return <IconPicker name={field.name} initialValue={value as string | null} />;
     case 'url':
     default:
       return (

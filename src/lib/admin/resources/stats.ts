@@ -19,6 +19,7 @@ export const statsResource: ResourceConfig = {
   authorScoped: false,
   defaultSort: { column: 'sort_order', ascending: true },
   columns: [
+    { key: 'icon', label: '', kind: 'icon' },
     { key: 'label', label: 'Label' },
     { key: 'value', label: 'Nilai' },
     { key: 'status', label: 'Status', kind: 'status' },
@@ -30,7 +31,7 @@ export const statsResource: ResourceConfig = {
     { name: 'prefix', label: 'Prefix', type: 'text', section: 'Basic Information' },
     { name: 'suffix', label: 'Suffix', type: 'text', section: 'Basic Information' },
     { name: 'description', label: 'Deskripsi', type: 'textarea', section: 'Details' },
-    { name: 'icon', label: 'Ikon', type: 'text', section: 'Details' },
+    { name: 'icon', label: 'Ikon', type: 'icon', help: 'Ditampilkan di atas angka pada beranda.', section: 'Details' },
     { name: 'status', label: 'Status', type: 'select', options: STATUS_OPTIONS, required: true, section: 'Publishing' },
     { name: 'sort_order', label: 'Urutan', type: 'number', section: 'Publishing' },
   ],
