@@ -14,7 +14,8 @@ export type FieldType =
   | 'url'
   | 'color'
   | 'entity-select'
-  | 'entity-multiselect';
+  | 'entity-multiselect'
+  | 'icon';
 
 export type FieldConfig = {
   name: string;
@@ -30,7 +31,7 @@ export type FieldConfig = {
   section?: string;
 };
 
-export type ColumnKind = 'text' | 'status' | 'image' | 'date' | 'badge';
+export type ColumnKind = 'text' | 'status' | 'image' | 'date' | 'badge' | 'icon';
 
 export type ColumnConfig = {
   key: string;

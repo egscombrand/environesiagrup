@@ -21,6 +21,7 @@ export const pillarsResource: ResourceConfig = {
   defaultSort: { column: 'sort_order', ascending: true },
   relation: { table: 'pillar_entities', thisKey: 'pillar_id', otherKey: 'entity_id', fieldName: 'relatedEntities' },
   columns: [
+    { key: 'icon', label: '', kind: 'icon' },
     { key: 'name', label: 'Nama' },
     { key: 'slug', label: 'Slug' },
     { key: 'status', label: 'Status', kind: 'status' },
@@ -29,7 +30,7 @@ export const pillarsResource: ResourceConfig = {
   fields: [
     { name: 'name', label: 'Nama', type: 'text', required: true, section: 'Basic Information' },
     { name: 'slug', label: 'Slug', type: 'text', section: 'Basic Information' },
-    { name: 'icon', label: 'Ikon', type: 'text', help: 'Nama ikon (mis. leaf, flask, graduation-cap).', section: 'Basic Information' },
+    { name: 'icon', label: 'Ikon', type: 'icon', help: 'Ditampilkan di kartu pilar pada beranda.', section: 'Basic Information' },
     { name: 'short_description', label: 'Deskripsi Singkat', type: 'textarea', section: 'Details' },
     { name: 'description', label: 'Deskripsi Lengkap', type: 'richtext', section: 'Details' },
     { name: 'services', label: 'Layanan', type: 'tags', section: 'Details' },

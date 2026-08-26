@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Search, Bell, ChevronDown, LogOut, User } from 'lucide-react';
 import { signOutAction } from '@/app/wp-admin/logout-action';
 import { ROLE_LABELS, type Role } from '@/lib/admin/roles';
+import { useClickOutside } from '@/lib/admin/use-click-outside';
 import { NAV_GROUPS, OVERVIEW_LINK } from './nav-config';
 import type { ActivityItem } from '@/lib/admin/activity';
 
@@ -39,22 +40,10 @@ function timeAgo(iso: string): string {
   return `${days}d ago`;
 }
 
-function useClickOutside(onOutside: () => void) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    function handle(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) onOutside();
-    }
-    document.addEventListener('mousedown', handle);
-    return () => document.removeEventListener('mousedown', handle);
-  }, [onOutside]);
-  return ref;
-}
-
 function SearchMenu() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const ref = useClickOutside(() => setOpen(false));
+  const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   const allLinks = useMemo(() => [OVERVIEW_LINK, ...NAV_GROUPS.flatMap((g) => g.links)], []);
   const results = useMemo(() => {
@@ -109,7 +98,7 @@ function SearchMenu() {
 
 function NotificationsMenu({ activity }: { activity: ActivityItem[] }) {
   const [open, setOpen] = useState(false);
-  const ref = useClickOutside(() => setOpen(false));
+  const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   return (
     <div ref={ref} className="relative">
@@ -150,7 +139,7 @@ function NotificationsMenu({ activity }: { activity: ActivityItem[] }) {
 
 function UserMenu({ username, role }: { username: string; role: Role }) {
   const [open, setOpen] = useState(false);
-  const ref = useClickOutside(() => setOpen(false));
+  const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   return (
     <div ref={ref} className="relative">

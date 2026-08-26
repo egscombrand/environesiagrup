@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Stat } from '@/lib/cms/stats';
 
 const DURATION_MS = 1500;
@@ -36,7 +36,7 @@ function useCountUp(target: number, active: boolean) {
   return value;
 }
 
-function Counter({ stat }: { stat: Stat }) {
+function Counter({ stat, icon }: { stat: Stat; icon: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
 
@@ -62,7 +62,10 @@ function Counter({ stat }: { stat: Stat }) {
 
   return (
     <div ref={ref} className="text-center">
-      <p className="font-display text-display text-forest">
+      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-forest/10">
+        {icon}
+      </span>
+      <p className="mt-4 font-display text-display text-forest">
         {stat.prefix}
         {value}
         {stat.suffix}
@@ -72,11 +75,13 @@ function Counter({ stat }: { stat: Stat }) {
   );
 }
 
-export function KeyStatsCounters({ stats }: { stats: Stat[] }) {
+export function KeyStatsCounters({ items }: { items: { stat: Stat; icon: ReactNode }[] }) {
   return (
-    <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-      {stats.map((stat) => (
-        <Counter key={stat.id} stat={stat} />
+    <div className="flex flex-wrap justify-center gap-x-10 gap-y-10">
+      {items.map(({ stat, icon }) => (
+        <div key={stat.id} className="basis-[calc(50%-1.25rem)] md:basis-[calc(25%-1.875rem)]">
+          <Counter stat={stat} icon={icon} />
+        </div>
       ))}
     </div>
   );
