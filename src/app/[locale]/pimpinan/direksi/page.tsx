@@ -4,6 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { LeadershipGrid } from '@/components/pimpinan/leadership-grid';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -24,21 +25,22 @@ export default async function DireksiPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await params;
+  const { locale } = await params;
+  const t = messagesFor(locale);
   const people = await getPublishedLeadership('direksi');
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Pimpinan</p>
-          <h1 className="mt-4 font-display text-display text-ink">Direksi</h1>
+          <p className="font-mono text-label uppercase text-slate">{t.pimpinan.judul}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.pimpinan.direksi}</h1>
         </Reveal>
       </Section>
 
       <Section className="bg-stone">
         <Reveal>
-          <LeadershipGrid people={people} emptyLabel="Profil jajaran direksi sedang disiapkan." />
+          <LeadershipGrid people={people} emptyLabel={t.pimpinan.direksiPending} />
         </Reveal>
       </Section>
     </>

@@ -37,4 +37,9 @@ describe('KontakPage', () => {
     const { container } = render(await KontakPage({ params: Promise.resolve({ locale: 'id' }) }));
     expect(container.querySelector('form')).not.toBeInTheDocument();
   });
+
+  it('renders Chinese copy for the zh locale', async () => {
+    render(await KontakPage({ params: Promise.resolve({ locale: 'zh' }) }));
+    expect(screen.getByRole('heading', { level: 1, name: '联系方式' })).toBeInTheDocument();
+  });
 });

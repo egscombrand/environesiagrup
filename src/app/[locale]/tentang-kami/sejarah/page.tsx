@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PendingContent } from '@/components/layout/pending-content';
 import { buildMetadata } from '@/lib/metadata';
 import { findTentangKamiRoute } from '@/lib/tentang-kami-routes';
+import { messagesFor } from '@/i18n/messages';
 
 const ROUTE = findTentangKamiRoute('sejarah');
 
@@ -25,10 +26,11 @@ export default async function SejarahPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   return (
     <PendingContent
       locale={locale}
-      eyebrow="Tentang Kami"
+      eyebrow={t.tentangKami.judul}
       title={ROUTE.label}
       description={ROUTE.deskripsi}
     />

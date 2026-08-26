@@ -8,6 +8,7 @@ import { routing } from '@/i18n/routing';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { EntityCard } from '@/components/entitas/entity-card';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateStaticParams() {
   const pillars = await getPublishedPillars();
@@ -47,6 +48,7 @@ export default async function PillarDetailPage({
   params: Promise<{ locale: string; pilar: string }>;
 }) {
   const { locale, pilar } = await params;
+  const t = messagesFor(locale);
   const pillar = await getPublishedPillarBySlug(pilar);
 
   if (!pillar) {
@@ -64,7 +66,7 @@ export default async function PillarDetailPage({
             href={`/${locale}/bisnis`}
             className="font-mono text-label uppercase text-slate hover:text-forest"
           >
-            ← Semua pilar
+            ← {t.bisnis.kembali}
           </Link>
           <p className="mt-6 font-mono text-label uppercase text-slate">
             {String(pillar.sort_order).padStart(2, '0')}
@@ -78,7 +80,7 @@ export default async function PillarDetailPage({
         <Reveal>
           <div className="grid gap-10 md:grid-cols-2">
             <div>
-              <h2 className="font-display text-h3 text-ink">Layanan</h2>
+              <h2 className="font-display text-h3 text-ink">{t.common.layanan}</h2>
               {pillar.services.length > 0 ? (
                 <ul className="mt-4 space-y-2">
                   {pillar.services.map((layanan) => (
@@ -88,12 +90,12 @@ export default async function PillarDetailPage({
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 text-small text-slate">Rincian layanan akan segera hadir.</p>
+                <p className="mt-4 text-small text-slate">{t.common.layananPending}</p>
               )}
             </div>
 
             <div>
-              <h2 className="font-display text-h3 text-ink">Dijalankan Oleh</h2>
+              <h2 className="font-display text-h3 text-ink">{t.bisnis.dijalankanOleh}</h2>
               {related.length > 0 ? (
                 <div className="mt-4 space-y-3">
                   {related.map((entity) => (
@@ -101,7 +103,7 @@ export default async function PillarDetailPage({
                   ))}
                 </div>
               ) : (
-                <p className="mt-4 text-small text-slate">Entitas terkait akan segera hadir.</p>
+                <p className="mt-4 text-small text-slate">{t.bisnis.entitasTerkaitPending}</p>
               )}
             </div>
           </div>

@@ -4,6 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { GroupStructureDiagram } from '@/components/entitas/group-structure-diagram';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -27,18 +28,16 @@ export default async function EntitasPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const entities = await getPublishedEntities();
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Struktur Grup</p>
-          <h1 className="mt-4 font-display text-display text-ink">Entitas Kami</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Lima entitas yang bergerak di konsultasi lingkungan, pengujian dan sampling,
-            pelatihan kompetensi, sertifikasi profesi, serta konveksi custom apparel.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.entitas.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.entitas.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.entitas.intro}</p>
         </Reveal>
       </Section>
 

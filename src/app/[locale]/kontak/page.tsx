@@ -3,6 +3,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { getSiteSettings } from '@/lib/cms/settings';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -24,7 +25,8 @@ export default async function KontakPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await params;
+  const { locale } = await params;
+  const t = messagesFor(locale);
   const settings = await getSiteSettings();
   const addressLines = settings.address?.split('\n') ?? [];
   const [officeBuilding, ...restAddressLines] = addressLines;
@@ -33,12 +35,9 @@ export default async function KontakPage({
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Hubungi Kami</p>
-          <h1 className="mt-4 font-display text-display text-ink">Kontak</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Untuk kebutuhan konsultasi, pengujian, pelatihan, atau sertifikasi lingkungan, tim kami
-            dapat dihubungi melalui kantor pusat.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.kontak.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.kontak.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.kontak.intro}</p>
         </Reveal>
       </Section>
 
@@ -46,7 +45,7 @@ export default async function KontakPage({
         <Reveal>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-[14px] border border-line bg-paper p-8">
-              <p className="font-mono text-label uppercase text-slate">Kantor Pusat</p>
+              <p className="font-mono text-label uppercase text-slate">{t.kontak.kantorPusat}</p>
               <p className="mt-3 font-display text-h3 text-ink">{officeBuilding}</p>
               <address className="mt-2 text-small not-italic text-slate">
                 {restAddressLines.map((line) => (
@@ -60,10 +59,8 @@ export default async function KontakPage({
             </div>
 
             <div className="rounded-[14px] border border-line bg-paper p-8">
-              <p className="font-mono text-label uppercase text-slate">Formulir</p>
-              <p className="mt-3 text-body text-ink">
-                Formulir kontak akan tersedia setelah kebijakan privasi terbit.
-              </p>
+              <p className="font-mono text-label uppercase text-slate">{t.kontak.formulir}</p>
+              <p className="mt-3 text-body text-ink">{t.kontak.formulirPending}</p>
             </div>
           </div>
         </Reveal>

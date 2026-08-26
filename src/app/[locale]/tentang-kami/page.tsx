@@ -7,6 +7,7 @@ import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { BrandTagline } from '@/components/layout/brand-tagline';
 import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -30,6 +31,7 @@ export default async function TentangKamiPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const [entities, stats] = await Promise.all([getPublishedEntities(), getPublishedStats()]);
   const leadStat = stats[0];
 
@@ -37,8 +39,8 @@ export default async function TentangKamiPage({
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Profil</p>
-          <h1 className="mt-4 font-display text-display text-ink">Tentang Kami</h1>
+          <p className="font-mono text-label uppercase text-slate">{t.tentangKami.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.tentangKami.judul}</h1>
           <BrandTagline className="mt-4 font-display text-h3 text-forest" />
           <p className="mt-6 max-w-2xl text-body text-slate">
             Environesia Company Group adalah holding yang membawahi lima entitas: konsultasi
@@ -53,7 +55,7 @@ export default async function TentangKamiPage({
           <div className="grid gap-8 sm:grid-cols-2">
             <div className="rounded-[14px] border border-line bg-paper p-8">
               <p className="font-display text-display text-forest">{entities.length}</p>
-              <p className="mt-2 font-mono text-label uppercase text-slate">Entitas dalam grup</p>
+              <p className="mt-2 font-mono text-label uppercase text-slate">{t.tentangKami.entitasDalamGrup}</p>
             </div>
             {leadStat ? (
               <div className="rounded-[14px] border border-line bg-paper p-8">
@@ -71,7 +73,7 @@ export default async function TentangKamiPage({
 
       <Section>
         <Reveal>
-          <h2 className="font-display text-h2 text-ink">Selengkapnya</h2>
+          <h2 className="font-display text-h2 text-ink">{t.common.selengkapnya}</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             {TENTANG_KAMI_ROUTES.map((route) => (
               <Link

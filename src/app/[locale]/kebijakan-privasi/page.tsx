@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PendingContent } from '@/components/layout/pending-content';
 import { buildMetadata } from '@/lib/metadata';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -22,13 +23,14 @@ export default async function KebijakanPrivasiPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   return (
     <PendingContent
       locale={locale}
       eyebrow="Legal"
-      title="Kebijakan Privasi"
-      description="Bagaimana kami menangani data yang Anda berikan."
-      note="Naskah kebijakan privasi sedang disusun bersama tim legal."
+      title={t.privasi.judul}
+      description={t.privasi.deskripsi}
+      note={t.privasi.catatan}
     />
   );
 }

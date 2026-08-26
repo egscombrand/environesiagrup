@@ -10,6 +10,7 @@ import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { RichText } from '@/components/cms/rich-text';
 import { EntityCard } from '@/components/entitas/entity-card';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateStaticParams() {
   const projects = await getPublishedProjects();
@@ -47,6 +48,7 @@ export default async function ProyekDetailPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  const t = messagesFor(locale);
   const project = await getPublishedProjectBySlug(slug);
 
   if (!project) {
@@ -103,7 +105,7 @@ export default async function ProyekDetailPage({
       {project.images.length > 0 ? (
         <Section>
           <Reveal>
-            <h2 className="font-display text-h2 text-ink">Galeri</h2>
+            <h2 className="font-display text-h2 text-ink">{t.proyek.galeri}</h2>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {project.images.map((image) => (
                 <Image
@@ -123,7 +125,7 @@ export default async function ProyekDetailPage({
       {relatedEntities.length > 0 ? (
         <Section className="bg-stone">
           <Reveal>
-            <h2 className="font-display text-h2 text-ink">Dikerjakan Oleh</h2>
+            <h2 className="font-display text-h2 text-ink">{t.proyek.dikerjakanOleh}</h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedEntities.map((entity) => (
                 <EntityCard key={entity.slug} entity={entity} locale={locale} />

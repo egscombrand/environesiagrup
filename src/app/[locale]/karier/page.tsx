@@ -4,6 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { PendingContent } from '@/components/layout/pending-content';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -23,15 +24,16 @@ const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
 
 export default async function KarierPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const jobs = await getOpenPublishedJobs();
 
   if (jobs.length === 0) {
     return (
       <PendingContent
         locale={locale}
-        eyebrow="Karier"
-        title="Karier"
-        description="Peluang berkarier bersama grup."
+        eyebrow={t.karier.judul}
+        title={t.karier.judul}
+        description={t.karier.deskripsi}
         note="Belum ada lowongan yang dibuka saat ini."
       />
     );
@@ -41,9 +43,9 @@ export default async function KarierPage({ params }: { params: Promise<{ locale:
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Karier</p>
-          <h1 className="mt-4 font-display text-display text-ink">Karier</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">Peluang berkarier bersama grup.</p>
+          <p className="font-mono text-label uppercase text-slate">{t.karier.judul}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.karier.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.karier.deskripsi}</p>
         </Reveal>
       </Section>
 

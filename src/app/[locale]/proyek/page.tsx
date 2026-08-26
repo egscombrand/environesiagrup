@@ -5,6 +5,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { CountryMap } from '@/components/home/country-map';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -27,17 +28,16 @@ export default async function ProyekPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const [projects, pins] = await Promise.all([getPublishedProjects(), getPublishedProjectPins()]);
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Portofolio</p>
-          <h1 className="mt-4 font-display text-display text-ink">Proyek</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Rekam jejak pekerjaan grup bersama klien korporat dan instansi.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.proyek.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.proyek.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.proyek.intro}</p>
         </Reveal>
       </Section>
 
@@ -49,9 +49,9 @@ export default async function ProyekPage({
 
       <Section>
         <Reveal>
-          <h2 className="font-display text-h2 text-ink">Daftar Proyek</h2>
+          <h2 className="font-display text-h2 text-ink">{t.proyek.daftar}</h2>
           {projects.length === 0 ? (
-            <p className="mt-6 text-small text-slate">Daftar proyek sedang disiapkan.</p>
+            <p className="mt-6 text-small text-slate">{t.proyek.kosong}</p>
           ) : (
             <ul className="mt-8">
               {projects.map((project) => (

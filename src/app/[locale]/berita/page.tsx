@@ -4,6 +4,7 @@ import { getPublishedPosts } from '@/lib/cms/posts';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { messagesFor } from '@/i18n/messages';
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
 
@@ -28,24 +29,23 @@ export default async function BeritaPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const posts = await getPublishedPosts();
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Publikasi</p>
-          <h1 className="mt-4 font-display text-display text-ink">Berita &amp; Insight</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Kabar terbaru dan wawasan dari tim grup.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.berita.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.berita.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.berita.intro}</p>
         </Reveal>
       </Section>
 
       <Section className="bg-stone">
         <Reveal>
           {posts.length === 0 ? (
-            <p className="text-small text-slate">Belum ada berita terbaru.</p>
+            <p className="text-small text-slate">{t.berita.kosong}</p>
           ) : (
             <ul>
               {posts.map((post) => (

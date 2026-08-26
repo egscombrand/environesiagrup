@@ -4,6 +4,7 @@ import { getPublishedPillars } from '@/lib/cms/pillars';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -27,18 +28,16 @@ export default async function BisnisPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const pillars = await getPublishedPillars();
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Layanan</p>
-          <h1 className="mt-4 font-display text-display text-ink">Pilar Bisnis</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Pilar-pilar yang membentuk satu rantai layanan berurutan, dari perencanaan hingga
-            pengakuan kompetensi.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.bisnis.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.bisnis.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.bisnis.intro}</p>
         </Reveal>
       </Section>
 

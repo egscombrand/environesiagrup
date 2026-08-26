@@ -15,12 +15,12 @@ describe('Pimpinan pages', () => {
   it('renders the overview with links to both sub-pages', async () => {
     render(await PimpinanPage({ params: Promise.resolve({ locale: 'en' }) }));
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Pimpinan' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Direksi/ })).toHaveAttribute(
+    expect(screen.getByRole('heading', { level: 1, name: 'Leadership' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Board of Directors/ })).toHaveAttribute(
       'href',
       '/en/pimpinan/direksi'
     );
-    expect(screen.getByRole('link', { name: /Komisaris/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Board of Commissioners/ })).toHaveAttribute(
       'href',
       '/en/pimpinan/komisaris'
     );

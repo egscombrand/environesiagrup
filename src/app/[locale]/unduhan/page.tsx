@@ -4,6 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { PendingContent } from '@/components/layout/pending-content';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -21,15 +22,16 @@ export async function generateMetadata({
 
 export default async function UnduhanPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const documents = await getPublishedDocuments();
 
   if (documents.length === 0) {
     return (
       <PendingContent
         locale={locale}
-        eyebrow="Unduhan"
-        title="Unduhan"
-        description="Dokumen resmi grup untuk keperluan tender dan prakualifikasi."
+        eyebrow={t.unduhan.judul}
+        title={t.unduhan.judul}
+        description={t.unduhan.deskripsi}
         note="Belum ada dokumen yang dipublikasikan."
       />
     );
@@ -39,11 +41,9 @@ export default async function UnduhanPage({ params }: { params: Promise<{ locale
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Unduhan</p>
-          <h1 className="mt-4 font-display text-display text-ink">Unduhan</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Dokumen resmi grup untuk keperluan tender dan prakualifikasi.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.unduhan.judul}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.unduhan.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.unduhan.deskripsi}</p>
         </Reveal>
       </Section>
 

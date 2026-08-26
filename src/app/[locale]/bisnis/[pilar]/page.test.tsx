@@ -63,6 +63,6 @@ describe('PillarDetailPage', () => {
     render(
       await PillarDetailPage({ params: Promise.resolve({ locale: 'en', pilar: 'konsultasi' }) })
     );
-    expect(screen.getByRole('link', { name: /Semua pilar/ })).toHaveAttribute('href', '/en/bisnis');
+    expect(screen.getByRole('link', { name: /All pillars/ })).toHaveAttribute('href', '/en/bisnis');
   });
 });

@@ -3,11 +3,7 @@ import Link from 'next/link';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
-
-const SUB_PAGES = [
-  { label: 'Direksi', href: '/pimpinan/direksi', deskripsi: 'Jajaran direksi grup.' },
-  { label: 'Komisaris', href: '/pimpinan/komisaris', deskripsi: 'Dewan komisaris grup.' },
-] as const;
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateMetadata({
   params,
@@ -29,16 +25,19 @@ export default async function PimpinanPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
+  const SUB_PAGES = [
+    { label: t.pimpinan.direksi, href: '/pimpinan/direksi', deskripsi: 'Jajaran direksi grup.' },
+    { label: t.pimpinan.komisaris, href: '/pimpinan/komisaris', deskripsi: 'Dewan komisaris grup.' },
+  ] as const;
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Kepemimpinan</p>
-          <h1 className="mt-4 font-display text-display text-ink">Pimpinan</h1>
-          <p className="mt-4 max-w-2xl text-body text-slate">
-            Jajaran kepemimpinan yang mengarahkan grup dan entitas di bawahnya.
-          </p>
+          <p className="font-mono text-label uppercase text-slate">{t.pimpinan.eyebrow}</p>
+          <h1 className="mt-4 font-display text-display text-ink">{t.pimpinan.judul}</h1>
+          <p className="mt-4 max-w-2xl text-body text-slate">{t.pimpinan.intro}</p>
         </Reveal>
       </Section>
 

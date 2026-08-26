@@ -7,6 +7,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { routing } from '@/i18n/routing';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { messagesFor } from '@/i18n/messages';
 
 export async function generateStaticParams() {
   const entities = await getPublishedEntities();
@@ -46,6 +47,7 @@ export default async function EntityDetailPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  const t = messagesFor(locale);
   const entity = await getPublishedEntityBySlug(slug);
 
   if (!entity) {
@@ -60,7 +62,7 @@ export default async function EntityDetailPage({
             href={`/${locale}/entitas`}
             className="font-mono text-label uppercase text-slate hover:text-forest"
           >
-            ← Semua entitas
+            ← {t.entitas.kembali}
           </Link>
           {entity.logoUrl ? (
             // The logo carries the entity name, so it becomes the visible heading.
@@ -104,7 +106,7 @@ export default async function EntityDetailPage({
         <Reveal>
           <div className="grid gap-10 md:grid-cols-2">
             <div>
-              <h2 className="font-display text-h3 text-ink">Layanan</h2>
+              <h2 className="font-display text-h3 text-ink">{t.common.layanan}</h2>
               {entity.services.length > 0 ? (
                 <ul className="mt-4 space-y-2">
                   {entity.services.map((layanan) => (
@@ -114,12 +116,12 @@ export default async function EntityDetailPage({
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 text-small text-slate">Rincian layanan akan segera hadir.</p>
+                <p className="mt-4 text-small text-slate">{t.common.layananPending}</p>
               )}
             </div>
 
             <div>
-              <h2 className="font-display text-h3 text-ink">Legalitas & Akreditasi</h2>
+              <h2 className="font-display text-h3 text-ink">{t.entitas.legalitas}</h2>
               {entity.legalitas.length > 0 ? (
                 <ul className="mt-4 space-y-2">
                   {entity.legalitas.map((item) => (
@@ -129,7 +131,7 @@ export default async function EntityDetailPage({
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 text-small text-slate">Data legalitas akan segera hadir.</p>
+                <p className="mt-4 text-small text-slate">{t.entitas.legalitasPending}</p>
               )}
             </div>
           </div>

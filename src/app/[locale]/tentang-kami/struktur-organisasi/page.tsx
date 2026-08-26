@@ -5,6 +5,7 @@ import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { GroupStructureDiagram } from '@/components/entitas/group-structure-diagram';
 import { findTentangKamiRoute } from '@/lib/tentang-kami-routes';
+import { messagesFor } from '@/i18n/messages';
 
 const ROUTE = findTentangKamiRoute('struktur-organisasi');
 
@@ -28,13 +29,14 @@ export default async function StrukturOrganisasiPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = messagesFor(locale);
   const entities = await getPublishedEntities();
 
   return (
     <>
       <Section>
         <Reveal>
-          <p className="font-mono text-label uppercase text-slate">Tentang Kami</p>
+          <p className="font-mono text-label uppercase text-slate">{t.tentangKami.judul}</p>
           <h1 className="mt-4 font-display text-display text-ink">{ROUTE.label}</h1>
           <p className="mt-4 max-w-2xl text-body text-slate">
             Susunan grup dan entitas yang berada di bawahnya.
@@ -51,9 +53,7 @@ export default async function StrukturOrganisasiPage({
       <Section>
         <Reveal>
           <div className="rounded-[14px] border border-line bg-paper p-8">
-            <p className="text-body text-ink">
-              Susunan organisasi tingkat personel sedang disiapkan.
-            </p>
+            <p className="text-body text-ink">{t.tentangKami.strukturPending}</p>
           </div>
         </Reveal>
       </Section>

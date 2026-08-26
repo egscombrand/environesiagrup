@@ -60,7 +60,7 @@ describe('EntityDetailPage', () => {
     render(
       await EntityDetailPage({ params: Promise.resolve({ locale: 'en', slug: 'greenlab' }) })
     );
-    expect(screen.getByRole('link', { name: /Semua entitas/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /All entities/ })).toHaveAttribute(
       'href',
       '/en/entitas'
     );
