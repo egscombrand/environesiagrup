@@ -19,12 +19,14 @@ export async function generateMetadata({
   });
 }
 
-export default async function UnduhanPage() {
+export default async function UnduhanPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const documents = await getPublishedDocuments();
 
   if (documents.length === 0) {
     return (
       <PendingContent
+        locale={locale}
         eyebrow="Unduhan"
         title="Unduhan"
         description="Dokumen resmi grup untuk keperluan tender dan prakualifikasi."

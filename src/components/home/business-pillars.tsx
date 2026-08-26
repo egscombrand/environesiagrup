@@ -2,8 +2,10 @@ import { getPublishedPillars } from '@/lib/cms/pillars';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { resolveServerIcon } from '@/components/icons/server-icon';
+import { messagesFor } from '@/i18n/messages';
 
-export async function BusinessPillars({ title = 'Pilar Bisnis' }: { title?: string } = {}) {
+export async function BusinessPillars({ locale, title }: { locale: string; title?: string }) {
+  const t = messagesFor(locale);
   const pillars = await getPublishedPillars();
   const pillarsWithIcons = await Promise.all(
     pillars.map(async (pillar) => ({
@@ -15,7 +17,7 @@ export async function BusinessPillars({ title = 'Pilar Bisnis' }: { title?: stri
   return (
     <Section className="bg-stone">
       <Reveal>
-        <h2 className="font-display text-h2 text-ink">{title}</h2>
+        <h2 className="font-display text-h2 text-ink">{title ?? t.beranda.pilarBisnis}</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {pillarsWithIcons.map(({ pillar, icon }) => (
             <div key={pillar.slug} className="rounded-[14px] border border-line bg-paper p-6">

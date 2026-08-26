@@ -16,9 +16,15 @@ export async function generateMetadata({
   });
 }
 
-export default async function KebijakanPrivasiPage() {
+export default async function KebijakanPrivasiPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return (
     <PendingContent
+      locale={locale}
       eyebrow="Legal"
       title="Kebijakan Privasi"
       description="Bagaimana kami menangani data yang Anda berikan."

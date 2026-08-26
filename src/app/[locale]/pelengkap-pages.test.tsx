@@ -13,12 +13,14 @@ const { default: KarierPage } = await import('./karier/page');
 const { default: UnduhanPage } = await import('./unduhan/page');
 const { default: KebijakanPrivasiPage } = await import('./kebijakan-privasi/page');
 
+const params = Promise.resolve({ locale: 'id' });
+
 describe('Pelengkap pages', () => {
   it('renders each page with its own h1 and the pending notice', async () => {
     const cases: Array<[string, React.ReactElement]> = [
-      ['Karier', await KarierPage()],
-      ['Unduhan', await UnduhanPage()],
-      ['Kebijakan Privasi', await KebijakanPrivasiPage()],
+      ['Karier', await KarierPage({ params })],
+      ['Unduhan', await UnduhanPage({ params })],
+      ['Kebijakan Privasi', await KebijakanPrivasiPage({ params })],
     ];
 
     for (const [title, element] of cases) {
@@ -30,7 +32,7 @@ describe('Pelengkap pages', () => {
   });
 
   it('notes on the privacy page that the policy text is still being prepared', async () => {
-    render(await KebijakanPrivasiPage());
+    render(await KebijakanPrivasiPage({ params }));
     expect(
       screen.getByText('Naskah kebijakan privasi sedang disusun bersama tim legal.')
     ).toBeInTheDocument();

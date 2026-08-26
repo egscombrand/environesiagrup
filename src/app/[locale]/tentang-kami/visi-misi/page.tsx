@@ -19,8 +19,18 @@ export async function generateMetadata({
   });
 }
 
-export default async function VisiMisiPage() {
+export default async function VisiMisiPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return (
-    <PendingContent eyebrow="Tentang Kami" title={ROUTE.label} description={ROUTE.deskripsi} />
+    <PendingContent
+      locale={locale}
+      eyebrow="Tentang Kami"
+      title={ROUTE.label}
+      description={ROUTE.deskripsi}
+    />
   );
 }

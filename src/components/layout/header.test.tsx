@@ -65,7 +65,7 @@ describe('Header', () => {
 
   it('prefixes links with the active locale', async () => {
     render(await Header({ locale: 'en' }));
-    const nav = screen.getByRole('navigation', { name: 'Navigasi utama' });
+    const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     const projectLink = Array.from(nav.querySelectorAll('a')).find((a) => a.textContent === 'Proyek');
     expect(projectLink).toHaveAttribute('href', '/en/proyek');
   });

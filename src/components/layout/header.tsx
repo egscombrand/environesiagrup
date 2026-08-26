@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
 import { getPublishedNavigation } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
+import { messagesFor } from '@/i18n/messages';
 import { MobileNav } from './header-mobile-nav';
 
 export async function Header({ locale }: { locale: string }) {
@@ -10,6 +11,7 @@ export async function Header({ locale }: { locale: string }) {
     getPublishedNavigation('header'),
     getSiteSettings(),
   ]);
+  const t = messagesFor(locale);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
@@ -27,7 +29,7 @@ export async function Header({ locale }: { locale: string }) {
           </Link>
           <BrandTagline className="text-[10px] leading-tight text-slate md:text-[11px]" />
         </div>
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Navigasi utama">
+        <nav className="hidden items-center gap-8 md:flex" aria-label={t.nav.utama}>
           {navItems.map((item) => (
             <Link
               key={item.id}

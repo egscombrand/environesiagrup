@@ -4,7 +4,7 @@ import { GreenBusinessSplit } from './green-business-split';
 
 describe('GreenBusinessSplit', () => {
   it('renders honest placeholders for both the manifesto and the CEO quote', () => {
-    render(<GreenBusinessSplit />);
+    render(<GreenBusinessSplit locale="id" />);
     expect(
       screen.getByText('Manifesto Green Business akan segera hadir di sini.')
     ).toBeInTheDocument();

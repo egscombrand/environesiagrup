@@ -15,7 +15,7 @@ const { BusinessPillars } = await import('./business-pillars');
 
 describe('BusinessPillars', () => {
   it('renders all 4 pillars in chain order with numbered labels', async () => {
-    render(await BusinessPillars());
+    render(await BusinessPillars({ locale: 'id' }));
     const order = [
       'Konsultasi Lingkungan',
       'Pengujian & Sampling',

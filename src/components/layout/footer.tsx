@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
 import { getPublishedNavigation } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
+import { messagesFor } from '@/i18n/messages';
 
 export async function Footer({ locale }: { locale: string }) {
   const [footerItems, settings] = await Promise.all([
     getPublishedNavigation('footer'),
     getSiteSettings(),
   ]);
+  const t = messagesFor(locale);
   const year = new Date().getFullYear();
 
   return (
@@ -34,7 +36,7 @@ export async function Footer({ locale }: { locale: string }) {
               </address>
             ) : null}
           </div>
-          <nav aria-label="Navigasi footer">
+          <nav aria-label={t.nav.footer}>
             <ul className="flex flex-col gap-2">
               {footerItems.map((item) => (
                 <li key={item.id}>

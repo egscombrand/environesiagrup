@@ -41,9 +41,9 @@ const SECTION_REGISTRY: Record<SectionKey, (props: SectionProps) => React.ReactN
   hero: ({ locale }) => <HeroSection locale={locale} />,
   stats: () => <KeyStatsSection />,
   entities: ({ locale, title }) => <EntityCards locale={locale} title={title} />,
-  pillars: ({ title }) => <BusinessPillars title={title} />,
-  map: ({ title }) => <CountryMapSection title={title} />,
-  green_business: () => <GreenBusinessSplit />,
+  pillars: ({ locale, title }) => <BusinessPillars locale={locale} title={title} />,
+  map: ({ locale, title }) => <CountryMapSection locale={locale} title={title} />,
+  green_business: ({ locale }) => <GreenBusinessSplit locale={locale} />,
   news: ({ locale, title }) => <NewsCards locale={locale} title={title} />,
   cta: ({ locale, title, subtitle }) => <CTASection locale={locale} title={title} subtitle={subtitle} />,
 };

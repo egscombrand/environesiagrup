@@ -18,11 +18,11 @@ const params = Promise.resolve({ locale: 'id' });
 describe('Tentang Kami sub-pages', () => {
   it('renders each page with its own h1 and the pending notice', async () => {
     const cases: Array<[string, React.ReactElement]> = [
-      ['Sejarah', await SejarahPage()],
-      ['Visi & Misi', await VisiMisiPage()],
-      ['Makna Logo', await MaknaLogoPage()],
-      ['Green Business', await GreenBusinessPage()],
-      ['Penghargaan', await PenghargaanPage()],
+      ['Sejarah', await SejarahPage({ params })],
+      ['Visi & Misi', await VisiMisiPage({ params })],
+      ['Makna Logo', await MaknaLogoPage({ params })],
+      ['Green Business', await GreenBusinessPage({ params })],
+      ['Penghargaan', await PenghargaanPage({ params })],
     ];
 
     for (const [title, element] of cases) {

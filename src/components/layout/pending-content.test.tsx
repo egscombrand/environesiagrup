@@ -6,6 +6,7 @@ describe('PendingContent', () => {
   it('renders the eyebrow, heading, and description', () => {
     render(
       <PendingContent
+        locale="id"
         eyebrow="Tentang Kami"
         title="Sejarah"
         description="Perjalanan grup dari tahun ke tahun."
@@ -18,19 +19,27 @@ describe('PendingContent', () => {
   });
 
   it('states plainly that the content is not available yet', () => {
-    render(<PendingContent eyebrow="E" title="T" description="D" />);
+    render(<PendingContent locale="id" eyebrow="E" title="T" description="D" />);
     expect(screen.getByText('Konten halaman ini sedang disiapkan.')).toBeInTheDocument();
   });
 
   it('renders an extra note when one is given', () => {
     render(
-      <PendingContent eyebrow="E" title="T" description="D" note="Menunggu konfirmasi struktur." />
+      <PendingContent
+        locale="id"
+        eyebrow="E"
+        title="T"
+        description="D"
+        note="Menunggu konfirmasi struktur."
+      />
     );
     expect(screen.getByText('Menunggu konfirmasi struktur.')).toBeInTheDocument();
   });
 
   it('omits the note element entirely when none is given', () => {
-    const { container } = render(<PendingContent eyebrow="E" title="T" description="D" />);
+    const { container } = render(
+      <PendingContent locale="id" eyebrow="E" title="T" description="D" />
+    );
     expect(container.querySelectorAll('[data-pending-note]')).toHaveLength(0);
   });
 });

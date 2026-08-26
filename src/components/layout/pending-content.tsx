@@ -1,17 +1,22 @@
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { messagesFor } from '@/i18n/messages';
 
 export function PendingContent({
+  locale,
   eyebrow,
   title,
   description,
   note,
 }: {
+  locale: string;
   eyebrow: string;
   title: string;
   description: string;
   note?: string;
 }) {
+  const t = messagesFor(locale);
+
   return (
     <>
       <Section>
@@ -25,7 +30,7 @@ export function PendingContent({
       <Section className="bg-stone">
         <Reveal>
           <div className="rounded-[14px] border border-line bg-paper p-8">
-            <p className="text-body text-ink">Konten halaman ini sedang disiapkan.</p>
+            <p className="text-body text-ink">{t.common.pendingContent}</p>
             {note ? (
               <p data-pending-note className="mt-2 text-small text-slate">
                 {note}

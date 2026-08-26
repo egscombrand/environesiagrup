@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { NavigationNode } from '@/lib/cms/navigation';
+import { messagesFor } from '@/i18n/messages';
 
 export function MobileNav({ locale, items }: { locale: string; items: readonly NavigationNode[] }) {
   const [open, setOpen] = useState(false);
+  const t = messagesFor(locale);
 
   return (
     <div className="md:hidden">
@@ -16,12 +18,12 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
         aria-controls="mobile-nav-menu"
         className="p-2 text-small text-ink"
       >
-        {open ? 'Tutup' : 'Menu'}
+        {open ? t.nav.tutup : t.nav.menu}
       </button>
       {open ? (
         <nav
           id="mobile-nav-menu"
-          aria-label="Navigasi mobile"
+          aria-label={t.nav.mobile}
           className="absolute inset-x-0 top-full border-b border-line bg-paper px-6 py-4"
         >
           <ul className="flex flex-col gap-4">

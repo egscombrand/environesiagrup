@@ -21,12 +21,14 @@ export async function generateMetadata({
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
 
-export default async function KarierPage() {
+export default async function KarierPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const jobs = await getOpenPublishedJobs();
 
   if (jobs.length === 0) {
     return (
       <PendingContent
+        locale={locale}
         eyebrow="Karier"
         title="Karier"
         description="Peluang berkarier bersama grup."
