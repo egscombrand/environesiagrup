@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCollection } from '@/lib/content';
@@ -69,7 +70,23 @@ export default async function EntityDetailPage({
           >
             ← Semua entitas
           </Link>
-          <h1 className="mt-6 font-display text-display text-ink">{entity.nama}</h1>
+          {entity.logo ? (
+            // The logo carries the entity name, so it becomes the visible heading.
+            // `alt` supplies the h1's accessible text, keeping the document outline
+            // intact for screen readers and crawlers.
+            <h1 className="mt-6">
+              <Image
+                src={entity.logo}
+                alt={entity.nama}
+                width={640}
+                height={200}
+                priority
+                className="h-16 w-auto object-contain md:h-20"
+              />
+            </h1>
+          ) : (
+            <h1 className="mt-6 font-display text-display text-ink">{entity.nama}</h1>
+          )}
           <div
             className="mt-5 h-[3px] w-24 rounded-full"
             style={{ backgroundColor: entity.warnaAksen }}

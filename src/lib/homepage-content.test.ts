@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getCollection } from './content';
 import type { StatEntry, EntityEntry, PillarEntry } from './content-types';
@@ -30,5 +32,18 @@ describe('Fase 2 content collections', () => {
       'pelatihan-kompetensi',
       'sertifikasi-profesi',
     ]);
+  });
+
+  it('gives every entity a logo file that actually exists in public/', () => {
+    const entities = getCollection<EntityEntry>('entities').map((e) => e.data);
+
+    const missing = entities
+      .filter((entity) => {
+        if (!entity.logo) return true;
+        return !fs.existsSync(path.join(process.cwd(), 'public', entity.logo));
+      })
+      .map((entity) => entity.slug);
+
+    expect(missing).toEqual([]);
   });
 });
