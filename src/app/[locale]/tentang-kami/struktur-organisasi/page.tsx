@@ -28,7 +28,7 @@ export default async function StrukturOrganisasiPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await params;
+  const { locale } = await params;
   const entities = getCollection<EntityEntry>('entities')
     .map((entry) => entry.data)
     .sort((a, b) => a.urutan - b.urutan);
@@ -47,7 +47,7 @@ export default async function StrukturOrganisasiPage({
 
       <Section className="bg-stone">
         <Reveal>
-          <GroupStructureDiagram entities={entities} />
+          <GroupStructureDiagram entities={entities} locale={locale} />
         </Reveal>
       </Section>
 

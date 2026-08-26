@@ -14,9 +14,18 @@ describe('EntitasPage', () => {
 
     ['Environesia', 'GreenLab', 'GreenSkill', 'LSP Praktisi Lingkungan Indonesia', 'Bikin Indonesia Berdaya'].forEach(
       (nama) => {
-        expect(screen.getAllByText(nama).length).toBeGreaterThan(0);
+        expect(screen.getByRole('link', { name: nama })).toBeInTheDocument();
       }
     );
+  });
+
+  it('shows each entity exactly once, with no duplicate listing below the diagram', async () => {
+    const { container } = render(await EntitasPage({ params: Promise.resolve({ locale: 'id' }) }));
+
+    // one card per entity, and one description per entity — the page used to
+    // render both a text diagram and a separate logo grid, repeating all five
+    expect(container.querySelectorAll('a[href^="/id/entitas/"]')).toHaveLength(5);
+    expect(screen.getAllByText('Laboratorium & sampling.')).toHaveLength(1);
   });
 
   it('links every entity to its locale-prefixed detail page', async () => {
@@ -30,6 +39,5 @@ describe('EntitasPage', () => {
 
     expect(screen.queryByText('Unit Penunjang')).not.toBeInTheDocument();
     expect(screen.queryByText('Lini Inti')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2, name: 'Semua Entitas' })).toBeInTheDocument();
   });
 });

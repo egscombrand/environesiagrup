@@ -4,7 +4,6 @@ import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { GroupStructureDiagram } from '@/components/entitas/group-structure-diagram';
-import { EntityCard } from '@/components/entitas/entity-card';
 import type { EntityEntry } from '@/lib/content-types';
 
 export async function generateMetadata({
@@ -48,20 +47,10 @@ export default async function EntitasPage({
 
       <Section className="bg-stone">
         <Reveal>
-          <GroupStructureDiagram entities={entities} />
+          <GroupStructureDiagram entities={entities} locale={locale} />
         </Reveal>
       </Section>
 
-      <Section>
-        <Reveal>
-          <h2 className="font-display text-h2 text-ink">Semua Entitas</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {entities.map((entity) => (
-              <EntityCard key={entity.slug} entity={entity} locale={locale} />
-            ))}
-          </div>
-        </Reveal>
-      </Section>
     </>
   );
 }

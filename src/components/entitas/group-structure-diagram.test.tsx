@@ -12,39 +12,44 @@ const entities: EntityEntry[] = [
 ];
 
 describe('GroupStructureDiagram', () => {
-  it('renders the group name and every entity name', () => {
-    render(<GroupStructureDiagram entities={entities} />);
+  it('renders the group name and links every entity', () => {
+    render(<GroupStructureDiagram entities={entities} locale="id" />);
     expect(screen.getByText('Environesia Group')).toBeInTheDocument();
     entities.forEach((entity) => {
-      expect(screen.getByText(entity.nama)).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: entity.nama })).toHaveAttribute(
+        'href',
+        `/id/entitas/${entity.slug}`
+      );
     });
   });
 
-  it('exposes each entity name and description as real text for screen readers', () => {
-    render(<GroupStructureDiagram entities={entities} />);
+  it('exposes each entity name and description to screen readers', () => {
+    render(<GroupStructureDiagram entities={entities} locale="id" />);
     entities.forEach((entity) => {
-      expect(screen.getByText(entity.nama)).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: entity.nama })).toBeInTheDocument();
       expect(screen.getByText(entity.deskripsi)).toBeInTheDocument();
     });
   });
 
   it('presents every entity at the same level, with no supporting-unit singling-out', () => {
-    const { container } = render(<GroupStructureDiagram entities={entities} />);
+    const { container } = render(<GroupStructureDiagram entities={entities} locale="id" />);
 
     expect(screen.queryByText('Unit Penunjang')).not.toBeInTheDocument();
     expect(container.querySelectorAll('.border-dashed')).toHaveLength(0);
   });
 
   it('renders all five entities as siblings in a single list', () => {
-    const { container } = render(<GroupStructureDiagram entities={entities} />);
+    const { container } = render(<GroupStructureDiagram entities={entities} locale="id" />);
 
     const lists = container.querySelectorAll('ul');
     expect(lists).toHaveLength(1);
     expect(lists[0].querySelectorAll('li')).toHaveLength(5);
   });
 
-  it('renders a long entity name in full instead of truncating or overflowing it', () => {
-    render(<GroupStructureDiagram entities={entities} />);
-    expect(screen.getByText('LSP Praktisi Lingkungan Indonesia')).toBeInTheDocument();
+  it('carries a long entity name in full rather than truncating it', () => {
+    render(<GroupStructureDiagram entities={entities} locale="id" />);
+    expect(
+      screen.getByRole('link', { name: 'LSP Praktisi Lingkungan Indonesia' })
+    ).toBeInTheDocument();
   });
 });
