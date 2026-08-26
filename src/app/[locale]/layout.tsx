@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
 import { SITE_NAME, ogLocale } from '@/lib/metadata';
+import { BRAND_TAGLINE } from '@/lib/site';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { OrganizationJsonLd } from '@/components/seo/organization-jsonld';
@@ -23,8 +24,7 @@ export async function generateMetadata({
       default: SITE_NAME,
       template: `%s — ${SITE_NAME}`,
     },
-    description:
-      'Grup layanan lingkungan terintegrasi: konsultasi, pengujian, pelatihan, dan sertifikasi.',
+    description: `${BRAND_TAGLINE}. Grup layanan lingkungan terintegrasi: konsultasi, pengujian, pelatihan, dan sertifikasi.`,
     openGraph: {
       siteName: SITE_NAME,
       locale: ogLocale(locale),

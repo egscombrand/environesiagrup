@@ -11,6 +11,14 @@ describe('Header', () => {
     );
   });
 
+  it('shows the brand tagline beneath the logo, outside the home link', () => {
+    render(<Header locale="id" />);
+
+    expect(screen.getByText(/Integrated Green Ecosystem/)).toBeInTheDocument();
+    // the tagline must not bloat the home link's accessible name
+    expect(screen.getByRole('link', { name: 'Environesia Company Group' })).toBeInTheDocument();
+  });
+
   it('renders the logo with explicit dimensions so it cannot shift the layout', () => {
     render(<Header locale="id" />);
     const logo = screen.getByRole('img', { name: 'Environesia Company Group' });

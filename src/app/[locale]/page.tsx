@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/metadata';
+import { BRAND_TAGLINE } from '@/lib/site';
 import { HeroSection } from '@/components/home/hero-section';
 import { KeyStatsSection } from '@/components/home/key-stats-section';
 import { EntityCards } from '@/components/home/entity-cards';
@@ -22,8 +23,7 @@ export async function generateMetadata({
   return buildMetadata({
     title:
       'Environesia Company Group — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',
-    description:
-      'Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.',
+    description: `${BRAND_TAGLINE}. Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.`,
     locale,
     path: '/',
   });

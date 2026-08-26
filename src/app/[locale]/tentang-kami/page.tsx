@@ -4,6 +4,7 @@ import { getCollection } from '@/lib/content';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
+import { BrandTagline } from '@/components/layout/brand-tagline';
 import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
 import type { EntityEntry, StatEntry } from '@/lib/content-types';
 
@@ -41,6 +42,7 @@ export default async function TentangKamiPage({
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">Profil</p>
           <h1 className="mt-4 font-display text-display text-ink">Tentang Kami</h1>
+          <BrandTagline className="mt-4 font-display text-h3 text-forest" />
           <p className="mt-6 max-w-2xl text-body text-slate">
             Environesia Company Group adalah holding yang membawahi lima entitas: konsultasi
             lingkungan, pengujian dan sampling, pelatihan kompetensi, sertifikasi profesi, serta

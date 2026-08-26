@@ -1,5 +1,5 @@
 import { getCollection } from '@/lib/content';
-import { SITE_URL, OFFICE_ADDRESS } from '@/lib/site';
+import { SITE_URL, OFFICE_ADDRESS, BRAND_TAGLINE } from '@/lib/site';
 import { SITE_NAME } from '@/lib/metadata';
 import type { EntityEntry } from '@/lib/content-types';
 
@@ -12,6 +12,7 @@ export function OrganizationJsonLd({ locale }: { locale: string }) {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: SITE_NAME,
+    slogan: BRAND_TAGLINE,
     url: `${SITE_URL}/${locale}`,
     address: {
       '@type': 'PostalAddress',

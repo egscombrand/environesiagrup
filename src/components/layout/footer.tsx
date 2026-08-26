@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { BrandTagline } from '@/components/layout/brand-tagline';
 import Link from 'next/link';
 import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
 
@@ -27,6 +28,7 @@ export function Footer({ locale }: { locale: string }) {
               height={40}
               className="h-10 w-auto"
             />
+            <BrandTagline className="mt-2 text-small text-slate" />
             <p className="mt-3 font-mono text-label uppercase text-slate">{OFFICE_BUILDING}</p>
             <address className="mt-1 text-small not-italic text-slate">
               {OFFICE_ADDRESS_LINES.map((line) => (

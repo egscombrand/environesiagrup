@@ -8,6 +8,11 @@ describe('Footer', () => {
     expect(screen.getByRole('img', { name: 'Environesia Company Group' })).toBeInTheDocument();
   });
 
+  it('shows the brand tagline beneath the logo', () => {
+    render(<Footer locale="id" />);
+    expect(screen.getByText(/Integrated Green Ecosystem/)).toBeInTheDocument();
+  });
+
   it('renders the head office address', () => {
     render(<Footer locale="id" />);
     expect(screen.getByText(/Jl\. Jati Mataram No\. 284B/)).toBeInTheDocument();
