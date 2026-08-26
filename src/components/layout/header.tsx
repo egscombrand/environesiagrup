@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { MobileNav } from './header-mobile-nav';
 
@@ -17,8 +18,15 @@ export function Header({ locale }: { locale: string }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-12">
-        <Link href={`/${locale}`} className="font-display text-h3 font-semibold text-forest">
-          Environesia Group
+        <Link href={`/${locale}`} className="flex items-center">
+          <Image
+            src="/brand/environesia-group.png"
+            alt="Environesia Company Group"
+            width={172}
+            height={36}
+            priority
+            className="h-9 w-auto"
+          />
         </Link>
         <nav className="hidden items-center gap-8 md:flex" aria-label="Navigasi utama">
           {NAV_ITEMS.map((item) => (

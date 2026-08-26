@@ -3,6 +3,11 @@ import { describe, expect, it } from 'vitest';
 import { Footer } from './footer';
 
 describe('Footer', () => {
+  it('renders the group logo with an accessible name', () => {
+    render(<Footer locale="id" />);
+    expect(screen.getByRole('img', { name: 'Environesia Company Group' })).toBeInTheDocument();
+  });
+
   it('renders the head office address', () => {
     render(<Footer locale="id" />);
     expect(screen.getByText(/Jl\. Jati Mataram No\. 284B/)).toBeInTheDocument();

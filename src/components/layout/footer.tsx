@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { OFFICE_ADDRESS_LINES, OFFICE_BUILDING } from '@/lib/site';
 
@@ -19,7 +20,13 @@ export function Footer({ locale }: { locale: string }) {
       <div className="mx-auto max-w-[1280px] px-6 py-12 md:px-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <p className="font-display text-h3 font-semibold text-forest">Environesia Group</p>
+            <Image
+              src="/brand/environesia-group.png"
+              alt="Environesia Company Group"
+              width={191}
+              height={40}
+              className="h-10 w-auto"
+            />
             <p className="mt-3 font-mono text-label uppercase text-slate">{OFFICE_BUILDING}</p>
             <address className="mt-1 text-small not-italic text-slate">
               {OFFICE_ADDRESS_LINES.map((line) => (

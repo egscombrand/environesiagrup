@@ -3,9 +3,20 @@ import { describe, expect, it } from 'vitest';
 import { Header } from './header';
 
 describe('Header', () => {
-  it('links the group name to the locale home', () => {
+  it('links the group logo to the locale home', () => {
     render(<Header locale="id" />);
-    expect(screen.getByRole('link', { name: 'Environesia Group' })).toHaveAttribute('href', '/id');
+    expect(screen.getByRole('link', { name: 'Environesia Company Group' })).toHaveAttribute(
+      'href',
+      '/id'
+    );
+  });
+
+  it('renders the logo with explicit dimensions so it cannot shift the layout', () => {
+    render(<Header locale="id" />);
+    const logo = screen.getByRole('img', { name: 'Environesia Company Group' });
+
+    expect(logo).toHaveAttribute('width');
+    expect(logo).toHaveAttribute('height');
   });
 
   it('renders every top-level sitemap link in the desktop nav', () => {
