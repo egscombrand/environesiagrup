@@ -42,3 +42,6 @@ next-env.d.ts
 
 # superpowers SDD scratch workspace
 .superpowers/
+
+# Supabase CLI local state (project ref, pooler url) — not for version control
+supabase/.temp/

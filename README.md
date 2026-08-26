@@ -4,6 +4,23 @@ Corporate website for Environesia Company Group, a group of five
 environmental-services entities. Built with Next.js 15 (App Router),
 Tailwind CSS v4, and next-intl for `id`/`en` locale routing.
 
+
+## Environment setup
+
+Content now lives in Supabase, so the app needs credentials before it will
+build — a bare `npm run build` fails at page-data collection with
+`Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL`.
+
+Copy `.env.example` to `.env.local` and fill in the real values:
+
+```bash
+cp .env.example .env.local
+```
+
+`SUPABASE_SERVICE_ROLE_KEY` bypasses row level security entirely. Keep it
+server-side, never prefix it with `NEXT_PUBLIC_`, and rotate it in the
+Supabase dashboard if it is ever exposed.
+
 ## Tech stack
 
 - **Next.js 15** (App Router, Turbopack)
