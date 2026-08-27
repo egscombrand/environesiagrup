@@ -19,7 +19,7 @@ export function EntityCard({
   return (
     <Link
       href={`/${locale}/entitas/${entity.slug}`}
-      className={`block rounded-[14px] border border-line bg-paper p-6 transition-shadow hover:shadow-sm ${className}`.trim()}
+      className={`block rounded-[14px] border border-line bg-paper p-6 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${className}`.trim()}
       aria-label={entity.name}
     >
       {entity.logoUrl ? (
