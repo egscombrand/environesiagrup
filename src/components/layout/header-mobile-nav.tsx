@@ -40,6 +40,31 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
                 >
                   {navigationLabel(item, locale)}
                 </Link>
+
+                {/* Children are shown inline rather than behind a second tap.
+                    The mobile panel is already an expanded sheet, so hiding
+                    them would add a step without saving space. */}
+                {item.children.length > 0 ? (
+                  <ul className="mt-2 flex flex-col gap-2 border-l border-line pl-4">
+                    {item.children.map((child) => (
+                      <li key={child.id}>
+                        <Link
+                          href={
+                            child.url.startsWith('http')
+                              ? child.url
+                              : `/${locale}${child.url === '/' ? '' : child.url}`
+                          }
+                          target={child.open_new_tab ? '_blank' : undefined}
+                          rel={child.open_new_tab ? 'noreferrer' : undefined}
+                          className="text-small text-slate hover:text-forest"
+                          onClick={() => setOpen(false)}
+                        >
+                          {navigationLabel(child, locale)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </li>
             ))}
           </ul>

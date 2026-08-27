@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
-import { getPublishedNavigation, navigationLabel } from '@/lib/cms/navigation';
+import { getPublishedNavigation } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { messagesFor } from '@/i18n/messages';
 import { LanguageSwitcher } from './language-switcher';
+import { NavItem } from './nav-item';
 import { MobileNav } from './header-mobile-nav';
 
 export async function Header({ locale }: { locale: string }) {
@@ -33,15 +34,7 @@ export async function Header({ locale }: { locale: string }) {
         <div className="hidden items-center gap-8 md:flex">
           <nav className="flex items-center gap-8" aria-label={t.nav.utama}>
             {navItems.map((item) => (
-              <Link
-                key={item.id}
-                href={item.url.startsWith('http') ? item.url : `/${locale}${item.url === '/' ? '' : item.url}`}
-                target={item.open_new_tab ? '_blank' : undefined}
-                rel={item.open_new_tab ? 'noreferrer' : undefined}
-                className="text-small text-ink hover:text-forest"
-              >
-                {navigationLabel(item, locale)}
-              </Link>
+              <NavItem key={item.id} item={item} locale={locale} />
             ))}
           </nav>
           <LanguageSwitcher locale={locale} />
