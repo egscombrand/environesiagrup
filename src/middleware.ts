@@ -10,9 +10,7 @@ export default function middleware(request: NextRequest) {
     return guardWpAdmin(request);
   }
 
-  const response = intlMiddleware(request);
-  response.headers.set('x-pathname', request.nextUrl.pathname);
-  return response;
+  return intlMiddleware(request);
 }
 
 export const config = {

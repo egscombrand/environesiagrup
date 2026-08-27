@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { NavigationNode } from '@/lib/cms/navigation';
 import { messagesFor } from '@/i18n/messages';
+import { LanguageSwitcher } from './language-switcher';
 
 export function MobileNav({ locale, items }: { locale: string; items: readonly NavigationNode[] }) {
   const [open, setOpen] = useState(false);
@@ -41,6 +42,9 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
               </li>
             ))}
           </ul>
+          <div className="mt-4 border-t border-line pt-4">
+            <LanguageSwitcher locale={locale} />
+          </div>
         </nav>
       ) : null}
     </div>

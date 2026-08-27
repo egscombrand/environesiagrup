@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
@@ -9,13 +8,11 @@ import { LanguageSwitcher } from './language-switcher';
 import { MobileNav } from './header-mobile-nav';
 
 export async function Header({ locale }: { locale: string }) {
-  const [navItems, settings, requestHeaders] = await Promise.all([
+  const [navItems, settings] = await Promise.all([
     getPublishedNavigation('header'),
     getSiteSettings(),
-    headers(),
   ]);
   const t = messagesFor(locale);
-  const pathname = requestHeaders.get('x-pathname') ?? `/${locale}`;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
@@ -47,7 +44,7 @@ export async function Header({ locale }: { locale: string }) {
               </Link>
             ))}
           </nav>
-          <LanguageSwitcher locale={locale} pathname={pathname} />
+          <LanguageSwitcher locale={locale} />
         </div>
         <MobileNav locale={locale} items={navItems} />
       </div>

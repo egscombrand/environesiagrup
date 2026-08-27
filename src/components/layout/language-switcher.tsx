@@ -1,16 +1,23 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { messagesFor } from '@/i18n/messages';
 
 const LABELS: Record<string, string> = { id: 'ID', en: 'EN', zh: '中文' };
 
-// Takes the pathname as a prop rather than reading a client hook, so this
-// stays a Server Component and can be rendered directly in a test.
-export function LanguageSwitcher({ locale, pathname }: { locale: string; pathname: string }) {
+// Reads the current path from usePathname() rather than a server-only
+// Dynamic API (headers()), so this stays a client-rendered leaf that does
+// not force the rest of the page out of static generation. One test-file
+// mock is a much smaller cost than losing static rendering site-wide.
+export function LanguageSwitcher({ locale }: { locale: string }) {
   const t = messagesFor(locale);
+  const pathname = usePathname() ?? `/${locale}`;
 
-  // strip the leading locale segment; '/id/entitas' -> '/entitas', '/id' -> ''
-  const rest = pathname.replace(/^\/[^/]+/, '');
+  // strip the leading locale segment and any trailing slash;
+  // '/id/entitas' -> '/entitas', '/id' -> '', '/id/' -> ''
+  const rest = pathname.replace(/^\/[^/]+/, '').replace(/\/$/, '');
 
   return (
     <nav aria-label={t.nav.pilihBahasa} className="flex items-center gap-2">
