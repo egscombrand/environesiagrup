@@ -5,6 +5,7 @@ import { getPublishedNavigation } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { messagesFor } from '@/i18n/messages';
 import { LanguageSwitcher } from './language-switcher';
+import { HeaderShell } from './header-shell';
 import { NavItem } from './nav-item';
 import { MobileNav } from './header-mobile-nav';
 
@@ -16,7 +17,7 @@ export async function Header({ locale }: { locale: string }) {
   const t = messagesFor(locale);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
+    <HeaderShell>
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-12">
         <div className="flex flex-col gap-1">
           <Link href={`/${locale}`} className="flex">
@@ -29,7 +30,7 @@ export async function Header({ locale }: { locale: string }) {
               className="h-8 w-auto md:h-9"
             />
           </Link>
-          <BrandTagline className="text-[10px] leading-tight text-slate md:text-[11px]" />
+          <BrandTagline className="text-[10px] leading-tight text-slate transition-colors group-data-[overlay]/hdr:text-paper/80 md:text-[11px] motion-reduce:transition-none" />
         </div>
         <div className="hidden items-center gap-8 md:flex">
           <nav className="flex items-center gap-8" aria-label={t.nav.utama}>
@@ -41,6 +42,6 @@ export async function Header({ locale }: { locale: string }) {
         </div>
         <MobileNav locale={locale} items={navItems} />
       </div>
-    </header>
+    </HeaderShell>
   );
 }

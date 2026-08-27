@@ -28,8 +28,8 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
           aria-current={candidate === locale ? 'true' : undefined}
           className={
             candidate === locale
-              ? 'font-mono text-label uppercase text-forest'
-              : 'font-mono text-label uppercase text-slate hover:text-forest'
+              ? 'font-mono text-label uppercase text-forest transition-colors group-data-[overlay]/hdr:text-paper motion-reduce:transition-none'
+              : 'font-mono text-label uppercase text-slate transition-colors hover:text-forest group-data-[overlay]/hdr:text-paper/60 group-data-[overlay]/hdr:hover:text-paper motion-reduce:transition-none'
           }
         >
           {LABELS[candidate] ?? candidate}

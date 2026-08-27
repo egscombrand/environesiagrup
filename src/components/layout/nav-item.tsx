@@ -17,7 +17,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       href={href(item.url, locale)}
       target={item.open_new_tab ? '_blank' : undefined}
       rel={item.open_new_tab ? 'noreferrer' : undefined}
-      className="text-small text-ink hover:text-forest"
+      className="text-small text-ink transition-colors hover:text-forest group-data-[overlay]/hdr:text-paper group-data-[overlay]/hdr:hover:text-paper/70 motion-reduce:transition-none"
     >
       {label}
     </Link>
@@ -30,7 +30,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       <span className="flex items-center gap-1">
         {link}
         <svg
-          className="h-3 w-3 text-slate transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180 motion-reduce:transition-none"
+          className="h-3 w-3 text-slate group-data-[overlay]/hdr:text-paper/70 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180 motion-reduce:transition-none"
           viewBox="0 0 12 12"
           fill="none"
           aria-hidden="true"

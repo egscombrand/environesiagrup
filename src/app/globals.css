@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 @theme {
+  /* Header is fixed, so it no longer occupies layout space. Pages offset
+     their content by this; the hero cancels it out to sit under the header.
+     Defined once so a change to the header's padding or logo size does not
+     leave the two out of sync. */
+  --header-h: 5.25rem;
+
   --color-ink: #10221C;
   --color-forest: #0F4C3A;
   --color-moss: #2F7D5E;
@@ -62,5 +68,11 @@ button:focus-visible {
   }
   to {
     transform: scale(1.08);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 5.75rem;
   }
 }

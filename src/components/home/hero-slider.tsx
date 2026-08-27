@@ -95,7 +95,7 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlide[]; locale: st
 
   return (
     <section
-      className="relative h-[80vh] min-h-[480px] w-full overflow-hidden"
+      className="relative -mt-[var(--header-h)] h-dvh min-h-[560px] w-full overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -148,7 +148,12 @@ export function HeroSlider({ slides, locale }: { slides: HeroSlide[]; locale: st
                 className={`h-full w-full object-cover ${kenBurnsClass}`}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,20,16,0.45)] to-transparent" />
+            {/* Two scrims, not one: the lower gradient carries the headline's
+                contrast, the top band keeps the transparent header legible over
+                a bright photo. project.md §4 permits a black vertical gradient
+                and rules out coloured ones. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,20,16,0.65)] via-[rgba(8,20,16,0.15)] to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(8,20,16,0.45)] to-transparent" />
             <a
               href={`/${locale}${slide.cta_url ?? ''}`}
               tabIndex={isActive ? 0 : -1}
