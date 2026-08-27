@@ -30,6 +30,10 @@ vi.mock('@/lib/cms/settings', () => ({
   }),
 }));
 
+vi.mock('next/headers', () => ({
+  headers: vi.fn().mockResolvedValue(new Headers()),
+}));
+
 const { Header } = await import('./header');
 
 describe('Header', () => {

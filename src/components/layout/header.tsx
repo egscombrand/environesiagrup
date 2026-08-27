@@ -1,17 +1,21 @@
+import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
 import { getPublishedNavigation } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { messagesFor } from '@/i18n/messages';
+import { LanguageSwitcher } from './language-switcher';
 import { MobileNav } from './header-mobile-nav';
 
 export async function Header({ locale }: { locale: string }) {
-  const [navItems, settings] = await Promise.all([
+  const [navItems, settings, requestHeaders] = await Promise.all([
     getPublishedNavigation('header'),
     getSiteSettings(),
+    headers(),
   ]);
   const t = messagesFor(locale);
+  const pathname = requestHeaders.get('x-pathname') ?? `/${locale}`;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
@@ -29,19 +33,22 @@ export async function Header({ locale }: { locale: string }) {
           </Link>
           <BrandTagline className="text-[10px] leading-tight text-slate md:text-[11px]" />
         </div>
-        <nav className="hidden items-center gap-8 md:flex" aria-label={t.nav.utama}>
-          {navItems.map((item) => (
-            <Link
-              key={item.id}
-              href={item.url.startsWith('http') ? item.url : `/${locale}${item.url === '/' ? '' : item.url}`}
-              target={item.open_new_tab ? '_blank' : undefined}
-              rel={item.open_new_tab ? 'noreferrer' : undefined}
-              className="text-small text-ink hover:text-forest"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="hidden items-center gap-8 md:flex">
+          <nav className="flex items-center gap-8" aria-label={t.nav.utama}>
+            {navItems.map((item) => (
+              <Link
+                key={item.id}
+                href={item.url.startsWith('http') ? item.url : `/${locale}${item.url === '/' ? '' : item.url}`}
+                target={item.open_new_tab ? '_blank' : undefined}
+                rel={item.open_new_tab ? 'noreferrer' : undefined}
+                className="text-small text-ink hover:text-forest"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <LanguageSwitcher locale={locale} pathname={pathname} />
+        </div>
         <MobileNav locale={locale} items={navItems} />
       </div>
     </header>
