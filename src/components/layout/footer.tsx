@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { BrandTagline } from '@/components/layout/brand-tagline';
-import { getPublishedNavigation } from '@/lib/cms/navigation';
+import { getPublishedNavigation, navigationLabel } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { messagesFor } from '@/i18n/messages';
 
@@ -46,7 +46,7 @@ export async function Footer({ locale }: { locale: string }) {
                     rel={item.open_new_tab ? 'noreferrer' : undefined}
                     className="text-small text-ink hover:text-forest"
                   >
-                    {item.label}
+                    {navigationLabel(item, locale)}
                   </Link>
                 </li>
               ))}

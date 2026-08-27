@@ -6,6 +6,8 @@ import { revalidatePublicSite } from '@/lib/admin/revalidate';
 
 const schema = z.object({
   label: z.string().min(1),
+  label_en: z.string().optional(),
+  label_zh: z.string().optional(),
   url: z.string().min(1),
   parent_id: z.string().uuid().optional().or(z.literal('')),
   menu: z.enum(['header', 'footer']),
@@ -17,6 +19,8 @@ const schema = z.object({
 function parse(formData: FormData) {
   return schema.safeParse({
     label: formData.get('label'),
+    label_en: formData.get('label_en') || undefined,
+    label_zh: formData.get('label_zh') || undefined,
     url: formData.get('url'),
     parent_id: formData.get('parent_id') || undefined,
     menu: formData.get('menu'),
@@ -31,8 +35,10 @@ export async function createNavigationAction(formData: FormData) {
   const parsed = parse(formData);
   if (!parsed.success) return { error: parsed.error.issues.map((i) => i.message).join(', ') };
 
-  const { parent_id, ...rest } = parsed.data;
-  const { error } = await supabase.from('navigation_items').insert({ ...rest, parent_id: parent_id || null });
+  const { parent_id, label_en, label_zh, ...rest } = parsed.data;
+  const { error } = await supabase
+    .from('navigation_items')
+    .insert({ ...rest, parent_id: parent_id || null, label_en: label_en || null, label_zh: label_zh || null });
   if (error) return { error: error.message };
 
   revalidatePublicSite();
@@ -44,10 +50,10 @@ export async function updateNavigationAction(id: string, formData: FormData) {
   const parsed = parse(formData);
   if (!parsed.success) return { error: parsed.error.issues.map((i) => i.message).join(', ') };
 
-  const { parent_id, ...rest } = parsed.data;
+  const { parent_id, label_en, label_zh, ...rest } = parsed.data;
   const { error } = await supabase
     .from('navigation_items')
-    .update({ ...rest, parent_id: parent_id || null })
+    .update({ ...rest, parent_id: parent_id || null, label_en: label_en || null, label_zh: label_zh || null })
     .eq('id', id);
   if (error) return { error: error.message };
 

@@ -261,6 +261,8 @@ export function makeNavigationNode(overrides: Partial<NavigationNode> = {}): Nav
   return {
     id: id(),
     label: 'Beranda',
+    label_en: null,
+    label_zh: null,
     slug: null,
     url: '/',
     parent_id: null,

@@ -4,11 +4,13 @@ import { makeNavigationNode } from '@/lib/cms/fixtures';
 
 const FOOTER_LABELS = ['Entitas', 'Proyek', 'Berita', 'Karier', 'Unduhan', 'Kontak', 'Kebijakan Privasi'];
 
-vi.mock('@/lib/cms/navigation', () => ({
+vi.mock('@/lib/cms/navigation', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/cms/navigation')>()),
   getPublishedNavigation: vi.fn().mockResolvedValue(
     FOOTER_LABELS.map((label, i) =>
       makeNavigationNode({
         label,
+        label_zh: label === 'Entitas' ? '旗下企业' : null,
         url: `/${label.toLowerCase().replace(/ /g, '-')}`,
         menu: 'footer',
         sort_order: i,
@@ -62,5 +64,11 @@ describe('Footer', () => {
     render(await Footer({ locale: 'id' }));
     const year = new Date().getFullYear().toString();
     expect(screen.getByText(new RegExp(year))).toBeInTheDocument();
+  });
+
+  it('renders a translated label on zh, and falls back to Indonesian when untranslated', async () => {
+    render(await Footer({ locale: 'zh' }));
+    expect(screen.getByRole('link', { name: '旗下企业' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Karier' })).toBeInTheDocument();
   });
 });

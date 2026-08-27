@@ -507,6 +507,8 @@ export type Database = {
           created_at: string
           id: string
           label: string
+          label_en: string | null
+          label_zh: string | null
           menu: string
           open_new_tab: boolean
           parent_id: string | null
@@ -520,6 +522,8 @@ export type Database = {
           created_at?: string
           id?: string
           label: string
+          label_en?: string | null
+          label_zh?: string | null
           menu?: string
           open_new_tab?: boolean
           parent_id?: string | null
@@ -533,6 +537,8 @@ export type Database = {
           created_at?: string
           id?: string
           label?: string
+          label_en?: string | null
+          label_zh?: string | null
           menu?: string
           open_new_tab?: boolean
           parent_id?: string | null

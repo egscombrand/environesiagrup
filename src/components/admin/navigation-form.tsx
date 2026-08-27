@@ -10,6 +10,8 @@ const inputClass =
 export type NavigationItemValues = {
   id?: string;
   label: string;
+  label_en: string | null;
+  label_zh: string | null;
   url: string;
   parent_id: string | null;
   menu: string;
@@ -56,6 +58,14 @@ export function NavigationForm({
               Label<span className="text-danger"> *</span>
             </label>
             <input type="text" name="label" required defaultValue={initialValues.label} className={inputClass} />
+          </div>
+          <div>
+            <label className="font-mono text-label uppercase text-slate">Label (English)</label>
+            <input type="text" name="label_en" defaultValue={initialValues.label_en ?? ''} className={inputClass} />
+          </div>
+          <div>
+            <label className="font-mono text-label uppercase text-slate">Label (中文)</label>
+            <input type="text" name="label_zh" defaultValue={initialValues.label_zh ?? ''} className={inputClass} />
           </div>
           <div>
             <label className="font-mono text-label uppercase text-slate">

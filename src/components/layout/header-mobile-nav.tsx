@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { NavigationNode } from '@/lib/cms/navigation';
+import { navigationLabel } from '@/lib/cms/navigation-label';
 import { messagesFor } from '@/i18n/messages';
 import { LanguageSwitcher } from './language-switcher';
 
@@ -37,7 +38,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
                   className="text-small text-ink hover:text-forest"
                   onClick={() => setOpen(false)}
                 >
-                  {item.label}
+                  {navigationLabel(item, locale)}
                 </Link>
               </li>
             ))}

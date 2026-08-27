@@ -14,10 +14,16 @@ const HEADER_LABELS = [
   'Kontak',
 ];
 
-vi.mock('@/lib/cms/navigation', () => ({
+vi.mock('@/lib/cms/navigation', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/cms/navigation')>()),
   getPublishedNavigation: vi.fn().mockResolvedValue(
     HEADER_LABELS.map((label, i) =>
-      makeNavigationNode({ label, url: label === 'Beranda' ? '/' : `/${label.toLowerCase().replace(/ /g, '-')}`, sort_order: i })
+      makeNavigationNode({
+        label,
+        label_zh: label === 'Entitas' ? '旗下企业' : null,
+        url: label === 'Beranda' ? '/' : `/${label.toLowerCase().replace(/ /g, '-')}`,
+        sort_order: i,
+      })
     )
   ),
 }));
@@ -68,5 +74,11 @@ describe('Header', () => {
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     const projectLink = Array.from(nav.querySelectorAll('a')).find((a) => a.textContent === 'Proyek');
     expect(projectLink).toHaveAttribute('href', '/en/proyek');
+  });
+
+  it('renders a translated label on zh, and falls back to Indonesian when untranslated', async () => {
+    render(await Header({ locale: 'zh' }));
+    expect(screen.getByRole('link', { name: '旗下企业' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Karier' })).toBeInTheDocument();
   });
 });

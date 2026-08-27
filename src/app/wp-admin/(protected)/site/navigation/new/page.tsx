@@ -27,6 +27,8 @@ export default async function NewNavigationPage({
         <NavigationForm
           initialValues={{
             label: '',
+            label_en: null,
+            label_zh: null,
             url: '',
             parent_id: null,
             menu: menuValue,
