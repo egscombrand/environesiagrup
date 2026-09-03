@@ -11,13 +11,20 @@ import {
 import { useToast } from './toast-provider';
 
 const SECTION_LABELS: Record<string, string> = {
-  hero: 'Hero',
-  stats: 'Statistics',
-  entities: 'Entities',
-  pillars: 'Business Pillars',
-  map: 'Country Map (10 Negara)',
-  green_business: 'Green Business / CEO Split',
-  news: 'News & Insight',
+  hero: 'Hero (Executive Snapshot)',
+  stats: 'Statistics (retired — folded into Hero)',
+  entities: 'Our Ecosystem',
+  pillars: 'Our Capabilities',
+  projects_showcase: 'Featured Projects',
+  milestones: 'Achievements & Milestones',
+  leadership: 'Leadership',
+  map: 'Country / Reach Map (retired)',
+  leadership_message: 'Leadership Message (retired — see Leadership)',
+  sustainability: 'Sustainability & Impact',
+  clients: 'Clients & Partners (mock data — no CMS table yet)',
+  documents: 'Corporate Information',
+  green_business: 'Green Business / CEO Split (retired)',
+  news: 'News & Perspectives',
   cta: 'CTA Kontak',
 };
 

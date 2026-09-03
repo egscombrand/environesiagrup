@@ -13,6 +13,7 @@ export type NavigationItemValues = {
   label_en: string | null;
   label_zh: string | null;
   url: string;
+  slug: string | null;
   parent_id: string | null;
   menu: string;
   status: string;
@@ -23,10 +24,15 @@ export type NavigationItemValues = {
 export function NavigationForm({
   initialValues,
   siblingOptions,
+  disableParentSelect = false,
   action,
 }: {
   initialValues: NavigationItemValues;
   siblingOptions: { id: string; label: string }[];
+  /** True when this item already has its own submenu — the public site only
+   * renders one level of dropdown, so nesting it under another item would
+   * silently drop its children from the live menu. */
+  disableParentSelect?: boolean;
   action: (formData: FormData) => Promise<{ error?: string } | void>;
 }) {
   const router = useRouter();
@@ -42,6 +48,7 @@ export function NavigationForm({
         setPending(false);
         if (result?.error) {
           setError(result.error);
+          toast('error', result.error);
           return;
         }
         toast('success', 'Menu item saved successfully.');
@@ -59,19 +66,23 @@ export function NavigationForm({
             </label>
             <input type="text" name="label" required defaultValue={initialValues.label} className={inputClass} />
           </div>
-          <div>
-            <label className="font-mono text-label uppercase text-slate">Label (English)</label>
-            <input type="text" name="label_en" defaultValue={initialValues.label_en ?? ''} className={inputClass} />
-          </div>
-          <div>
-            <label className="font-mono text-label uppercase text-slate">Label (中文)</label>
-            <input type="text" name="label_zh" defaultValue={initialValues.label_zh ?? ''} className={inputClass} />
-          </div>
+          {/* English/Chinese labels aren't editable here — there's no
+              translation pipeline yet, so they stay unset and the public
+              site falls back to the Indonesian label (navigationLabel). */}
           <div>
             <label className="font-mono text-label uppercase text-slate">
               URL<span className="text-danger"> *</span>
             </label>
             <input type="text" name="url" required defaultValue={initialValues.url} className={inputClass} />
+          </div>
+          <div>
+            <label className="font-mono text-label uppercase text-slate">Slug</label>
+            <input type="text" name="slug" defaultValue={initialValues.slug ?? ''} className={inputClass} />
+            <p className="mt-1.5 text-small text-slate">
+              Sets which CMS record (e.g. an entity&rsquo;s own slug) this menu item links to — a page that only
+              knows its own content can look up this URL by that identifier. Leave blank if this item doesn&rsquo;t
+              need to be looked up that way.
+            </p>
           </div>
           <div>
             <label className="font-mono text-label uppercase text-slate">
@@ -84,16 +95,28 @@ export function NavigationForm({
           </div>
           <div>
             <label className="font-mono text-label uppercase text-slate">Parent Menu</label>
-            <select name="parent_id" defaultValue={initialValues.parent_id ?? ''} className={inputClass}>
+            {/* Disabled fields aren't included in FormData on submit, so this
+                intentionally sends no parent_id — which is exactly right
+                here, since a disableParentSelect item is always already
+                top-level and must stay that way. */}
+            <select
+              name="parent_id"
+              defaultValue={initialValues.parent_id ?? ''}
+              disabled={disableParentSelect}
+              className={`${inputClass} disabled:cursor-not-allowed disabled:opacity-60`}
+            >
               <option value="">— None (top-level) —</option>
-              {siblingOptions
-                .filter((s) => s.id !== initialValues.id)
-                .map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.label}
-                  </option>
-                ))}
+              {siblingOptions.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
             </select>
+            {disableParentSelect ? (
+              <p className="mt-1.5 text-small text-slate">
+                This item has submenus and can&rsquo;t be nested under another item.
+              </p>
+            ) : null}
           </div>
           <div>
             <label className="font-mono text-label uppercase text-slate">

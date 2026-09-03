@@ -39,12 +39,17 @@ vi.mock('@/lib/cms/settings', () => ({
 const { Header } = await import('./header');
 
 describe('Header', () => {
-  it('links the group logo to the locale home', async () => {
+  it('links the group logo to the locale home, with an explicit accessible label', async () => {
     render(await Header({ locale: 'id' }));
-    expect(screen.getByRole('link', { name: 'Environesia Company Group' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Kembali ke halaman utama' })).toHaveAttribute(
       'href',
       '/id'
     );
+  });
+
+  it('uses the active locale for the home link on every locale, not a hardcoded one', async () => {
+    render(await Header({ locale: 'en' }));
+    expect(screen.getByRole('link', { name: 'Back to homepage' })).toHaveAttribute('href', '/en');
   });
 
   it('shows the brand tagline beneath the logo, outside the home link', async () => {
@@ -52,7 +57,7 @@ describe('Header', () => {
 
     expect(screen.getByText(/Integrated Green Ecosystem/)).toBeInTheDocument();
     // the tagline must not bloat the home link's accessible name
-    expect(screen.getByRole('link', { name: 'Environesia Company Group' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Kembali ke halaman utama' })).toBeInTheDocument();
   });
 
   it('renders the logo with explicit dimensions so it cannot shift the layout', async () => {

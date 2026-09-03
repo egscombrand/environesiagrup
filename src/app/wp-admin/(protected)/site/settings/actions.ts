@@ -28,6 +28,18 @@ const schema = z.object({
   logo_path: z.string().optional(),
   favicon_path: z.string().optional(),
   seo_default_og_image: z.string().optional(),
+  ecosystem_eyebrow: z.string().optional(),
+  ecosystem_opening_question: z.string().optional(),
+  ecosystem_opening_statement_1: z.string().optional(),
+  ecosystem_opening_statement_2: z.string().optional(),
+  ecosystem_opening_cta_label: z.string().optional(),
+  ecosystem_discovery_intro_1: z.string().optional(),
+  ecosystem_discovery_intro_2: z.string().optional(),
+  ecosystem_closing_heading: z.string().optional(),
+  ecosystem_closing_subtext: z.string().optional(),
+  ecosystem_closing_cta_label: z.string().optional(),
+  milestones_eyebrow: z.string().optional(),
+  milestones_intro: z.string().optional(),
 });
 
 export type SettingsFormState = { error?: string; success?: boolean };

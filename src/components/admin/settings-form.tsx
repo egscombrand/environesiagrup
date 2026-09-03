@@ -22,9 +22,9 @@ function TextField({ name, label, defaultValue, textarea }: { name: string; labe
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-[14px] border border-line bg-paper p-6">
+    <section id={id} className="scroll-mt-24 rounded-[14px] border border-line bg-paper p-6">
       <h2 className="font-display text-h3 text-ink">{title}</h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">{children}</div>
     </section>
@@ -84,6 +84,75 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           initialPath={settings.seo_default_og_image}
           accept="image"
         />
+      </Section>
+
+      <Section title="Company Group Experience" id="company-group-experience">
+        <p className="text-small text-slate sm:col-span-2">
+          The opening scene plays as a short auto-paced sequence: the intro line appears alone first, then the
+          heading and each statement line cascade in one at a time, and the CTA appears only once that&apos;s
+          finished. For the two statement fields, each line of text becomes its own beat in that sequence.
+        </p>
+        <TextField name="ecosystem_eyebrow" label="Eyebrow" defaultValue={s('ecosystem_eyebrow')} />
+        <TextField name="ecosystem_opening_cta_label" label="Opening CTA Label" defaultValue={s('ecosystem_opening_cta_label')} />
+        <div className="sm:col-span-2">
+          <TextField
+            name="ecosystem_opening_question"
+            label="Opening Intro Line (shown alone, first)"
+            defaultValue={s('ecosystem_opening_question')}
+          />
+        </div>
+        <TextField
+          name="ecosystem_opening_statement_1"
+          label="Opening Statement Lines 1 (one line per row)"
+          defaultValue={s('ecosystem_opening_statement_1')}
+          textarea
+        />
+        <TextField
+          name="ecosystem_opening_statement_2"
+          label="Opening Statement Lines 2 (one line per row)"
+          defaultValue={s('ecosystem_opening_statement_2')}
+          textarea
+        />
+        <TextField
+          name="ecosystem_discovery_intro_1"
+          label="Discovery Transition — Line 1"
+          defaultValue={s('ecosystem_discovery_intro_1')}
+        />
+        <TextField
+          name="ecosystem_discovery_intro_2"
+          label="Discovery Transition — Line 2"
+          defaultValue={s('ecosystem_discovery_intro_2')}
+        />
+        <TextField
+          name="ecosystem_closing_heading"
+          label="Closing Heading (one line per row)"
+          defaultValue={s('ecosystem_closing_heading')}
+          textarea
+        />
+        <TextField
+          name="ecosystem_closing_cta_label"
+          label="Closing CTA Label"
+          defaultValue={s('ecosystem_closing_cta_label')}
+        />
+        <div className="sm:col-span-2">
+          <TextField
+            name="ecosystem_closing_subtext"
+            label="Closing Subtext"
+            defaultValue={s('ecosystem_closing_subtext')}
+            textarea
+          />
+        </div>
+      </Section>
+
+      <Section title="Company History / Our Journey" id="company-history">
+        <p className="text-small text-slate sm:col-span-2">
+          Shown above the milestones timeline. The individual milestones themselves (year, title, story, image) are
+          managed under Content → Milestones, not here.
+        </p>
+        <TextField name="milestones_eyebrow" label="Eyebrow (e.g. Our Journey)" defaultValue={s('milestones_eyebrow')} />
+        <div className="sm:col-span-2">
+          <TextField name="milestones_intro" label="Intro Narrative" defaultValue={s('milestones_intro')} textarea />
+        </div>
       </Section>
 
       <Section title="Footer">

@@ -83,6 +83,14 @@ export async function getPublishedProjects(): Promise<Project[]> {
   return attachRelations(supabase, data ?? []);
 }
 
+/** First N published projects in admin-defined sort_order — the homepage's
+ * featured showcase. No dedicated "featured" flag exists, so editorial
+ * control stays entirely in sort_order, same as entities/pillars/hero. */
+export async function getFeaturedPublishedProjects(limit = 5): Promise<Project[]> {
+  const projects = await getPublishedProjects();
+  return projects.slice(0, limit);
+}
+
 export async function getPublishedProjectBySlug(slug: string): Promise<Project | null> {
   const supabase = createPublicClient();
   const { data, error } = await supabase

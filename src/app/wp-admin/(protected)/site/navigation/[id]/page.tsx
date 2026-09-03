@@ -20,6 +20,9 @@ export default async function EditNavigationPage({
   const item = items.find((i) => i.id === id);
   if (!item) notFound();
 
+  const hasChildren = items.some((i) => i.parent_id === item.id);
+  const topLevelSiblings = items.filter((i) => i.menu === item.menu && i.parent_id === null && i.id !== item.id);
+
   return (
     <div>
       <p className="font-mono text-label uppercase text-slate">Website / Navigation</p>
@@ -27,7 +30,8 @@ export default async function EditNavigationPage({
       <div className="mt-8">
         <NavigationForm
           initialValues={item}
-          siblingOptions={items.filter((i) => i.menu === item.menu).map((i) => ({ id: i.id, label: i.label }))}
+          siblingOptions={topLevelSiblings.map((i) => ({ id: i.id, label: i.label }))}
+          disableParentSelect={hasChildren}
           action={updateNavigationAction.bind(null, id)}
         />
       </div>

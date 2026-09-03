@@ -2,9 +2,11 @@ import { getPublishedStats } from '@/lib/cms/stats';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { resolveServerIcon } from '@/components/icons/server-icon';
+import { messagesFor } from '@/i18n/messages';
 import { KeyStatsCounters } from './key-stats-counters';
 
-export async function KeyStatsSection() {
+export async function KeyStatsSection({ locale, title }: { locale: string; title?: string }) {
+  const t = messagesFor(locale);
   const stats = await getPublishedStats();
 
   if (stats.length === 0) {
@@ -22,9 +24,14 @@ export async function KeyStatsSection() {
   );
 
   return (
-    <Section className="bg-stone">
+    <Section className="border-y border-line bg-stone">
       <Reveal>
-        <KeyStatsCounters items={items} />
+        <p className="text-center font-mono text-label uppercase text-slate">
+          {title ?? t.beranda.angkaKunciEyebrow}
+        </p>
+        <div className="mt-6">
+          <KeyStatsCounters items={items} />
+        </div>
       </Reveal>
     </Section>
   );

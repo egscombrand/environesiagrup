@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { makeNavigationNode } from '@/lib/cms/fixtures';
+import { makeNavigationNode, makeEntity } from '@/lib/cms/fixtures';
 
 const FOOTER_LABELS = ['Entitas', 'Proyek', 'Berita', 'Karier', 'Unduhan', 'Kontak', 'Kebijakan Privasi'];
 
@@ -27,7 +27,23 @@ vi.mock('@/lib/cms/settings', () => ({
     footer_copyright: null,
     address:
       'Grha Environesia (Lantai 2)\nJl. Jati Mataram No. 284B, Karangjati\nSinduadi, Mlati, Sleman\nDaerah Istimewa Yogyakarta 55284',
+    email: 'halo@environesia.co.id',
+    phone: '+62 274 000000',
+    whatsapp: null,
+    social_instagram: null,
+    social_linkedin: null,
+    social_facebook: null,
+    social_youtube: null,
+    social_tiktok: null,
+    social_twitter: null,
   }),
+}));
+
+vi.mock('@/lib/cms/entities', () => ({
+  getPublishedEntities: vi.fn().mockResolvedValue([
+    makeEntity({ name: 'Environesia', slug: 'environesia', sort_order: 1 }),
+    makeEntity({ name: 'GreenLab', slug: 'greenlab', sort_order: 2 }),
+  ]),
 }));
 
 const { Footer } = await import('./footer');
@@ -70,5 +86,19 @@ describe('Footer', () => {
     render(await Footer({ locale: 'zh' }));
     expect(screen.getByRole('link', { name: '旗下企业' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Karier' })).toBeInTheDocument();
+  });
+
+  it('renders a Group Entities column linking to each entity detail page', async () => {
+    render(await Footer({ locale: 'id' }));
+    expect(screen.getByRole('link', { name: 'GreenLab' })).toHaveAttribute('href', '/id/entitas/greenlab');
+  });
+
+  it('renders a Contact column with email and phone', async () => {
+    render(await Footer({ locale: 'id' }));
+    expect(screen.getByRole('link', { name: 'halo@environesia.co.id' })).toHaveAttribute(
+      'href',
+      'mailto:halo@environesia.co.id'
+    );
+    expect(screen.getByText('+62 274 000000')).toBeInTheDocument();
   });
 });

@@ -13,7 +13,7 @@ const { KeyStatsSection } = await import('./key-stats-section');
 
 describe('KeyStatsSection', () => {
   it('renders both real stats', async () => {
-    render(await KeyStatsSection());
+    render(await KeyStatsSection({ locale: 'id' }));
     expect(screen.getByText('Tahun Pengalaman')).toBeInTheDocument();
     expect(screen.getByText('Negara')).toBeInTheDocument();
   });

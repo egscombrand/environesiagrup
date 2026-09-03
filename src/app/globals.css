@@ -25,9 +25,23 @@
   --color-info: #454A85;
   --color-danger: #A8482D;
 
+  /* Landing-page blueprint palette (environesia-landing-page-master-prompt
+     skill) — additive, scoped to the homepage + shared header/footer only.
+     Every other public page and wp-admin keep the tokens above untouched. */
+  --color-pine-ink: #0B2B22;
+  --color-emerald-pulse: #0FA96B;
+  --color-sky-aqua: #33C4C9;
+  --color-sunrise-amber: #F2A93B;
+  --color-coral-flare: #FF6B57;
+  --color-canvas: #F6F8F3;
+  --color-sage-mist: #D8E4DA;
+
   --font-display: var(--font-display-src), ui-sans-serif, sans-serif;
   --font-body: var(--font-body-src), ui-sans-serif, sans-serif;
   --font-mono: var(--font-mono-src), ui-monospace, monospace;
+
+  --font-landing-display: var(--font-landing-display-src), Georgia, serif;
+  --font-landing-body: var(--font-landing-body-src), ui-sans-serif, sans-serif;
 
   --text-display: clamp(36px, 5vw, 56px);
   --text-display--line-height: 1.05;
@@ -68,6 +82,50 @@ button:focus-visible {
   }
   to {
     transform: scale(1.08);
+  }
+}
+
+/* Section 02 "Company Discovery" — every ambient/idle animation here is
+   gated behind `@media (prefers-reduced-motion: no-preference)` so it does
+   not exist at all (not just "slowed down") for users who asked for less
+   motion; JS-driven one-shot effects (phase transitions) are separately
+   gated via useReducedMotion() in the components themselves.
+   `.ecosystem-ambient` elements also get `animation-play-state: paused`
+   whenever the section's outer wrapper carries `data-in-view="false"`, so
+   nothing animates off-screen. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-in-view='false'] .ecosystem-ambient {
+    animation-play-state: paused;
+  }
+
+  .ecosystem-ambient.ecosystem-drift {
+    animation: ecosystem-drift 12s ease-in-out infinite;
+  }
+}
+
+.ecosystem-drift {
+  background: radial-gradient(circle, rgba(15, 169, 107, 0.07), transparent 70%);
+}
+
+@keyframes ecosystem-drift {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-47%, -53%) scale(1.1);
+  }
+}
+
+/* Hero progress timeline — the active segment fills 0%->100% over the
+   slide's real duration (its own animation-duration is set inline per
+   slide), Instagram-Stories style. animation-play-state toggles pause. */
+@keyframes hero-progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
   }
 }
 

@@ -10,14 +10,17 @@ export const metadata: Metadata = { title: 'Tambah Menu' };
 export default async function NewNavigationPage({
   searchParams,
 }: {
-  searchParams: Promise<{ menu?: string }>;
+  searchParams: Promise<{ menu?: string; parent_id?: string }>;
 }) {
   const { profile } = await requireProfile();
   if (profile.role !== 'super_admin') redirect('/wp-admin/unauthorized');
 
-  const { menu } = await searchParams;
+  const { menu, parent_id } = await searchParams;
   const items = await listNavigationForAdmin();
   const menuValue = menu === 'footer' ? 'footer' : 'header';
+
+  const topLevelInMenu = items.filter((i) => i.menu === menuValue && i.parent_id === null);
+  const parentId = topLevelInMenu.some((i) => i.id === parent_id) ? (parent_id as string) : null;
 
   return (
     <div>
@@ -30,13 +33,14 @@ export default async function NewNavigationPage({
             label_en: null,
             label_zh: null,
             url: '',
-            parent_id: null,
+            slug: null,
+            parent_id: parentId,
             menu: menuValue,
             status: 'published',
             open_new_tab: false,
-            sort_order: items.filter((i) => i.menu === menuValue).length,
+            sort_order: items.filter((i) => i.menu === menuValue && i.parent_id === parentId).length,
           }}
-          siblingOptions={items.filter((i) => i.menu === menuValue).map((i) => ({ id: i.id, label: i.label }))}
+          siblingOptions={topLevelInMenu.map((i) => ({ id: i.id, label: i.label }))}
           action={createNavigationAction}
         />
       </div>

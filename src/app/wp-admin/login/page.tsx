@@ -1,26 +1,35 @@
 import type { Metadata } from 'next';
-import { getPublishedEntities } from '@/lib/cms/entities';
-import { AuthShell } from '@/components/admin/auth-shell';
 import { LoginForm } from '@/components/admin/login-form';
 
 export const metadata: Metadata = { title: 'Sign In' };
 
+// A plain Server Component, start to finish — no "use client" anywhere in
+// this page or LoginForm. The error message travels as a `?error=` query
+// param on the Server Action's own redirect back here, not as client
+// state, so there is nothing in this render path that can differ between
+// the server pass and the client's first paint.
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
 }) {
-  const { next } = await searchParams;
-  const entities = await getPublishedEntities();
+  const { next, error } = await searchParams;
 
   return (
-    <AuthShell
-      eyebrow="Admin Workspace"
-      title="Welcome back"
-      subtitle="Masuk untuk melanjutkan ke workspace Anda."
-      accentColors={entities.map((e) => e.accent_color).filter((c): c is string => Boolean(c))}
-    >
-      <LoginForm next={next} />
-    </AuthShell>
+    <div className="flex min-h-screen items-center justify-center bg-stone px-6 py-16">
+      <div className="w-full max-w-sm rounded-[16px] border border-line bg-paper p-8 shadow-sm sm:p-10">
+        <p className="text-center font-mono text-label uppercase tracking-[0.14em] text-slate">ENVIROnesia</p>
+        <p className="mt-1 text-center font-mono text-label uppercase tracking-[0.14em] text-slate/50">
+          Admin Portal
+        </p>
+
+        <h1 className="mt-8 text-center font-display text-h2 text-ink">Welcome back</h1>
+        <p className="mt-2 text-center text-body text-slate">Masuk ke panel administrasi.</p>
+
+        <div className="mt-8">
+          <LoginForm next={next} error={error} />
+        </div>
+      </div>
+    </div>
   );
 }

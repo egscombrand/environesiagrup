@@ -18,7 +18,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls="mobile-nav-menu"
-        className="p-2 text-small text-ink transition-colors group-data-[overlay]/hdr:text-paper motion-reduce:transition-none"
+        className="p-2 font-landing-body text-small text-pine-ink transition-colors group-data-[overlay]/hdr:text-canvas motion-reduce:transition-none"
       >
         {open ? t.nav.tutup : t.nav.menu}
       </button>
@@ -26,7 +26,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
         <nav
           id="mobile-nav-menu"
           aria-label={t.nav.mobile}
-          className="absolute inset-x-0 top-full border-b border-line bg-paper px-6 py-4"
+          className="absolute inset-x-0 top-full border-b border-sage-mist bg-canvas px-6 py-4"
         >
           <ul className="flex flex-col gap-4">
             {items.map((item) => (
@@ -35,7 +35,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
                   href={item.url.startsWith('http') ? item.url : `/${locale}${item.url === '/' ? '' : item.url}`}
                   target={item.open_new_tab ? '_blank' : undefined}
                   rel={item.open_new_tab ? 'noreferrer' : undefined}
-                  className="text-small text-ink hover:text-forest"
+                  className="font-landing-body text-small text-pine-ink hover:text-emerald-pulse"
                   onClick={() => setOpen(false)}
                 >
                   {navigationLabel(item, locale)}
@@ -45,7 +45,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
                     The mobile panel is already an expanded sheet, so hiding
                     them would add a step without saving space. */}
                 {item.children.length > 0 ? (
-                  <ul className="mt-2 flex flex-col gap-2 border-l border-line pl-4">
+                  <ul className="mt-2 flex flex-col gap-2 border-l border-sage-mist pl-4">
                     {item.children.map((child) => (
                       <li key={child.id}>
                         <Link
@@ -56,7 +56,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
                           }
                           target={child.open_new_tab ? '_blank' : undefined}
                           rel={child.open_new_tab ? 'noreferrer' : undefined}
-                          className="text-small text-slate hover:text-forest"
+                          className="font-landing-body text-small text-pine-ink/60 hover:text-emerald-pulse"
                           onClick={() => setOpen(false)}
                         >
                           {navigationLabel(child, locale)}
@@ -68,7 +68,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
               </li>
             ))}
           </ul>
-          <div className="mt-4 border-t border-line pt-4">
+          <div className="mt-4 border-t border-sage-mist pt-4">
             <LanguageSwitcher locale={locale} />
           </div>
         </nav>

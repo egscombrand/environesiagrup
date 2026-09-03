@@ -17,7 +17,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       href={href(item.url, locale)}
       target={item.open_new_tab ? '_blank' : undefined}
       rel={item.open_new_tab ? 'noreferrer' : undefined}
-      className="text-small text-ink transition-colors hover:text-forest group-data-[overlay]/hdr:text-paper group-data-[overlay]/hdr:hover:text-paper/70 motion-reduce:transition-none"
+      className="font-landing-body text-small font-medium tracking-[0.01em] text-pine-ink transition-colors hover:text-emerald-pulse group-data-[overlay]/hdr:text-canvas group-data-[overlay]/hdr:hover:text-canvas/70 motion-reduce:transition-none"
     >
       {label}
     </Link>
@@ -30,7 +30,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       <span className="flex items-center gap-1">
         {link}
         <svg
-          className="h-3 w-3 text-slate group-data-[overlay]/hdr:text-paper/70 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180 motion-reduce:transition-none"
+          className="h-3 w-3 text-pine-ink/60 group-data-[overlay]/hdr:text-canvas/70 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180 motion-reduce:transition-none"
           viewBox="0 0 12 12"
           fill="none"
           aria-hidden="true"
@@ -40,7 +40,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       </span>
 
       <ul
-        className="invisible absolute left-0 top-full z-50 min-w-56 translate-y-1 rounded-[14px] border border-line bg-paper p-2 opacity-0 shadow-sm transition-all duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none"
+        className="invisible absolute left-0 top-full z-50 min-w-56 translate-y-1 rounded-[14px] border border-sage-mist bg-canvas p-2 opacity-0 shadow-sm transition-all duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none"
       >
         {item.children.map((child) => (
           <li key={child.id}>
@@ -48,7 +48,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
               href={href(child.url, locale)}
               target={child.open_new_tab ? '_blank' : undefined}
               rel={child.open_new_tab ? 'noreferrer' : undefined}
-              className="block rounded-[10px] px-3 py-2 text-small text-ink hover:bg-stone hover:text-forest"
+              className="block rounded-[10px] px-3 py-2 font-landing-body text-small text-pine-ink hover:bg-sage-mist/40 hover:text-emerald-pulse"
             >
               {navigationLabel(child, locale)}
             </Link>

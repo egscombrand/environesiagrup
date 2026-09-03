@@ -76,6 +76,7 @@ export function makeHeroSlide(overrides: Partial<HeroSlide> = {}): HeroSlide {
     mobile_image_path: null,
     video_url: null,
     video_poster_path: null,
+    duration_seconds: null,
     cta_label: 'Lihat Entitas',
     cta_url: '/entitas',
     secondary_cta_label: null,
@@ -201,6 +202,7 @@ export function makeMilestone(overrides: Partial<Milestone> = {}): Milestone {
   return {
     id: id(),
     year: 2016,
+    date_label: null,
     title: 'Grup berdiri',
     description: null,
     image_path: null,

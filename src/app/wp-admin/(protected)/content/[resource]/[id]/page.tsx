@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { BookOpen } from 'lucide-react';
 import { notFound, redirect } from 'next/navigation';
 import { requireProfile } from '@/lib/admin/auth';
 import { getResource } from '@/lib/admin/resources';
@@ -49,7 +51,21 @@ export default async function EditResourcePage({
 
   return (
     <div>
-      <PageHeader eyebrow={`Content / ${resource.title}`} title={`Edit ${resource.singular}`} />
+      <PageHeader
+        eyebrow={`Content / ${resource.title}`}
+        title={`Edit ${resource.singular}`}
+        action={
+          resourceSlug === 'entities' ? (
+            <Link
+              href={`/wp-admin/content/entities/${id}/story`}
+              className="inline-flex items-center gap-1.5 rounded-[10px] border border-line px-4 py-2 text-small font-medium text-ink hover:bg-stone"
+            >
+              <BookOpen className="h-4 w-4" aria-hidden="true" />
+              Kelola Cerita Perusahaan
+            </Link>
+          ) : undefined
+        }
+      />
 
       <div className="mt-8">
         <ResourceForm

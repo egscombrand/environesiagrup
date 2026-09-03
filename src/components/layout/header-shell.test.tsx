@@ -26,7 +26,7 @@ describe('HeaderShell', () => {
 
     const header = screen.getByText('nav').parentElement!;
     expect(header).not.toHaveAttribute('data-overlay');
-    expect(header.className).toContain('bg-paper/95');
+    expect(header.className).toContain('bg-canvas/95');
   });
 
   it('treats every locale root as a hero page', () => {

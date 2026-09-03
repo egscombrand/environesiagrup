@@ -15,6 +15,7 @@ import {
   Settings,
   Image as ImageIcon,
   UserCog,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import type { Role } from '@/lib/admin/roles';
@@ -43,6 +44,12 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Website',
     links: [
+      {
+        label: 'Environesia Group Experience',
+        href: '/wp-admin/site/group-experience',
+        icon: Sparkles,
+        roles: ['super_admin', 'editor'],
+      },
       { label: 'Pages', href: '/wp-admin/site/pages', icon: LayoutTemplate, roles: ['super_admin'] },
       { label: 'Navigation', href: '/wp-admin/site/navigation', icon: Waypoints, roles: ['super_admin'] },
       { label: 'Site Settings', href: '/wp-admin/site/settings', icon: Settings, roles: ['super_admin'] },

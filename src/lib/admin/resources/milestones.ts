@@ -26,14 +26,16 @@ export const milestonesResource: ResourceConfig = {
   ],
   fields: [
     { name: 'year', label: 'Tahun', type: 'number', required: true, section: 'Basic Information' },
+    { name: 'date_label', label: 'Tanggal (opsional, mis. "13 Januari 2018")', type: 'text', section: 'Basic Information' },
     { name: 'title', label: 'Judul', type: 'text', required: true, section: 'Basic Information' },
-    { name: 'description', label: 'Deskripsi', type: 'textarea', section: 'Details' },
+    { name: 'description', label: 'Cerita / Narasi', type: 'textarea', section: 'Details' },
     { name: 'image_path', label: 'Gambar', type: 'image', mediaFolder: 'general', section: 'Media' },
     { name: 'status', label: 'Status', type: 'select', options: STATUS_OPTIONS, required: true, section: 'Publishing' },
     { name: 'sort_order', label: 'Urutan', type: 'number', section: 'Publishing' },
   ],
   schema: z.object({
     year: z.coerce.number().int(),
+    date_label: z.string().optional().nullable(),
     title: z.string().min(1),
     description: z.string().optional().nullable(),
     image_path: z.string().optional().nullable(),

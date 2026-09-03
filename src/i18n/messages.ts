@@ -13,6 +13,7 @@ export type Messages = {
     menu: string;
     tutup: string;
     pilihBahasa: string;
+    beranda: string;
   };
   common: {
     pendingContent: string;
@@ -21,9 +22,53 @@ export type Messages = {
     selengkapnya: string;
   };
   beranda: {
-    entitasKami: string;
+    angkaKunciEyebrow: string;
+    ekosistemEyebrow: string;
+    ekosistemWelcomeHeading: string;
+    ekosistemOpeningStatement1: string;
+    ekosistemOpeningStatement2: string;
+    ekosistemOpeningCta: string;
+    ekosistemSkipLabel: string;
+    ekosistemDiscoveryIntro1: string;
+    ekosistemDiscoveryIntro2: string;
+    ekosistemExploreLabel: string;
+    ekosistemLihatProfil: string;
+    ekosistemBackToEcosystem: string;
+    ekosistemCloseDetail: string;
+    ekosistemPrevious: string;
+    ekosistemNext: string;
+    ekosistemScenePrevious: string;
+    ekosistemSceneNext: string;
+    ekosistemClosingHeading: string;
+    ekosistemClosingSubtext: string;
+    ekosistemClosingCta: string;
     pilarBisnis: string;
     jejakNegara: string;
+    negaraLabel: string;
+    proyekUnggulan: string;
+    proyekKosong: string;
+    milestonesEyebrow: string;
+    milestonesKosong: string;
+    milestonesJourneyEyebrow: string;
+    milestonesIntroFallback: string;
+    milestonesPrevious: string;
+    milestonesNext: string;
+    leadershipEyebrow: string;
+    leadershipKosong: string;
+    corporateInfoEyebrow: string;
+    corporateInfoKosong: string;
+    clientsEyebrow: string;
+    clientsKosong: string;
+    pesanPimpinanEyebrow: string;
+    pesanPimpinanKosong: string;
+    pesanPimpinanNamaMenyusul: string;
+    sustainabilityEyebrow: string;
+    sustainabilityEnvLabel: string;
+    sustainabilityEnvCopy: string;
+    sustainabilitySocialLabel: string;
+    sustainabilitySocialCopy: string;
+    sustainabilityGovLabel: string;
+    sustainabilityGovCopy: string;
     greenBusiness: string;
     pesanPimpinan: string;
     pesanCeoPending: string;
@@ -33,6 +78,9 @@ export type Messages = {
     ctaJudul: string;
     ctaDeskripsi: string;
     ctaTombol: string;
+    footerLinksTitle: string;
+    footerEntitasTitle: string;
+    footerContactTitle: string;
   };
   entitas: {
     eyebrow: string;
@@ -104,6 +152,7 @@ const id: Messages = {
     menu: 'Menu',
     tutup: 'Tutup',
     pilihBahasa: 'Pilih bahasa',
+    beranda: 'Kembali ke halaman utama',
   },
   common: {
     pendingContent: 'Konten halaman ini sedang disiapkan.',
@@ -112,18 +161,67 @@ const id: Messages = {
     selengkapnya: 'Selengkapnya',
   },
   beranda: {
-    entitasKami: 'Entitas Kami',
-    pilarBisnis: 'Pilar Bisnis',
-    jejakNegara: 'Jejak di 10 Negara',
+    angkaKunciEyebrow: 'Sekilas Angka',
+    ekosistemEyebrow: 'Mempersembahkan…',
+    ekosistemWelcomeHeading: 'ENVIROnesia Group',
+    ekosistemOpeningStatement1: 'Satu ecosystem.\nLima perusahaan.',
+    ekosistemOpeningStatement2:
+      'Keahlian yang berbeda.\nSatu tujuan: membangun solusi untuk bisnis, lingkungan, dan keberlanjutan.',
+    ekosistemOpeningCta: 'Lanjut',
+    ekosistemSkipLabel: 'Lewati',
+    ekosistemDiscoveryIntro1: 'Baik. Mari kita mulai.',
+    ekosistemDiscoveryIntro2: 'Dari mana Anda ingin memulai?',
+    ekosistemExploreLabel: 'Kenali {name}',
+    ekosistemLihatProfil: 'Lihat Profil {name}',
+    ekosistemBackToEcosystem: 'Kembali ke Ecosystem',
+    ekosistemCloseDetail: 'Tutup detail perusahaan',
+    ekosistemPrevious: 'Perusahaan Sebelumnya',
+    ekosistemNext: 'Perusahaan Selanjutnya',
+    ekosistemScenePrevious: 'Sebelumnya',
+    ekosistemSceneNext: 'Lanjut',
+    ekosistemClosingHeading: '{count} Perusahaan.\nKeahlian yang Berbeda.\nSatu Ecosystem.',
+    ekosistemClosingSubtext:
+      'Temukan bagaimana setiap bagian berkontribusi dalam perjalanan Environesia Group.',
+    ekosistemClosingCta: 'Jelajahi Kembali',
+    pilarBisnis: 'Kapabilitas',
+    jejakNegara: 'Jejak Operasional',
+    negaraLabel: 'Negara',
+    proyekUnggulan: 'Proyek Unggulan',
+    proyekKosong: 'Daftar proyek unggulan sedang disiapkan.',
+    milestonesEyebrow: 'Pencapaian & Tonggak Sejarah',
+    milestonesKosong: 'Tonggak sejarah grup sedang disusun.',
+    milestonesJourneyEyebrow: 'Perjalanan Kami',
+    milestonesIntroFallback: 'Dari sebuah langkah kecil menuju ecosystem yang terus berkembang.',
+    milestonesPrevious: 'Sebelumnya',
+    milestonesNext: 'Berikutnya',
+    leadershipEyebrow: 'Pimpinan',
+    leadershipKosong: 'Profil pimpinan sedang disiapkan.',
+    corporateInfoEyebrow: 'Informasi Korporat',
+    corporateInfoKosong: 'Dokumen legalitas dan akreditasi sedang disiapkan.',
+    clientsEyebrow: 'Klien & Mitra',
+    clientsKosong: 'Daftar klien dan mitra sedang disiapkan.',
+    pesanPimpinanEyebrow: 'Pesan Pimpinan',
+    pesanPimpinanKosong: 'Kutipan pesan pimpinan akan ditambahkan di sini.',
+    pesanPimpinanNamaMenyusul: 'Nama dan jabatan menyusul',
+    sustainabilityEyebrow: 'Keberlanjutan & Dampak',
+    sustainabilityEnvLabel: 'Lingkungan',
+    sustainabilityEnvCopy: 'Praktik pengelolaan lingkungan dan efisiensi sumber daya di seluruh lini operasi grup.',
+    sustainabilitySocialLabel: 'Sosial',
+    sustainabilitySocialCopy: 'Kontribusi terhadap masyarakat dan mitra kerja melalui pelatihan dan pemberdayaan.',
+    sustainabilityGovLabel: 'Tata Kelola',
+    sustainabilityGovCopy: 'Standar kepatuhan dan akuntabilitas yang diterapkan di setiap entitas grup.',
     greenBusiness: 'Green Business',
     pesanPimpinan: 'Pesan Pimpinan',
     pesanCeoPending: 'Kutipan pesan CEO menyusul.',
     manifestoPending: 'Manifesto Green Business akan segera hadir di sini.',
-    beritaJudul: 'Berita & Insight',
+    beritaJudul: 'Berita & Wawasan',
     beritaKosong: 'Belum ada berita terbaru.',
     ctaJudul: 'Mari berdiskusi tentang kebutuhan Anda',
     ctaDeskripsi: 'Hubungi tim kami untuk konsultasi, pengujian, pelatihan, atau sertifikasi.',
     ctaTombol: 'Hubungi Kami',
+    footerLinksTitle: 'Tautan Cepat',
+    footerEntitasTitle: 'Entitas Grup',
+    footerContactTitle: 'Kontak',
   },
   entitas: {
     eyebrow: 'Struktur Grup',
@@ -205,6 +303,7 @@ const en: Messages = {
     menu: 'Menu',
     tutup: 'Close',
     pilihBahasa: 'Choose language',
+    beranda: 'Back to homepage',
   },
   common: {
     pendingContent: 'This page is being prepared.',
@@ -213,19 +312,68 @@ const en: Messages = {
     selengkapnya: 'Explore further',
   },
   beranda: {
-    entitasKami: 'Our Entities',
-    pilarBisnis: 'Business Pillars',
-    jejakNegara: 'Presence in 10 Countries',
+    angkaKunciEyebrow: 'At a Glance',
+    ekosistemEyebrow: 'Presenting…',
+    ekosistemWelcomeHeading: 'ENVIROnesia Group',
+    ekosistemOpeningStatement1: 'One ecosystem.\nFive companies.',
+    ekosistemOpeningStatement2:
+      'Different expertise.\nOne purpose: building solutions for business, the environment, and sustainability.',
+    ekosistemOpeningCta: 'Continue',
+    ekosistemSkipLabel: 'Skip',
+    ekosistemDiscoveryIntro1: 'Good. Let’s get started.',
+    ekosistemDiscoveryIntro2: 'Where would you like to begin?',
+    ekosistemExploreLabel: 'Meet {name}',
+    ekosistemLihatProfil: 'View {name}’s Profile',
+    ekosistemBackToEcosystem: 'Return to Ecosystem',
+    ekosistemCloseDetail: 'Close company detail',
+    ekosistemPrevious: 'Previous Company',
+    ekosistemNext: 'Next Company',
+    ekosistemScenePrevious: 'Previous',
+    ekosistemSceneNext: 'Next',
+    ekosistemClosingHeading: '{count} Companies.\nDifferent Expertise.\nOne Ecosystem.',
+    ekosistemClosingSubtext:
+      'From environmental consulting and laboratory testing to competency development, professional certification, and technology-driven solutions.',
+    ekosistemClosingCta: 'Explore Again',
+    pilarBisnis: 'Capabilities',
+    jejakNegara: 'Operational Reach',
+    negaraLabel: 'Countries',
+    proyekUnggulan: 'Featured Projects',
+    proyekKosong: 'The featured project list is being prepared.',
+    milestonesEyebrow: 'Achievements & Milestones',
+    milestonesKosong: 'The group’s milestones are being compiled.',
+    milestonesJourneyEyebrow: 'Our Journey',
+    milestonesIntroFallback: 'From a small step into an ecosystem that keeps growing.',
+    milestonesPrevious: 'Previous',
+    milestonesNext: 'Next',
+    leadershipEyebrow: 'Leadership',
+    leadershipKosong: 'Leadership profiles are being prepared.',
+    corporateInfoEyebrow: 'Corporate Information',
+    corporateInfoKosong: 'Legal and accreditation documents are being prepared.',
+    clientsEyebrow: 'Clients & Partners',
+    clientsKosong: 'The client and partner list is being prepared.',
+    pesanPimpinanEyebrow: 'Leadership Message',
+    pesanPimpinanKosong: 'A message from our leadership will be added here.',
+    pesanPimpinanNamaMenyusul: 'Name and title to follow',
+    sustainabilityEyebrow: 'Sustainability & Impact',
+    sustainabilityEnvLabel: 'Environmental',
+    sustainabilityEnvCopy: 'Environmental management practices and resource efficiency across the group’s operations.',
+    sustainabilitySocialLabel: 'Social',
+    sustainabilitySocialCopy: 'Contribution to communities and partners through training and empowerment.',
+    sustainabilityGovLabel: 'Governance',
+    sustainabilityGovCopy: 'Compliance and accountability standards applied across every group entity.',
     greenBusiness: 'Green Business',
     pesanPimpinan: 'Leadership Message',
     pesanCeoPending: "The CEO's message is coming soon.",
     manifestoPending: 'The Green Business manifesto will appear here soon.',
-    beritaJudul: 'News & Insight',
+    beritaJudul: 'News & Perspectives',
     beritaKosong: 'No news yet.',
     ctaJudul: "Let's discuss what you need",
     ctaDeskripsi:
       'Contact our team for consulting, testing, training, or certification.',
     ctaTombol: 'Contact Us',
+    footerLinksTitle: 'Quick Links',
+    footerEntitasTitle: 'Group Entities',
+    footerContactTitle: 'Contact',
   },
   entitas: {
     eyebrow: 'Group Structure',
@@ -307,6 +455,7 @@ const zh: Messages = {
     menu: '菜单',
     tutup: '关闭',
     pilihBahasa: '选择语言',
+    beranda: '返回首页',
   },
   common: {
     pendingContent: '本页内容正在筹备中。',
@@ -315,9 +464,53 @@ const zh: Messages = {
     selengkapnya: '了解更多',
   },
   beranda: {
-    entitasKami: '旗下企业',
-    pilarBisnis: '业务支柱',
-    jejakNegara: '业务遍及十国',
+    angkaKunciEyebrow: '数据概览',
+    ekosistemEyebrow: '隆重呈现…',
+    ekosistemWelcomeHeading: 'ENVIROnesia Group',
+    ekosistemOpeningStatement1: '一个生态系统。\n五家企业。',
+    ekosistemOpeningStatement2: '不同的专业领域。\n一个目标：为商业、环境与可持续发展构建解决方案。',
+    ekosistemOpeningCta: '继续',
+    ekosistemSkipLabel: '跳过',
+    ekosistemDiscoveryIntro1: '好的，让我们开始吧。',
+    ekosistemDiscoveryIntro2: '您想从哪里开始？',
+    ekosistemExploreLabel: '认识{name}',
+    ekosistemLihatProfil: '查看{name}简介',
+    ekosistemBackToEcosystem: '返回生态系统',
+    ekosistemCloseDetail: '关闭企业详情',
+    ekosistemPrevious: '上一家企业',
+    ekosistemNext: '下一家企业',
+    ekosistemScenePrevious: '上一步',
+    ekosistemSceneNext: '继续',
+    ekosistemClosingHeading: '{count}家企业。\n各具专长。\n一个生态系统。',
+    ekosistemClosingSubtext: '探索每一部分如何在 Environesia Group 的旅程中发挥作用。',
+    ekosistemClosingCta: '再次探索',
+    pilarBisnis: '核心能力',
+    jejakNegara: '业务足迹',
+    negaraLabel: '国家',
+    proyekUnggulan: '重点项目',
+    proyekKosong: '重点项目列表正在筹备中。',
+    milestonesEyebrow: '发展历程与里程碑',
+    milestonesKosong: '集团发展历程正在整理中。',
+    milestonesJourneyEyebrow: '我们的旅程',
+    milestonesIntroFallback: '从微小的第一步,到不断成长的生态系统。',
+    milestonesPrevious: '上一个',
+    milestonesNext: '下一个',
+    leadershipEyebrow: '领导团队',
+    leadershipKosong: '领导团队简介正在筹备中。',
+    corporateInfoEyebrow: '企业信息',
+    corporateInfoKosong: '法律与认证文件正在筹备中。',
+    clientsEyebrow: '客户与合作伙伴',
+    clientsKosong: '客户与合作伙伴名单正在筹备中。',
+    pesanPimpinanEyebrow: '领导致辞',
+    pesanPimpinanKosong: '领导致辞内容即将在此发布。',
+    pesanPimpinanNamaMenyusul: '姓名与职位即将公布',
+    sustainabilityEyebrow: '可持续发展与影响力',
+    sustainabilityEnvLabel: '环境',
+    sustainabilityEnvCopy: '集团各业务环节的环境管理实践与资源效率提升。',
+    sustainabilitySocialLabel: '社会',
+    sustainabilitySocialCopy: '通过培训与赋能为社区和合作伙伴创造价值。',
+    sustainabilityGovLabel: '治理',
+    sustainabilityGovCopy: '集团各企业共同遵循的合规与问责标准。',
     greenBusiness: '绿色商业',
     pesanPimpinan: '领导致辞',
     pesanCeoPending: '首席执行官致辞即将发布。',
@@ -327,6 +520,9 @@ const zh: Messages = {
     ctaJudul: '欢迎与我们探讨您的需求',
     ctaDeskripsi: '如需咨询、检测、培训或认证服务，请联系我们的团队。',
     ctaTombol: '联系我们',
+    footerLinksTitle: '快速链接',
+    footerEntitasTitle: '集团企业',
+    footerContactTitle: '联系方式',
   },
   entitas: {
     eyebrow: '集团架构',

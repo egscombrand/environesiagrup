@@ -34,7 +34,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
     <header
       data-overlay={transparent ? '' : undefined}
       className={`group/hdr fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-out motion-reduce:transition-none ${
-        transparent ? 'border-b border-transparent bg-transparent' : 'border-b border-line bg-paper/95 backdrop-blur'
+        transparent ? 'border-b border-transparent bg-transparent' : 'border-b border-sage-mist bg-canvas/95 backdrop-blur'
       }`}
     >
       {children}

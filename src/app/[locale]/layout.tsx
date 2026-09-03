@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { fontDisplay, fontBody, fontMono } from '@/lib/fonts';
+import { fontDisplay, fontBody, fontMono, fontLandingDisplay, fontLandingBody } from '@/lib/fonts';
 import { SITE_NAME, ogLocale } from '@/lib/metadata';
 import { BRAND_TAGLINE } from '@/lib/site';
 import { Header } from '@/components/layout/header';
@@ -57,7 +57,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}
+      className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontLandingDisplay.variable} ${fontLandingBody.variable}`}
     >
       <body className="font-body antialiased">
         <OrganizationJsonLd locale={locale} />
