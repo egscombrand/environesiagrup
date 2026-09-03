@@ -241,7 +241,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 type="button"
                 onClick={goPrev}
                 aria-label="Previous slide"
-                className="shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
+                className="tap-target shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
               >
                 <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -255,7 +255,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       key={slide.id}
                       type="button"
                       onClick={() => goTo(i)}
-                      className={`flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
+                      className={`tap-target flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
                         i === index ? 'text-canvas' : 'text-canvas/40 hover:text-canvas/70'
                       }`}
                     >
@@ -293,7 +293,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 type="button"
                 onClick={goNext}
                 aria-label="Next slide"
-                className="shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
+                className="tap-target shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
               >
                 <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>

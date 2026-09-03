@@ -28,8 +28,8 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
           aria-current={candidate === locale ? 'true' : undefined}
           className={
             candidate === locale
-              ? 'font-mono text-label uppercase text-forest transition-colors group-data-[overlay]/hdr:text-paper motion-reduce:transition-none'
-              : 'font-mono text-label uppercase text-slate transition-colors hover:text-forest group-data-[overlay]/hdr:text-paper/60 group-data-[overlay]/hdr:hover:text-paper motion-reduce:transition-none'
+              ? 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1 font-mono text-label uppercase text-forest transition-colors group-data-[overlay]/hdr:text-paper motion-reduce:transition-none'
+              : 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1 font-mono text-label uppercase text-slate transition-colors hover:text-forest group-data-[overlay]/hdr:text-paper/60 group-data-[overlay]/hdr:hover:text-paper motion-reduce:transition-none'
           }
         >
           {LABELS[candidate] ?? candidate}
