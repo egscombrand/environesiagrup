@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { HeroSlide } from '@/lib/cms/hero';
 
@@ -195,6 +196,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         const isActive = i === index;
         const src = slideSrc(slide, useMobileSrc);
         const showVideo = slide.type === 'video' && !(useMobileSrc && saveData);
+        const imageSrc = slide.type === 'video' ? slide.videoPosterUrl : src;
         const kenBurnsClass = !reducedMotion && isActive ? 'animate-[kenburns_6s_ease-out_forwards]' : '';
 
         return (
@@ -219,12 +221,24 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 }}
               />
             ) : (
-              <img
-                src={slide.type === 'video' ? slide.videoPosterUrl : src}
-                alt=""
-                fetchPriority={isActive ? 'high' : 'auto'}
-                className={`h-full w-full object-cover ${kenBurnsClass}`}
-              />
+              // next/image, not a raw <img>: these come straight from
+              // Supabase Storage at whatever size the editor uploaded — the
+              // two published slides are 12.9MB and 13.0MB. A raw tag ships
+              // every one of those bytes. Routed through the optimiser they
+              // are resized to the viewport and re-encoded to AVIF/WebP,
+              // which is the difference between ~26MB and a few hundred KB
+              // on the one image the visitor sees first.
+              imageSrc ? (
+                <Image
+                  src={imageSrc}
+                  alt=""
+                  fill
+                  sizes="100vw"
+                  priority={isActive}
+                  quality={82}
+                  className={`object-cover ${kenBurnsClass}`}
+                />
+              ) : null
             )}
             <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(11,43,34,0.5)] to-transparent" />
           </div>
