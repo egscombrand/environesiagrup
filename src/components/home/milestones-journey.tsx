@@ -99,29 +99,68 @@ export function MilestonesJourney({
           </div>
         </div>
 
-        {/* Active story */}
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={active.id}
-            initial={shouldReduceMotion ? false : { opacity: 0, x: direction > 0 ? 28 : -28 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className={`mt-8 grid gap-8 ${active.imageUrl ? 'lg:grid-cols-2 lg:items-center' : ''}`}
-          >
-            {active.imageUrl ? (
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-sage-mist/40">
-                <Image
-                  src={active.imageUrl}
-                  alt={active.title}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                  priority={activeIndex === 0}
-                />
-              </div>
-            ) : null}
-            <div className="flex flex-col justify-center">
+        {/* Active story.
+
+            The panel container is deliberately NOT animated as a whole. With
+            AnimatePresence's default sync mode the outgoing and incoming
+            panels both sit in normal flow, so the section's height doubles
+            mid-transition and everything below it lurches — the single thing
+            that made this read as cheap rather than considered.
+
+            Instead each part transitions inside a box whose size never
+            changes: the image crossfades inside its fixed aspect-ratio frame
+            (absolutely positioned, so zero layout cost), and the text swaps
+            with mode="wait" against a height the image already governs on
+            desktop. */}
+        <div className={`mt-8 grid gap-8 ${active.imageUrl ? 'lg:grid-cols-2 lg:items-center' : ''}`}>
+          {active.imageUrl ? (
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-sage-mist/40">
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={active.id}
+                  className="absolute inset-0"
+                  initial={shouldReduceMotion ? false : { opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    opacity: { duration: shouldReduceMotion ? 0 : 0.6, ease: [0.16, 1, 0.3, 1] },
+                    // The scale settles rather than zooms: it lands a beat
+                    // after the fade, which is what reads as weight.
+                    scale: { duration: shouldReduceMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] },
+                  }}
+                >
+                  <Image
+                    src={active.imageUrl}
+                    alt={active.title}
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
+                    priority={activeIndex === 0}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ) : null}
+
+          {/* popLayout, not "wait": waiting for the outgoing text to finish
+              leaving empties the column for 200ms, which on mobile — where no
+              image governs the height — collapses the section and lurches the
+              page just as badly as the double-height it was meant to fix.
+              popLayout lifts the outgoing copy out of flow so the incoming
+              copy defines the height immediately. */}
+          <AnimatePresence initial={false} mode="popLayout">
+            <motion.div
+              key={active.id}
+              className="flex flex-col justify-center"
+              initial={shouldReduceMotion ? false : { opacity: 0, x: direction > 0 ? 24 : -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              // Exit runs at roughly 40% of the entrance. A symmetrical exit
+              // makes a carousel feel sluggish to click through; leaving
+              // quickly and arriving slowly is what feels responsive AND
+              // unhurried at the same time.
+              exit={{ opacity: 0, x: direction > 0 ? -16 : 16, transition: { duration: shouldReduceMotion ? 0 : 0.2, ease: 'easeIn' } }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1], delay: shouldReduceMotion ? 0 : 0.08 }}
+            >
               <p className="font-mono text-label uppercase tracking-[0.08em] text-pine-ink/50">
                 {active.date_label || active.year}
               </p>
@@ -131,9 +170,9 @@ export function MilestonesJourney({
                   {active.description}
                 </p>
               ) : null}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Navigation — user-driven, no autoplay */}
         {total > 1 ? (
@@ -142,7 +181,7 @@ export function MilestonesJourney({
               type="button"
               onClick={() => goTo(activeIndex - 1)}
               disabled={activeIndex === 0}
-              className="text-small font-medium text-pine-ink/70 hover:text-pine-ink disabled:pointer-events-none disabled:opacity-30"
+              className="inline-flex min-h-[44px] items-center text-small font-medium text-pine-ink/70 transition-colors duration-200 hover:text-pine-ink disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none"
             >
               ← {previousLabel}
             </button>
@@ -153,7 +192,7 @@ export function MilestonesJourney({
               type="button"
               onClick={() => goTo(activeIndex + 1)}
               disabled={activeIndex === total - 1}
-              className="text-small font-medium text-emerald-pulse disabled:pointer-events-none disabled:opacity-30"
+              className="inline-flex min-h-[44px] items-center text-small font-medium text-emerald-pulse transition-colors duration-200 hover:text-forest disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none"
             >
               {nextLabel} →
             </button>
