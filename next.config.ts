@@ -24,8 +24,9 @@ const nextConfig: NextConfig = {
   images: {
     // Default (75) covers everything else; 100 is used for the entity brand
     // rail so those logos are served at full source fidelity, not softened
-    // by the default JPEG-ish compression.
-    qualities: [75, 100],
+    // by the default JPEG-ish compression. 82 is the hero slider's quality:
+    // enough to keep the large photos sharp while still cutting bytes.
+    qualities: [75, 82, 100],
 
     remotePatterns: [
       ...(supabaseHostname
