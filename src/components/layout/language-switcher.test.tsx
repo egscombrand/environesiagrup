@@ -55,9 +55,10 @@ describe('LanguageSwitcher', () => {
 
     // 12px text with no padding gave a ~24x17px tap area — well under the
     // 44x44 minimum, and these sit in the mobile menu too
+    // The pill keeps its visual size; tap-target extends the clickable area to
+    // 44x44 with a pseudo-element (see .tap-target in globals.css).
     for (const link of screen.getAllByRole('link')) {
-      expect(link.className).toContain('min-h-[44px]');
-      expect(link.className).toContain('min-w-[44px]');
+      expect(link.className).toContain('tap-target');
     }
   });
 });
