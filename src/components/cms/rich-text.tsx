@@ -28,8 +28,18 @@ const components: Components = {
     <blockquote className="mt-4 border-l-2 border-line pl-4 text-body text-slate italic">{children}</blockquote>
   ),
   img: ({ src, alt }) => (
+    // Editor-inserted images carry no dimensions, so next/image is out — but
+    // they always sit inside body copy, below the fold, and are the kind of
+    // full-size upload that quietly costs a reader several MB. Lazy loading
+    // and async decoding keep them off the critical path.
     // eslint-disable-next-line @next/next/no-img-element -- body copy images are arbitrary remote/storage URLs, not known at build time
-    <img src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} className="mt-4 rounded-[14px]" />
+    <img
+      src={typeof src === 'string' ? src : undefined}
+      alt={alt ?? ''}
+      loading="lazy"
+      decoding="async"
+      className="mt-4 rounded-[14px]"
+    />
   ),
 };
 

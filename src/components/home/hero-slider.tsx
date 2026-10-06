@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { HeroSlide } from '@/lib/cms/hero';
 
@@ -195,6 +196,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         const isActive = i === index;
         const src = slideSrc(slide, useMobileSrc);
         const showVideo = slide.type === 'video' && !(useMobileSrc && saveData);
+        const imageSrc = slide.type === 'video' ? slide.videoPosterUrl : src;
         const kenBurnsClass = !reducedMotion && isActive ? 'animate-[kenburns_6s_ease-out_forwards]' : '';
 
         return (
@@ -219,12 +221,24 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 }}
               />
             ) : (
-              <img
-                src={slide.type === 'video' ? slide.videoPosterUrl : src}
-                alt=""
-                fetchPriority={isActive ? 'high' : 'auto'}
-                className={`h-full w-full object-cover ${kenBurnsClass}`}
-              />
+              // next/image, not a raw <img>: these come straight from
+              // Supabase Storage at whatever size the editor uploaded — the
+              // two published slides are 12.9MB and 13.0MB. A raw tag ships
+              // every one of those bytes. Routed through the optimiser they
+              // are resized to the viewport and re-encoded to AVIF/WebP,
+              // which is the difference between ~26MB and a few hundred KB
+              // on the one image the visitor sees first.
+              imageSrc ? (
+                <Image
+                  src={imageSrc}
+                  alt=""
+                  fill
+                  sizes="100vw"
+                  priority={isActive}
+                  quality={82}
+                  className={`object-cover ${kenBurnsClass}`}
+                />
+              ) : null
             )}
             <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(11,43,34,0.5)] to-transparent" />
           </div>
@@ -241,7 +255,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 type="button"
                 onClick={goPrev}
                 aria-label="Previous slide"
-                className="shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
+                className="tap-target shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
               >
                 <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -255,7 +269,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       key={slide.id}
                       type="button"
                       onClick={() => goTo(i)}
-                      className={`flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
+                      className={`tap-target flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
                         i === index ? 'text-canvas' : 'text-canvas/40 hover:text-canvas/70'
                       }`}
                     >
@@ -293,7 +307,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 type="button"
                 onClick={goNext}
                 aria-label="Next slide"
-                className="shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
+                className="tap-target shrink-0 rounded-full p-1 text-canvas/70 transition-colors hover:text-canvas motion-reduce:transition-none"
               >
                 <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>

@@ -49,4 +49,15 @@ describe('LanguageSwitcher', () => {
     render(<LanguageSwitcher locale="id" />);
     expect(screen.getByRole('link', { name: 'EN' })).toHaveAttribute('href', '/en');
   });
+
+  it('gives each locale link a 44px touch target', () => {
+    render(<LanguageSwitcher locale="id" />);
+
+    // 12px text with no padding gave a ~24x17px tap area — well under the
+    // 44x44 minimum, and these sit in the mobile menu too
+    for (const link of screen.getAllByRole('link')) {
+      expect(link.className).toContain('min-h-[44px]');
+      expect(link.className).toContain('min-w-[44px]');
+    }
+  });
 });

@@ -80,6 +80,14 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+/* Over the transparent header the ring sits on a dark hero photo, where a
+   dark green outline is effectively invisible — a keyboard user would lose
+   track of where they are. Invert it there. */
+[data-overlay] a:focus-visible,
+[data-overlay] button:focus-visible {
+  outline-color: var(--color-paper);
+}
+
 @keyframes kenburns {
   from {
     transform: scale(1.08);
@@ -224,4 +232,23 @@ button:focus-visible {
   .ecosystem-orbit-group:hover .ecosystem-orbit-counter {
     animation-play-state: paused;
   }
+}
+
+/* Extends a control's touch area to the 44x44 minimum without changing what
+   it looks like or how it lays out — the hero's slide controls are
+   deliberately small, so growing them visually would break that design. The
+   pseudo-element is centred on the control and captures the taps. */
+.tap-target {
+  position: relative;
+}
+
+.tap-target::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  min-width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
 }

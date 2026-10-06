@@ -94,7 +94,7 @@ export function SectionRow({
               className="peer sr-only"
             />
             <div className="h-5 w-9 rounded-full bg-line peer-checked:bg-success" />
-            <div className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-paper transition-transform peer-checked:translate-x-4" />
+            <div className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-paper transition-transform motion-reduce:transition-none peer-checked:translate-x-4" />
           </label>
           <p className="font-display text-h3 text-ink">{label}</p>
         </div>

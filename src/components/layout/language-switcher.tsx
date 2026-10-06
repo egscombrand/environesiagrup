@@ -31,8 +31,8 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
           aria-current={candidate === locale ? 'true' : undefined}
           className={
             candidate === locale
-              ? 'rounded-full bg-emerald-pulse px-3 py-1 font-mono text-label uppercase text-white transition-colors motion-reduce:transition-none'
-              : 'rounded-full px-3 py-1 font-mono text-label uppercase text-pine-ink/60 transition-colors hover:text-pine-ink group-data-[overlay]/hdr:text-canvas/70 group-data-[overlay]/hdr:hover:text-canvas group-data-[overlay]/hdr:[text-shadow:0_1px_2px_rgba(0,0,0,0.85),0_1px_6px_rgba(0,0,0,0.45)] motion-reduce:transition-none'
+              ? 'tap-target rounded-full bg-emerald-pulse px-3 py-1 font-mono text-label uppercase text-white transition-colors motion-reduce:transition-none'
+              : 'tap-target rounded-full px-3 py-1 font-mono text-label uppercase text-pine-ink/60 transition-colors hover:text-pine-ink group-data-[overlay]/hdr:text-canvas/70 group-data-[overlay]/hdr:hover:text-canvas group-data-[overlay]/hdr:[text-shadow:0_1px_2px_rgba(0,0,0,0.85),0_1px_6px_rgba(0,0,0,0.45)] motion-reduce:transition-none'
           }
         >
           {LABELS[candidate] ?? candidate}
