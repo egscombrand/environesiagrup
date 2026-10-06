@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronUp, ChevronDown, PenLine } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronUp, ChevronDown, PenLine, ArrowRight } from 'lucide-react';
 import {
   moveSectionAction,
   toggleSectionAction,
@@ -13,10 +14,14 @@ import { useToast } from './toast-provider';
 const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero (Executive Snapshot)',
   stats: 'Statistics (retired — folded into Hero)',
-  entities: 'Our Ecosystem',
+  entities: 'Capabilities Grid ("Satu Grup, Beragam Kapabilitas")',
+  group_ecosystem: 'Group Ecosystem Banner ("Beragam Keahlian. Satu Ekosistem.")',
+  business_projects: 'Business Projects Deck ("Lini Bisnis dan Proyek Berjalan")',
+  standards: 'Standards Section ("Standar yang Kami Pegang dan Jalankan")',
+  trusted_partners: 'Trusted Partners Section ("Dipercaya oleh Berbagai Mitra")',
   pillars: 'Our Capabilities',
   projects_showcase: 'Featured Projects',
-  milestones: 'Achievements & Milestones',
+  milestones: 'Our Journey (Milestones)',
   leadership: 'Leadership',
   map: 'Country / Reach Map (retired)',
   leadership_message: 'Leadership Message (retired — see Leadership)',
@@ -26,6 +31,24 @@ const SECTION_LABELS: Record<string, string> = {
   green_business: 'Green Business / CEO Split (retired)',
   news: 'News & Perspectives',
   cta: 'CTA Kontak',
+};
+
+// Where to go to actually change what's inside a section — shown as a
+// direct "Manage Content" link on its row so there's no guessing which
+// content page corresponds to which part of the homepage. Sections with no
+// entry here (sustainability, cta, and the retired ones) have no dedicated
+// CMS list yet — only their title/subtitle can be overridden right here.
+const SECTION_CONTENT_LINKS: Record<string, string> = {
+  hero: '/wp-admin/content/hero',
+  stats: '/wp-admin/content/stats',
+  entities: '/wp-admin/content/entities',
+  business_projects: '/wp-admin/content/projects',
+  pillars: '/wp-admin/content/pillars',
+  projects_showcase: '/wp-admin/content/projects',
+  milestones: '/wp-admin/content/milestones',
+  leadership: '/wp-admin/content/leadership',
+  documents: '/wp-admin/content/documents',
+  news: '/wp-admin/content/posts',
 };
 
 export function SectionRow({
@@ -50,6 +73,7 @@ export function SectionRow({
   const router = useRouter();
   const toast = useToast();
   const label = SECTION_LABELS[section.section_key] ?? section.section_key;
+  const contentHref = SECTION_CONTENT_LINKS[section.section_key];
 
   return (
     <div className="rounded-[14px] border border-line bg-paper">
@@ -75,6 +99,15 @@ export function SectionRow({
           <p className="font-display text-h3 text-ink">{label}</p>
         </div>
         <div className="flex items-center gap-1">
+          {contentHref ? (
+            <Link
+              href={contentHref}
+              className="mr-1 inline-flex shrink-0 items-center gap-1 rounded-[8px] border border-line px-2.5 py-1.5 text-small font-medium text-ink hover:bg-stone"
+            >
+              Manage Content
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          ) : null}
           <button
             type="button"
             disabled={pending || isFirst}

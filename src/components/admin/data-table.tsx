@@ -62,6 +62,7 @@ export function DataTable({
   singular = 'item',
   searchPlaceholder = 'Search…',
   hasStatusFilter = true,
+  filters = [],
 }: {
   columns: ColumnConfig[];
   rows: TableRow[];
@@ -69,9 +70,12 @@ export function DataTable({
   singular?: string;
   searchPlaceholder?: string;
   hasStatusFilter?: boolean;
+  /** Extra dropdown filters beyond search + status, e.g. Sektor/Perusahaan. */
+  filters?: { key: string; label: string; options: { value: string; label: string }[] }[];
 }) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<(typeof STATUS_FILTERS)[number]>('all');
+  const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const [sort, setSort] = useState<{ key: string; dir: 'asc' | 'desc' } | null>(null);
   const [page, setPage] = useState(0);
 
@@ -85,6 +89,12 @@ export function DataTable({
     if (statusFilter !== 'all') {
       result = result.filter((row) => row.values.status === statusFilter);
     }
+    for (const f of filters) {
+      const selected = filterValues[f.key];
+      if (selected && selected !== 'all') {
+        result = result.filter((row) => row.values[f.key] === selected);
+      }
+    }
     if (sort) {
       result = [...result].sort((a, b) => {
         const av = a.values[sort.key];
@@ -95,7 +105,7 @@ export function DataTable({
     }
 
     return result;
-  }, [rows, search, statusFilter, sort, titleField]);
+  }, [rows, search, statusFilter, filterValues, filters, sort, titleField]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageRows = filtered.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
@@ -152,6 +162,25 @@ export function DataTable({
             ))}
           </select>
         ) : null}
+
+        {filters.map((f) => (
+          <select
+            key={f.key}
+            value={filterValues[f.key] ?? 'all'}
+            onChange={(e) => {
+              setFilterValues((prev) => ({ ...prev, [f.key]: e.target.value }));
+              setPage(0);
+            }}
+            className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          >
+            <option value="all">{f.label}</option>
+            {f.options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        ))}
       </div>
 
       {filtered.length === 0 ? (

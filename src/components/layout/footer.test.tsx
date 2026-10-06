@@ -1,22 +1,51 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { makeNavigationNode, makeEntity } from '@/lib/cms/fixtures';
+import { makeNavigationNode } from '@/lib/cms/fixtures';
 
-const FOOTER_LABELS = ['Entitas', 'Proyek', 'Berita', 'Karier', 'Unduhan', 'Kontak', 'Kebijakan Privasi'];
+function makeFooterTree() {
+  return [
+    makeNavigationNode({
+      label: 'Tentang Kami',
+      url: '/tentang-kami',
+      sort_order: 0,
+      children: [
+        makeNavigationNode({ label: 'Sejarah', url: '/tentang-kami/sejarah', sort_order: 0 }),
+        makeNavigationNode({ label: 'Legalitas dan Akreditasi', url: '/tentang-kami/legalitas', sort_order: 1 }),
+      ],
+    }),
+    makeNavigationNode({
+      label: 'Bisnis & Ekosistem',
+      url: '/bisnis-layanan',
+      sort_order: 1,
+      children: [
+        makeNavigationNode({ label: 'Greenlab Indonesia', url: '/bisnis-layanan/greenlab', sort_order: 0 }),
+      ],
+    }),
+    makeNavigationNode({
+      label: 'Proyek & Insight',
+      label_zh: '项目与洞察',
+      url: '/proyek-insight',
+      sort_order: 2,
+      children: [
+        makeNavigationNode({ label: 'Klien & Mitra', url: '/proyek-insight/klien-mitra', sort_order: 0 }),
+      ],
+    }),
+    // A 4th group with children, deliberately not shown — the footer only
+    // ever renders 3 grouped columns, matching the approved reference.
+    makeNavigationNode({
+      label: 'Tata Kelola & Keberlanjutan',
+      url: '/tata-kelola-keberlanjutan',
+      sort_order: 3,
+      children: [makeNavigationNode({ label: 'Kode Etik', url: '/tata-kelola-keberlanjutan/kode-etik', sort_order: 0 })],
+    }),
+    // A root item with no children — must never become an empty column.
+    makeNavigationNode({ label: 'Karier', url: '/karier', sort_order: 4, children: [] }),
+  ];
+}
 
 vi.mock('@/lib/cms/navigation', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/cms/navigation')>()),
-  getPublishedNavigation: vi.fn().mockResolvedValue(
-    FOOTER_LABELS.map((label, i) =>
-      makeNavigationNode({
-        label,
-        label_zh: label === 'Entitas' ? '旗下企业' : null,
-        url: `/${label.toLowerCase().replace(/ /g, '-')}`,
-        menu: 'footer',
-        sort_order: i,
-      })
-    )
-  ),
+  getPublishedNavigation: vi.fn().mockResolvedValue(makeFooterTree()),
 }));
 
 vi.mock('@/lib/cms/settings', () => ({
@@ -25,25 +54,11 @@ vi.mock('@/lib/cms/settings', () => ({
     site_name: 'Environesia Company Group',
     logoUrl: undefined,
     footer_copyright: null,
-    address:
-      'Grha Environesia (Lantai 2)\nJl. Jati Mataram No. 284B, Karangjati\nSinduadi, Mlati, Sleman\nDaerah Istimewa Yogyakarta 55284',
-    email: 'halo@environesia.co.id',
-    phone: '+62 274 000000',
+    address: 'Grha Environesia\nJl. Jati Mataram No. 284B, Karangjati\nSinduadi, Mlati, Sleman\nDaerah Istimewa Yogyakarta 55284',
+    email: 'info@environesia.co.id',
+    phone: '0822 6000 6030',
     whatsapp: null,
-    social_instagram: null,
-    social_linkedin: null,
-    social_facebook: null,
-    social_youtube: null,
-    social_tiktok: null,
-    social_twitter: null,
   }),
-}));
-
-vi.mock('@/lib/cms/entities', () => ({
-  getPublishedEntities: vi.fn().mockResolvedValue([
-    makeEntity({ name: 'Environesia', slug: 'environesia', sort_order: 1 }),
-    makeEntity({ name: 'GreenLab', slug: 'greenlab', sort_order: 2 }),
-  ]),
 }));
 
 const { Footer } = await import('./footer');
@@ -54,51 +69,54 @@ describe('Footer', () => {
     expect(screen.getByRole('img', { name: 'Environesia Company Group' })).toBeInTheDocument();
   });
 
-  it('shows the brand tagline beneath the logo', async () => {
+  it('does not show the brand tagline beneath the logo', async () => {
     render(await Footer({ locale: 'id' }));
-    expect(screen.getByText(/Integrated Green Ecosystem/)).toBeInTheDocument();
+    expect(screen.queryByText(/Integrated Green Ecosystem/)).not.toBeInTheDocument();
   });
 
-  it('renders the head office address', async () => {
+  it('renders the head office address with the first line emphasized', async () => {
     render(await Footer({ locale: 'id' }));
+    expect(screen.getByText('Grha Environesia')).toBeInTheDocument();
     expect(screen.getByText(/Jl\. Jati Mataram No\. 284B/)).toBeInTheDocument();
     expect(screen.getByText(/55284/)).toBeInTheDocument();
   });
 
-  it('renders locale-prefixed footer links', async () => {
-    render(await Footer({ locale: 'en' }));
-    expect(screen.getByRole('link', { name: 'Kontak' })).toHaveAttribute('href', '/en/kontak');
-  });
-
-  it('renders every footer link', async () => {
+  it('renders phone and email in the first column, not a separate Contact column', async () => {
     render(await Footer({ locale: 'id' }));
-    const nav = screen.getByRole('navigation', { name: 'Navigasi footer' });
-    expect(nav.querySelectorAll('a')).toHaveLength(7);
+    expect(screen.getByRole('link', { name: /info@environesia\.co\.id/ })).toHaveAttribute(
+      'href',
+      'mailto:info@environesia.co.id'
+    );
+    expect(screen.getByRole('link', { name: /0822 6000 6030/ })).toHaveAttribute('href', 'tel:082260006030');
   });
 
-  it('renders the current year in the copyright line', async () => {
+  it('renders exactly 3 grouped link columns, each headed by its real parent nav item', async () => {
+    render(await Footer({ locale: 'id' }));
+
+    expect(screen.getByRole('link', { name: 'Tentang Kami' })).toHaveAttribute('href', '/id/tentang-kami');
+    expect(screen.getByRole('link', { name: 'Sejarah' })).toHaveAttribute('href', '/id/tentang-kami/sejarah');
+    expect(screen.getByRole('link', { name: 'Bisnis & Ekosistem' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Greenlab Indonesia' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Proyek & Insight' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Klien & Mitra' })).toBeInTheDocument();
+
+    // A 4th real group with children exists in the fixture but must not render a 4th column.
+    expect(screen.queryByRole('link', { name: 'Tata Kelola & Keberlanjutan' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Kode Etik' })).not.toBeInTheDocument();
+    // A childless root item must never become an empty column.
+    expect(screen.queryByRole('link', { name: 'Karier' })).not.toBeInTheDocument();
+  });
+
+  it('renders a translated column label on zh, and falls back to Indonesian when untranslated', async () => {
+    render(await Footer({ locale: 'zh' }));
+    expect(screen.getByRole('link', { name: '项目与洞察' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Greenlab Indonesia' })).toBeInTheDocument();
+  });
+
+  it('renders the current year and a real privacy-policy link in the bottom bar', async () => {
     render(await Footer({ locale: 'id' }));
     const year = new Date().getFullYear().toString();
     expect(screen.getByText(new RegExp(year))).toBeInTheDocument();
-  });
-
-  it('renders a translated label on zh, and falls back to Indonesian when untranslated', async () => {
-    render(await Footer({ locale: 'zh' }));
-    expect(screen.getByRole('link', { name: '旗下企业' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Karier' })).toBeInTheDocument();
-  });
-
-  it('renders a Group Entities column linking to each entity detail page', async () => {
-    render(await Footer({ locale: 'id' }));
-    expect(screen.getByRole('link', { name: 'GreenLab' })).toHaveAttribute('href', '/id/entitas/greenlab');
-  });
-
-  it('renders a Contact column with email and phone', async () => {
-    render(await Footer({ locale: 'id' }));
-    expect(screen.getByRole('link', { name: 'halo@environesia.co.id' })).toHaveAttribute(
-      'href',
-      'mailto:halo@environesia.co.id'
-    );
-    expect(screen.getByText('+62 274 000000')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Kebijakan Privasi' })).toHaveAttribute('href', '/id/kebijakan-privasi');
   });
 });

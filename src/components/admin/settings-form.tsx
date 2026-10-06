@@ -86,61 +86,13 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         />
       </Section>
 
-      <Section title="Company Group Experience" id="company-group-experience">
+      <Section title="Capabilities Grid (Section 02)" id="capabilities-grid">
         <p className="text-small text-slate sm:col-span-2">
-          The opening scene plays as a short auto-paced sequence: the intro line appears alone first, then the
-          heading and each statement line cascade in one at a time, and the CTA appears only once that&apos;s
-          finished. For the two statement fields, each line of text becomes its own beat in that sequence.
+          Shown as the heading&apos;s supporting line, next to the capability cards. Each card&apos;s own logo, title,
+          and description are edited per entity under Content → Entities.
         </p>
-        <TextField name="ecosystem_eyebrow" label="Eyebrow" defaultValue={s('ecosystem_eyebrow')} />
-        <TextField name="ecosystem_opening_cta_label" label="Opening CTA Label" defaultValue={s('ecosystem_opening_cta_label')} />
         <div className="sm:col-span-2">
-          <TextField
-            name="ecosystem_opening_question"
-            label="Opening Intro Line (shown alone, first)"
-            defaultValue={s('ecosystem_opening_question')}
-          />
-        </div>
-        <TextField
-          name="ecosystem_opening_statement_1"
-          label="Opening Statement Lines 1 (one line per row)"
-          defaultValue={s('ecosystem_opening_statement_1')}
-          textarea
-        />
-        <TextField
-          name="ecosystem_opening_statement_2"
-          label="Opening Statement Lines 2 (one line per row)"
-          defaultValue={s('ecosystem_opening_statement_2')}
-          textarea
-        />
-        <TextField
-          name="ecosystem_discovery_intro_1"
-          label="Discovery Transition — Line 1"
-          defaultValue={s('ecosystem_discovery_intro_1')}
-        />
-        <TextField
-          name="ecosystem_discovery_intro_2"
-          label="Discovery Transition — Line 2"
-          defaultValue={s('ecosystem_discovery_intro_2')}
-        />
-        <TextField
-          name="ecosystem_closing_heading"
-          label="Closing Heading (one line per row)"
-          defaultValue={s('ecosystem_closing_heading')}
-          textarea
-        />
-        <TextField
-          name="ecosystem_closing_cta_label"
-          label="Closing CTA Label"
-          defaultValue={s('ecosystem_closing_cta_label')}
-        />
-        <div className="sm:col-span-2">
-          <TextField
-            name="ecosystem_closing_subtext"
-            label="Closing Subtext"
-            defaultValue={s('ecosystem_closing_subtext')}
-            textarea
-          />
+          <TextField name="capabilities_subtext" label="Subtext" defaultValue={s('capabilities_subtext')} textarea />
         </div>
       </Section>
 

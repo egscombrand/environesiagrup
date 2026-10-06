@@ -1,25 +1,18 @@
-import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/lib/cms/projects', () => ({
-  getPublishedProjects: vi.fn().mockResolvedValue([]),
-  getPublishedProjectPins: vi.fn().mockResolvedValue([]),
-}));
+const redirect = vi.fn();
+vi.mock('next/navigation', () => ({ redirect: (...args: unknown[]) => redirect(...args) }));
 
 const { default: ProyekPage } = await import('./page');
 
-describe('ProyekPage', () => {
-  it('renders the heading and the map', async () => {
-    render(await ProyekPage({ params: Promise.resolve({ locale: 'id' }) }));
-
-    expect(screen.getByRole('heading', { level: 1, name: 'Proyek' })).toBeInTheDocument();
-    expect(
-      screen.getByText('Peta jejak proyek akan tersedia setelah data 10 negara lengkap.')
-    ).toBeInTheDocument();
+describe('ProyekPage (legacy /proyek)', () => {
+  it('redirects to the real Proyek & Insight hub instead of rendering the old plain list', async () => {
+    await ProyekPage({ params: Promise.resolve({ locale: 'id' }) });
+    expect(redirect).toHaveBeenCalledWith('/id/proyek-insight');
   });
 
-  it('reports honestly that no project records exist yet', async () => {
-    render(await ProyekPage({ params: Promise.resolve({ locale: 'id' }) }));
-    expect(screen.getByText('Daftar proyek sedang disiapkan.')).toBeInTheDocument();
+  it('redirects within the requested locale', async () => {
+    await ProyekPage({ params: Promise.resolve({ locale: 'en' }) });
+    expect(redirect).toHaveBeenCalledWith('/en/proyek-insight');
   });
 });

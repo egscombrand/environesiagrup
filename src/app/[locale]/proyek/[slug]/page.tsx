@@ -64,7 +64,7 @@ export default async function ProyekDetailPage({
       <Section>
         <Reveal>
           <Link
-            href={`/${locale}/proyek`}
+            href={`/${locale}/proyek-insight`}
             className="font-mono text-label uppercase text-slate hover:text-forest"
           >
             ← Semua proyek

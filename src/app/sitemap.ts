@@ -16,7 +16,7 @@ const STATIC_PATHS = [
   '/pimpinan',
   '/pimpinan/direksi',
   '/pimpinan/komisaris',
-  '/proyek',
+  '/proyek-insight',
   '/berita',
   '/karier',
   '/kontak',

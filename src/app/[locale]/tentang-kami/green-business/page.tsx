@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import { PendingContent } from '@/components/layout/pending-content';
 import { buildMetadata } from '@/lib/metadata';
-import { findTentangKamiRoute } from '@/lib/tentang-kami-routes';
 import { messagesFor } from '@/i18n/messages';
 
-const ROUTE = findTentangKamiRoute('green-business');
+// Deliberately not part of TENTANG_KAMI_ROUTES / the Tentang Kami sub-nav —
+// Green Business is a separate concept slated for its own home later, not
+// one of the 7 pages the "Tentang Kami" system now covers. The route stays
+// reachable (nothing deleted), it's just no longer advertised in that menu.
+const LABEL = 'Green Business';
+const DESKRIPSI = 'Manifesto keberlanjutan grup.';
 
 export async function generateMetadata({
   params,
@@ -13,10 +17,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   return buildMetadata({
-    title: ROUTE.label,
-    description: ROUTE.metaDescription,
+    title: LABEL,
+    description: 'Manifesto keberlanjutan Environesia Group.',
     locale,
-    path: `/tentang-kami/${ROUTE.slug}`,
+    path: '/tentang-kami/green-business',
   });
 }
 
@@ -27,12 +31,5 @@ export default async function GreenBusinessPage({
 }) {
   const { locale } = await params;
   const t = messagesFor(locale);
-  return (
-    <PendingContent
-      locale={locale}
-      eyebrow={t.tentangKami.judul}
-      title={ROUTE.label}
-      description={ROUTE.deskripsi}
-    />
-  );
+  return <PendingContent locale={locale} eyebrow={t.tentangKami.judul} title={LABEL} description={DESKRIPSI} />;
 }

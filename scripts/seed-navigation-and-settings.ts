@@ -29,7 +29,7 @@ const HEADER_ITEMS = [
   { label: 'Pimpinan', url: '/pimpinan' },
   { label: 'Bisnis', url: '/bisnis' },
   { label: 'Tentang Kami', url: '/tentang-kami' },
-  { label: 'Proyek', url: '/proyek' },
+  { label: 'Proyek', url: '/proyek-insight' },
   { label: 'Berita', url: '/berita' },
   { label: 'Karier', url: '/karier' },
   { label: 'Kontak', url: '/kontak' },
@@ -37,7 +37,7 @@ const HEADER_ITEMS = [
 
 const FOOTER_ITEMS = [
   { label: 'Entitas', url: '/entitas' },
-  { label: 'Proyek', url: '/proyek' },
+  { label: 'Proyek', url: '/proyek-insight' },
   { label: 'Berita', url: '/berita' },
   { label: 'Karier', url: '/karier' },
   { label: 'Unduhan', url: '/unduhan' },

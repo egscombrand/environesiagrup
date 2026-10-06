@@ -1,41 +1,31 @@
-'use client';
+import type { ReactNode } from 'react';
 
-import { usePathname } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
-import { routing } from '@/i18n/routing';
-
-// Only pages that actually render a hero behind the header may go transparent.
-// Everywhere else the header sits on a light page, where white text would be
-// invisible — the failure this component exists to prevent.
-function hasHeroBehind(pathname: string | null) {
-  if (!pathname) return false;
-  return routing.locales.some((locale) => pathname === `/${locale}` || pathname === `/${locale}/`);
-}
-
+// One header, one look, everywhere — no per-page/per-route branching, and
+// no background at all: truly `background: transparent`, not a tinted
+// panel. Legibility over arbitrary content (a hero photo, or a page with
+// no hero at all) comes from a drop-shadow on the logo and a text-shadow
+// on the nav text themselves (see header.tsx, nav-item.tsx,
+// language-switcher.tsx, header-mobile-nav.tsx), not from darkening the
+// bar behind them — a tinted bar reads as "a panel behind the header",
+// which is exactly what this is meant to avoid.
+//
+// `fixed inset-x-0 top-0` pins this to the viewport itself: no ancestor
+// between this element and <html> sets transform/filter/perspective/
+// contain/will-change (verified — body/html carry none, and
+// NextIntlClientProvider renders no DOM wrapper of its own), so nothing
+// can quietly turn this fixed positioning into "fixed relative to some
+// ancestor" instead of the viewport.
+//
+// Every child that reads `data-overlay` (logo, nav links, language
+// switcher, mobile toggle — see group-data-[overlay]/hdr: throughout
+// layout/) already treats it as a single on/off "light mode" switch, so
+// making it permanently on here is enough to keep them white/light
+// everywhere without touching any of them.
 export function HeaderShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const overHero = hasHeroBehind(pathname);
-
-  useEffect(() => {
-    if (!overHero) return;
-
-    // Solid again as soon as the hero starts leaving, so the header never
-    // floats transparent over page content further down.
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [overHero]);
-
-  const transparent = overHero && !scrolled;
-
   return (
     <header
-      data-overlay={transparent ? '' : undefined}
-      className={`group/hdr fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-out motion-reduce:transition-none ${
-        transparent ? 'border-b border-transparent bg-transparent' : 'border-b border-sage-mist bg-canvas/95 backdrop-blur'
-      }`}
+      data-overlay=""
+      className="group/hdr fixed inset-x-0 top-0 z-[9999] w-full bg-transparent backdrop-blur-sm"
     >
       {children}
     </header>

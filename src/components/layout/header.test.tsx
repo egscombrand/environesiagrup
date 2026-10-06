@@ -52,11 +52,10 @@ describe('Header', () => {
     expect(screen.getByRole('link', { name: 'Back to homepage' })).toHaveAttribute('href', '/en');
   });
 
-  it('shows the brand tagline beneath the logo, outside the home link', async () => {
+  it('does not show the brand tagline beneath the logo', async () => {
     render(await Header({ locale: 'id' }));
 
-    expect(screen.getByText(/Integrated Green Ecosystem/)).toBeInTheDocument();
-    // the tagline must not bloat the home link's accessible name
+    expect(screen.queryByText(/Integrated Green Ecosystem/)).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Kembali ke halaman utama' })).toBeInTheDocument();
   });
 
@@ -68,10 +67,11 @@ describe('Header', () => {
     expect(logo).toHaveAttribute('height');
   });
 
-  it('renders every top-level sitemap link in the desktop nav', async () => {
+  it('renders every top-level sitemap link in the desktop nav, with no separate hardcoded Home link', async () => {
     render(await Header({ locale: 'id' }));
     const nav = screen.getByRole('navigation', { name: 'Navigasi utama' });
     expect(nav.querySelectorAll('a')).toHaveLength(9);
+    expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument();
   });
 
   it('prefixes links with the active locale', async () => {

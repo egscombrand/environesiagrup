@@ -1,36 +1,17 @@
-import { Bricolage_Grotesque, Plus_Jakarta_Sans, IBM_Plex_Mono, Fraunces, Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 
-export const fontDisplay = Bricolage_Grotesque({
+// Single global typography system — every semantic font role on the site
+// (display headings, body copy, mono-style labels/index numbers, and the
+// separate "landing" display/body roles the homepage + Tentang Kami pages
+// used to load Fraunces/Inter/Bricolage Grotesque for) now resolves to
+// this one family. Loaded once, at exactly the weights actually used
+// across the site (400/500/600/700, plus 800 for the one or two headings
+// that explicitly ask for extra-bold — see globals.css's font-* tokens),
+// rather than five separate Google Fonts requests for five names that all
+// render the same face.
+export const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-display-src',
-  display: 'swap',
-});
-
-export const fontBody = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-body-src',
-  display: 'swap',
-});
-
-export const fontMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono-src',
-  display: 'swap',
-});
-
-// Landing-page blueprint typography (environesia-landing-page-master-prompt
-// skill) — used only by the homepage and the shared header/footer. Kept
-// separate from fontDisplay/fontBody so every other public page and
-// wp-admin keep loading only Bricolage Grotesque/Plus Jakarta Sans.
-export const fontLandingDisplay = Fraunces({
-  subsets: ['latin'],
-  variable: '--font-landing-display-src',
-  display: 'swap',
-});
-
-export const fontLandingBody = Inter({
-  subsets: ['latin'],
-  variable: '--font-landing-body-src',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans-src',
   display: 'swap',
 });

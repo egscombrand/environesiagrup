@@ -1,13 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { getPublishedEntities } from '@/lib/cms/entities';
-import { getPublishedStats } from '@/lib/cms/stats';
 import { buildMetadata } from '@/lib/metadata';
-import { Section } from '@/components/layout/section';
-import { Reveal } from '@/components/motion/reveal';
-import { BrandTagline } from '@/components/layout/brand-tagline';
-import { TENTANG_KAMI_ROUTES } from '@/lib/tentang-kami-routes';
-import { messagesFor } from '@/i18n/messages';
+import { TentangKamiHubView } from '@/components/tentang-kami/hub-view';
 
 export async function generateMetadata({
   params,
@@ -19,7 +12,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Tentang Kami',
     description:
-      'Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.',
+      'Environesia Company Group bergerak di bidang lingkungan dan manufaktur terintegrasi.',
     locale,
     path: '/tentang-kami',
   });
@@ -27,67 +20,14 @@ export async function generateMetadata({
 
 export default async function TentangKamiPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ tab?: string }>;
 }) {
   const { locale } = await params;
-  const t = messagesFor(locale);
-  const [entities, stats] = await Promise.all([getPublishedEntities(), getPublishedStats()]);
-  const leadStat = stats[0];
+  const search = searchParams ? await searchParams : undefined;
+  const initialTab = search?.tab || 'sejarah';
 
-  return (
-    <>
-      <Section>
-        <Reveal>
-          <p className="font-mono text-label uppercase text-slate">{t.tentangKami.eyebrow}</p>
-          <h1 className="mt-4 font-display text-display text-ink">{t.tentangKami.judul}</h1>
-          <BrandTagline className="mt-4 font-display text-h3 text-forest" />
-          <p className="mt-6 max-w-2xl text-body text-slate">
-            Environesia Company Group adalah holding yang membawahi lima entitas: konsultasi
-            lingkungan, pengujian dan sampling, pelatihan kompetensi, sertifikasi profesi, serta
-            konveksi custom apparel.
-          </p>
-        </Reveal>
-      </Section>
-
-      <Section className="bg-stone">
-        <Reveal>
-          <div className="grid gap-8 sm:grid-cols-2">
-            <div className="rounded-[14px] border border-line bg-paper p-8">
-              <p className="font-display text-display text-forest">{entities.length}</p>
-              <p className="mt-2 font-mono text-label uppercase text-slate">{t.tentangKami.entitasDalamGrup}</p>
-            </div>
-            {leadStat ? (
-              <div className="rounded-[14px] border border-line bg-paper p-8">
-                <p className="font-display text-display text-forest">
-                  {leadStat.prefix}
-                  {leadStat.value}
-                  {leadStat.suffix}
-                </p>
-                <p className="mt-2 font-mono text-label uppercase text-slate">{leadStat.label}</p>
-              </div>
-            ) : null}
-          </div>
-        </Reveal>
-      </Section>
-
-      <Section>
-        <Reveal>
-          <h2 className="font-display text-h2 text-ink">{t.common.selengkapnya}</h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {TENTANG_KAMI_ROUTES.map((route) => (
-              <Link
-                key={route.slug}
-                href={`/${locale}/tentang-kami/${route.slug}`}
-                className="block rounded-[14px] border border-line bg-paper p-6 transition-shadow hover:shadow-sm"
-              >
-                <p className="font-display text-h3 text-ink">{route.label}</p>
-                <p className="mt-1 text-small text-slate">{route.deskripsi}</p>
-              </Link>
-            ))}
-          </div>
-        </Reveal>
-      </Section>
-    </>
-  );
+  return await TentangKamiHubView({ locale, initialTab });
 }

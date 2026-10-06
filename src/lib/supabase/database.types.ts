@@ -162,6 +162,8 @@ export type Database = {
       entities: {
         Row: {
           accent_color: string | null
+          capability_description: string | null
+          capability_title: string | null
           cover_image_path: string | null
           created_at: string
           deleted_at: string | null
@@ -184,6 +186,8 @@ export type Database = {
         }
         Insert: {
           accent_color?: string | null
+          capability_description?: string | null
+          capability_title?: string | null
           cover_image_path?: string | null
           created_at?: string
           deleted_at?: string | null
@@ -206,6 +210,8 @@ export type Database = {
         }
         Update: {
           accent_color?: string | null
+          capability_description?: string | null
+          capability_title?: string | null
           cover_image_path?: string | null
           created_at?: string
           deleted_at?: string | null
@@ -296,6 +302,47 @@ export type Database = {
           video_url?: string | null
         }
         Relationships: []
+      }
+      import_batches: {
+        Row: {
+          created_at: string
+          id: string
+          imported_by: string | null
+          imported_count: number
+          projects_found: number
+          source_document: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          imported_by?: string | null
+          imported_count?: number
+          projects_found?: number
+          source_document: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          imported_by?: string | null
+          imported_count?: number
+          projects_found?: number
+          source_document?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_batches_imported_by_fkey"
+            columns: ["imported_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jobs: {
         Row: {
@@ -685,6 +732,17 @@ export type Database = {
           tags: string[]
           title: string
           updated_at: string
+          media: string | null
+          needs_review: boolean
+          owner: string | null
+          source_url: string | null
+          thumbnail_source: string | null
+          thumbnail_source_url: string | null
+          thumbnail_status: string | null
+          thumbnail_url: string | null
+          thumbnail_detection_method: string | null
+          thumbnail_error_reason: string | null
+          thumbnail_extractor_version: number | null
         }
         Insert: {
           author?: string | null
@@ -705,6 +763,17 @@ export type Database = {
           tags?: string[]
           title: string
           updated_at?: string
+          media?: string | null
+          needs_review?: boolean
+          owner?: string | null
+          source_url?: string | null
+          thumbnail_source?: string | null
+          thumbnail_source_url?: string | null
+          thumbnail_status?: string | null
+          thumbnail_url?: string | null
+          thumbnail_detection_method?: string | null
+          thumbnail_error_reason?: string | null
+          thumbnail_extractor_version?: number | null
         }
         Update: {
           author?: string | null
@@ -725,6 +794,17 @@ export type Database = {
           tags?: string[]
           title?: string
           updated_at?: string
+          media?: string | null
+          needs_review?: boolean
+          owner?: string | null
+          source_url?: string | null
+          thumbnail_source?: string | null
+          thumbnail_source_url?: string | null
+          thumbnail_status?: string | null
+          thumbnail_url?: string | null
+          thumbnail_detection_method?: string | null
+          thumbnail_error_reason?: string | null
+          thumbnail_extractor_version?: number | null
         }
         Relationships: [
           {
@@ -837,19 +917,26 @@ export type Database = {
           client: string | null
           client_anonymous: boolean
           client_descriptor: string | null
+          company: string | null
+          confidence: string | null
           content: string | null
           country: string | null
           created_at: string
           created_by: string | null
           deleted_at: string | null
+          extraction_method: string | null
           featured_image_path: string | null
           id: string
+          import_batch_id: string | null
           latitude: number | null
           longitude: number | null
           published_at: string | null
           sector: string | null
+          services: string | null
           slug: string
           sort_order: number
+          source_document: string | null
+          source_page: number | null
           status: string
           summary: string | null
           title: string
@@ -861,19 +948,26 @@ export type Database = {
           client?: string | null
           client_anonymous?: boolean
           client_descriptor?: string | null
+          company?: string | null
+          confidence?: string | null
           content?: string | null
           country?: string | null
           created_at?: string
           created_by?: string | null
           deleted_at?: string | null
+          extraction_method?: string | null
           featured_image_path?: string | null
           id?: string
+          import_batch_id?: string | null
           latitude?: number | null
           longitude?: number | null
           published_at?: string | null
           sector?: string | null
+          services?: string | null
           slug: string
           sort_order?: number
+          source_document?: string | null
+          source_page?: number | null
           status?: string
           summary?: string | null
           title: string
@@ -885,19 +979,26 @@ export type Database = {
           client?: string | null
           client_anonymous?: boolean
           client_descriptor?: string | null
+          company?: string | null
+          confidence?: string | null
           content?: string | null
           country?: string | null
           created_at?: string
           created_by?: string | null
           deleted_at?: string | null
+          extraction_method?: string | null
           featured_image_path?: string | null
           id?: string
+          import_batch_id?: string | null
           latitude?: number | null
           longitude?: number | null
           published_at?: string | null
           sector?: string | null
+          services?: string | null
           slug?: string
           sort_order?: number
+          source_document?: string | null
+          source_page?: number | null
           status?: string
           summary?: string | null
           title?: string
@@ -912,11 +1013,19 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "projects_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "import_batches"
+            referencedColumns: ["id"]
+          },
         ]
       }
       site_settings: {
         Row: {
           address: string | null
+          capabilities_subtext: string | null
           ecosystem_closing_cta_label: string | null
           ecosystem_closing_heading: string | null
           ecosystem_closing_subtext: string | null
@@ -958,6 +1067,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          capabilities_subtext?: string | null
           ecosystem_closing_cta_label?: string | null
           ecosystem_closing_heading?: string | null
           ecosystem_closing_subtext?: string | null
@@ -999,6 +1109,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          capabilities_subtext?: string | null
           ecosystem_closing_cta_label?: string | null
           ecosystem_closing_heading?: string | null
           ecosystem_closing_subtext?: string | null

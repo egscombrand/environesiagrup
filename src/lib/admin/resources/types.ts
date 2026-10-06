@@ -39,6 +39,14 @@ export type ColumnConfig = {
   kind?: ColumnKind;
 };
 
+export type ListFilterConfig = {
+  /** Row value key this filter matches against (usually a field/column name). */
+  key: string;
+  /** Label for the "no filter applied" option, e.g. "Semua Sektor". */
+  label: string;
+  options: { value: string; label: string }[];
+};
+
 export type ResourceConfig = {
   slug: string;
   table: string;
@@ -47,6 +55,10 @@ export type ResourceConfig = {
   /** Column used as the row's display title in the list table and confirm dialogs. */
   titleField: string;
   slugSource?: string;
+  /** Overrides the generic "Manage all {title}…" list-page description. */
+  description?: string;
+  /** Overrides the generic "Search {title}…" placeholder. */
+  searchPlaceholder?: string;
   fields: FieldConfig[];
   columns: ColumnConfig[];
   schema: ZodTypeAny;
@@ -63,4 +75,6 @@ export type ResourceConfig = {
     /** Form field name holding the selected related ids (string[]). */
     fieldName: string;
   };
+  /** Extra dropdown filters shown in the list table, beyond search + status. */
+  listFilters?: ListFilterConfig[];
 };

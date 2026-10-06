@@ -5,7 +5,7 @@ import { listPageSectionsForAdmin } from '@/lib/cms/pages';
 import { PageHeader } from '@/components/admin/page-header';
 import { SectionRow } from '@/components/admin/section-row';
 
-export const metadata: Metadata = { title: 'Pages' };
+export const metadata: Metadata = { title: 'Homepage Sections' };
 
 export default async function PagesAdminPage() {
   const { supabase, profile } = await requireProfile();
@@ -18,8 +18,8 @@ export default async function PagesAdminPage() {
     <div>
       <PageHeader
         eyebrow="Website"
-        title="Pages"
-        description={`Enable/disable and reorder sections on the ${page?.title ?? 'Beranda'} page. Disabled sections are hidden from the live site immediately — no redeploy needed.`}
+        title="Homepage Sections"
+        description={`The ${page?.title ?? 'Beranda'} page, top to bottom — enable/disable and reorder sections here (changes go live immediately, no redeploy needed), then use each row's "Manage Content" button to edit what's actually inside it.`}
       />
 
       <div className="mt-6 space-y-3">

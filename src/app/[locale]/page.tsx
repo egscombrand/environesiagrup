@@ -4,19 +4,15 @@ import { BRAND_TAGLINE } from '@/lib/site';
 import { getPublishedPageSections, type SectionKey } from '@/lib/cms/pages';
 import { HeroSection } from '@/components/home/hero-section';
 import { KeyStatsSection } from '@/components/home/key-stats-section';
-import { EcosystemDiagram } from '@/components/home/ecosystem-diagram';
-import { BusinessPillars } from '@/components/home/business-pillars';
-import { ProjectsShowcase } from '@/components/home/projects-showcase';
-import { MilestonesTimeline } from '@/components/home/milestones-timeline';
-import { LeadershipRoster } from '@/components/home/leadership-roster';
+import { CapabilitiesGrid } from '@/components/home/capabilities-grid';
+import { GroupEcosystemBanner } from '@/components/home/group-ecosystem-banner';
+import { BusinessProjectsDeck } from '@/components/home/business-projects-deck';
+import { StandardsSection } from '@/components/tentang-kami/standards-section';
+import { TrustedPartnersSection } from '@/components/home/trusted-partners';
 import { CountryMapSection } from '@/components/home/country-map-section';
 import { LeadershipMessage } from '@/components/home/leadership-message';
-import { SustainabilitySection } from '@/components/home/sustainability-section';
 import { ClientsPartners } from '@/components/home/clients-partners';
-import { CorporateInformation } from '@/components/home/corporate-information';
 import { GreenBusinessSplit } from '@/components/home/green-business-split';
-import { NewsCards } from '@/components/home/news-cards';
-import { CTASection } from '@/components/home/cta-section';
 
 export async function generateMetadata({
   params,
@@ -47,19 +43,33 @@ type SectionProps = { locale: string; title?: string; subtitle?: string };
 const SECTION_REGISTRY: Record<SectionKey, (props: SectionProps) => React.ReactNode> = {
   hero: () => <HeroSection />,
   stats: ({ locale, title }) => <KeyStatsSection locale={locale} title={title} />,
-  entities: ({ locale, title }) => <EcosystemDiagram locale={locale} title={title} />,
-  pillars: ({ locale, title }) => <BusinessPillars locale={locale} title={title} />,
-  projects_showcase: ({ locale, title }) => <ProjectsShowcase locale={locale} title={title} />,
-  milestones: ({ locale, title }) => <MilestonesTimeline locale={locale} title={title} />,
-  leadership: ({ locale, title }) => <LeadershipRoster locale={locale} title={title} />,
+  entities: ({ locale, title }) => <CapabilitiesGrid locale={locale} title={title} />,
+  group_ecosystem: ({ locale, title }) => <GroupEcosystemBanner locale={locale} title={title} />,
+  business_projects: ({ locale, title }) => <BusinessProjectsDeck locale={locale} title={title} />,
+  standards: ({ locale, title }) => <StandardsSection locale={locale} title={title} />,
+  trusted_partners: ({ locale, title }) => <TrustedPartnersSection locale={locale} title={title} />,
+  // Permanently removed from the frontend — Kapabilitas, Proyek Unggulan,
+  // Perjalanan Kami/Pencapaian & Tonggak Sejarah, Pimpinan, Keberlanjutan &
+  // Dampak, Berita & Wawasan, and Informasi Korporat. Their page_sections
+  // rows and CMS content stay in the database untouched; these keys just
+  // render nothing, ever, regardless of admin toggle state, and the
+  // components themselves are deleted so nothing here is even loaded.
+  pillars: () => null,
+  projects_showcase: () => null,
+  milestones: () => null,
+  leadership: () => null,
   map: ({ locale, title }) => <CountryMapSection locale={locale} title={title} />,
   leadership_message: ({ locale, title }) => <LeadershipMessage locale={locale} title={title} />,
-  sustainability: ({ locale, title }) => <SustainabilitySection locale={locale} title={title} />,
+  sustainability: () => null,
   clients: ({ locale, title }) => <ClientsPartners locale={locale} title={title} />,
-  documents: ({ locale, title }) => <CorporateInformation locale={locale} title={title} />,
+  documents: () => null,
   green_business: ({ locale }) => <GreenBusinessSplit locale={locale} />,
-  news: ({ locale, title }) => <NewsCards locale={locale} title={title} />,
-  cta: ({ locale, title, subtitle }) => <CTASection locale={locale} title={title} subtitle={subtitle} />,
+  news: () => null,
+  // Also permanently removed: the closing "Mari berdiskusi tentang
+  // kebutuhan Anda" contact CTA banner. Same pattern as the other removed
+  // sections above — page_sections row and CMS content stay in the
+  // database untouched, this key just renders nothing.
+  cta: () => null,
 };
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -71,15 +81,15 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {sections.map((section) => {
         const render = SECTION_REGISTRY[section.section_key];
         if (!render) return null;
-        return (
-          <div key={section.id}>
-            {render({
-              locale,
-              title: section.title_override ?? undefined,
-              subtitle: section.subtitle_override ?? undefined,
-            })}
-          </div>
-        );
+        const content = render({
+          locale,
+          title: section.title_override ?? undefined,
+          subtitle: section.subtitle_override ?? undefined,
+        });
+        // A removed section resolves to null — skip the wrapper entirely so
+        // it leaves no element in the DOM at all, not even an empty <div>.
+        if (content === null) return null;
+        return <div key={section.id}>{content}</div>;
       })}
     </>
   );

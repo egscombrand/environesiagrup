@@ -2,15 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { TENTANG_KAMI_ROUTES, findTentangKamiRoute } from './tentang-kami-routes';
 
 describe('TENTANG_KAMI_ROUTES', () => {
-  it('lists the six sub-pages in sitemap order', () => {
+  it('lists the 6 tab-system pages in order, with Makna Logo deliberately excluded', () => {
     expect(TENTANG_KAMI_ROUTES.map((route) => route.slug)).toEqual([
       'sejarah',
-      'visi-misi',
-      'makna-logo',
+      'visi-misi-tatanilai',
       'struktur-organisasi',
-      'green-business',
+      'direktur',
       'penghargaan',
+      'legalitas',
     ]);
+    expect(TENTANG_KAMI_ROUTES.some((route) => route.slug === 'makna-logo')).toBe(false);
   });
 
   it('gives every route a label, a card description, and a meta description', () => {
@@ -22,7 +23,8 @@ describe('TENTANG_KAMI_ROUTES', () => {
   });
 
   it('looks a route up by slug and throws on an unknown one', () => {
-    expect(findTentangKamiRoute('sejarah').label).toBe('Sejarah');
+    expect(findTentangKamiRoute('sejarah').label).toBe('Perjalanan Kami');
     expect(() => findTentangKamiRoute('tidak-ada')).toThrow();
+    expect(() => findTentangKamiRoute('makna-logo')).toThrow();
   });
 });

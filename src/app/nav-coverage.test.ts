@@ -11,7 +11,7 @@ const HEADER_ITEMS = [
   { href: '/pimpinan' },
   { href: '/bisnis' },
   { href: '/tentang-kami' },
-  { href: '/proyek' },
+  { href: '/proyek-insight' },
   { href: '/berita' },
   { href: '/karier' },
   { href: '/kontak' },
@@ -19,7 +19,7 @@ const HEADER_ITEMS = [
 
 const FOOTER_ITEMS = [
   { href: '/entitas' },
-  { href: '/proyek' },
+  { href: '/proyek-insight' },
   { href: '/berita' },
   { href: '/karier' },
   { href: '/unduhan' },

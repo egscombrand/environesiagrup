@@ -23,6 +23,22 @@ class MockIntersectionObserver implements IntersectionObserver {
 // jsdom has no native IntersectionObserver; assign the mock directly.
 global.IntersectionObserver = MockIntersectionObserver;
 
+// jsdom doesn't implement <dialog>'s showModal()/close() (used by
+// ConfirmDialog) — polyfill just enough of the native behavior for tests
+// that open a dialog: toggle the `open` attribute and fire the spec's
+// 'close' event.
+if (!HTMLDialogElement.prototype.showModal) {
+  HTMLDialogElement.prototype.showModal = function showModal() {
+    this.setAttribute('open', '');
+  };
+}
+if (!HTMLDialogElement.prototype.close) {
+  HTMLDialogElement.prototype.close = function close() {
+    this.removeAttribute('open');
+    this.dispatchEvent(new Event('close'));
+  };
+}
+
 if (!window.matchMedia) {
   window.matchMedia = (query: string) =>
     ({

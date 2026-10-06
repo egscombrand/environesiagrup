@@ -18,7 +18,7 @@ export function MobileNav({ locale, items }: { locale: string; items: readonly N
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls="mobile-nav-menu"
-        className="p-2 font-landing-body text-small text-pine-ink transition-colors group-data-[overlay]/hdr:text-canvas motion-reduce:transition-none"
+        className="p-2 font-landing-body text-small text-pine-ink transition-colors group-data-[overlay]/hdr:text-canvas group-data-[overlay]/hdr:[text-shadow:0_1px_2px_rgba(0,0,0,0.85),0_1px_6px_rgba(0,0,0,0.45)] motion-reduce:transition-none"
       >
         {open ? t.nav.tutup : t.nav.menu}
       </button>

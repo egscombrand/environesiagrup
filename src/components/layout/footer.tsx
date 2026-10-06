@@ -1,133 +1,144 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { BrandTagline } from '@/components/layout/brand-tagline';
 import { getPublishedNavigation, navigationLabel } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
-import { getPublishedEntities } from '@/lib/cms/entities';
 import { messagesFor } from '@/i18n/messages';
 
+// Sampled directly (pixel-measured) from the approved reference comp for
+// this footer — same one-off-color convention already used for
+// capabilities-grid's heading and the leadership-message section.
+const BG = '#2E7692';
+const BG_DARK = '#255D6E';
+
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 shrink-0" aria-hidden="true">
+      <path
+        d="M4.5 3h2.7l1.2 3.4-1.8 1.4a9.5 9.5 0 0 0 4.6 4.6l1.4-1.8 3.4 1.2v2.7c0 .8-.7 1.5-1.5 1.4C8.9 15.4 4.6 11.1 3.1 5.5 3 4.7 3.7 4 4.5 3Z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 shrink-0" aria-hidden="true">
+      <rect x="3" y="4.5" width="14" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M3.5 5.5 10 10.5l6.5-5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function href(url: string, locale: string) {
+  return url.startsWith('http') ? url : `/${locale}${url}`;
+}
+
 export async function Footer({ locale }: { locale: string }) {
-  const [footerItems, settings, entities] = await Promise.all([
+  const [footerItems, settings] = await Promise.all([
     getPublishedNavigation('footer'),
     getSiteSettings(),
-    getPublishedEntities(),
   ]);
   const t = messagesFor(locale);
   const year = new Date().getFullYear();
 
-  const socials: { label: string; url: string }[] = [
-    { label: 'Instagram', url: settings.social_instagram ?? '' },
-    { label: 'LinkedIn', url: settings.social_linkedin ?? '' },
-    { label: 'Facebook', url: settings.social_facebook ?? '' },
-    { label: 'YouTube', url: settings.social_youtube ?? '' },
-    { label: 'TikTok', url: settings.social_tiktok ?? '' },
-    { label: 'X', url: settings.social_twitter ?? '' },
-  ].filter((social) => social.url);
-
-  const whatsappUrl = settings.whatsapp ? `https://wa.me/${settings.whatsapp.replace(/\D/g, '')}` : null;
+  // The 3 real link columns: the top-level footer nav items that actually
+  // have children, in their configured order — the same real navigation
+  // tree the header's mega-menu uses, just grouped by parent instead of
+  // flattened into one list.
+  const groups = footerItems.filter((item) => item.children.length > 0).slice(0, 3);
+  const addressLines = settings.address ? settings.address.split('\n').filter(Boolean) : [];
 
   return (
-    <footer className="bg-pine-ink">
-      <div className="mx-auto max-w-[1280px] px-6 py-12 md:px-12 md:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <footer style={{ backgroundColor: BG }}>
+      <div className="mx-auto max-w-[1480px] px-8 py-14 md:px-12 lg:px-16">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           <div>
             <Image
               src={settings.logoUrl ?? '/brand/environesia-group.png'}
               alt={settings.site_name}
               width={191}
               height={40}
-              className="h-10 w-auto"
+              // The footer background is always this dark teal, never a
+              // light page, so — unlike the header's overlay-conditional
+              // version — the logo is unconditionally recolored white here.
+              className="h-9 w-auto brightness-0 invert"
             />
-            <BrandTagline className="mt-2 font-landing-body text-small text-canvas/60" />
-            {settings.address ? (
-              <address className="mt-3 font-landing-body text-small not-italic text-canvas/60">
-                {settings.address.split('\n').map((line) => (
+
+            {addressLines.length > 0 ? (
+              <address className="mt-6 font-landing-body text-[15px] leading-relaxed not-italic text-white/85">
+                <span className="block font-semibold text-white">{addressLines[0]}</span>
+                {addressLines.slice(1).map((line) => (
                   <span key={line} className="block">
                     {line}
                   </span>
                 ))}
               </address>
             ) : null}
-            {socials.length > 0 ? (
-              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-label uppercase text-canvas/60">
-                {socials.map((social) => (
-                  <a key={social.label} href={social.url} target="_blank" rel="noreferrer" className="hover:text-emerald-pulse">
-                    {social.label}
-                  </a>
-                ))}
-              </div>
-            ) : null}
-          </div>
 
-          <nav aria-label={t.nav.footer}>
-            <p className="font-mono text-label uppercase text-canvas/50">{t.beranda.footerLinksTitle}</p>
-            <ul className="mt-3 flex flex-col gap-2">
-              {footerItems.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    href={item.url.startsWith('http') ? item.url : `/${locale}${item.url}`}
-                    target={item.open_new_tab ? '_blank' : undefined}
-                    rel={item.open_new_tab ? 'noreferrer' : undefined}
-                    className="font-landing-body text-small text-canvas/85 hover:text-emerald-pulse"
-                  >
-                    {navigationLabel(item, locale)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <p className="font-mono text-label uppercase text-canvas/50">{t.beranda.footerEntitasTitle}</p>
-            <ul className="mt-3 flex flex-col gap-2">
-              {entities.map((entity) => (
-                <li key={entity.slug}>
-                  <Link
-                    href={`/${locale}/entitas/${entity.slug}`}
-                    className="flex items-center gap-2 font-landing-body text-small text-canvas/85 hover:text-emerald-pulse"
-                  >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: entity.accent_color ?? undefined }}
-                      aria-hidden="true"
-                    />
-                    {entity.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="font-mono text-label uppercase text-canvas/50">{t.beranda.footerContactTitle}</p>
-            <ul className="mt-3 flex flex-col gap-2 font-landing-body text-small text-canvas/85">
-              {settings.email ? (
-                <li>
-                  <a href={`mailto:${settings.email}`} className="hover:text-emerald-pulse">
-                    {settings.email}
-                  </a>
-                </li>
-              ) : null}
+            <div className="mt-5 flex flex-col gap-3">
               {settings.phone ? (
-                <li>
-                  <a href={`tel:${settings.phone}`} className="hover:text-emerald-pulse">
-                    {settings.phone}
-                  </a>
-                </li>
+                <a
+                  href={`tel:${settings.phone.replace(/\s+/g, '')}`}
+                  className="flex items-center gap-2.5 font-landing-body text-[15px] text-white/85 hover:text-white"
+                >
+                  <PhoneIcon />
+                  {settings.phone}
+                </a>
               ) : null}
-              {whatsappUrl ? (
-                <li>
-                  <a href={whatsappUrl} target="_blank" rel="noreferrer" className="hover:text-emerald-pulse">
-                    WhatsApp
-                  </a>
-                </li>
+              {settings.email ? (
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="flex items-center gap-2.5 font-landing-body text-[15px] text-white/85 hover:text-white"
+                >
+                  <MailIcon />
+                  {settings.email}
+                </a>
               ) : null}
-            </ul>
+            </div>
           </div>
+
+          {groups.map((group) => (
+            <nav key={group.id} aria-label={navigationLabel(group, locale)}>
+              <Link
+                href={href(group.url, locale)}
+                target={group.open_new_tab ? '_blank' : undefined}
+                rel={group.open_new_tab ? 'noreferrer' : undefined}
+                className="font-landing-display text-[18px] font-bold text-white hover:text-white/80"
+              >
+                {navigationLabel(group, locale)}
+              </Link>
+              <ul className="mt-5 flex flex-col gap-3">
+                {group.children.map((child) => (
+                  <li key={child.id}>
+                    <Link
+                      href={href(child.url, locale)}
+                      target={child.open_new_tab ? '_blank' : undefined}
+                      rel={child.open_new_tab ? 'noreferrer' : undefined}
+                      className="font-landing-body text-[15px] text-white/80 hover:text-white"
+                    >
+                      {navigationLabel(child, locale)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
-        <p className="mt-12 border-t border-canvas/10 pt-6 font-mono text-label uppercase text-canvas/50">
-          {settings.footer_copyright || `© ${year} ${settings.site_name}`}
-        </p>
+      </div>
+
+      <div style={{ backgroundColor: BG_DARK }}>
+        <div className="mx-auto flex max-w-[1480px] flex-col gap-3 px-8 py-5 md:flex-row md:items-center md:justify-between md:px-12 lg:px-16">
+          <p className="font-landing-body text-[14px] text-white/70">
+            {settings.footer_copyright || `© ${year} ${settings.site_name}. Seluruh hak cipta dilindungi.`}
+          </p>
+          <Link href={`/${locale}/kebijakan-privasi`} className="font-landing-body text-[14px] text-white/70 hover:text-white">
+            {t.privasi.judul}
+          </Link>
+        </div>
       </div>
     </footer>
   );

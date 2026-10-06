@@ -36,12 +36,16 @@
   --color-canvas: #F6F8F3;
   --color-sage-mist: #D8E4DA;
 
-  --font-display: var(--font-display-src), ui-sans-serif, sans-serif;
-  --font-body: var(--font-body-src), ui-sans-serif, sans-serif;
-  --font-mono: var(--font-mono-src), ui-monospace, monospace;
+  /* One global typography system: every font role — including the
+     "landing"/"mono" names kept below purely so the ~50+ components
+     already written against them don't need touching — renders the same
+     Plus Jakarta Sans loaded once in src/lib/fonts.ts. */
+  --font-display: var(--font-sans-src), ui-sans-serif, sans-serif;
+  --font-body: var(--font-sans-src), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-sans-src), ui-sans-serif, sans-serif;
 
-  --font-landing-display: var(--font-landing-display-src), Georgia, serif;
-  --font-landing-body: var(--font-landing-body-src), ui-sans-serif, sans-serif;
+  --font-landing-display: var(--font-sans-src), ui-sans-serif, sans-serif;
+  --font-landing-body: var(--font-sans-src), ui-sans-serif, sans-serif;
 
   --text-display: clamp(36px, 5vw, 56px);
   --text-display--line-height: 1.05;
@@ -78,10 +82,10 @@ button:focus-visible {
 
 @keyframes kenburns {
   from {
-    transform: scale(1);
+    transform: scale(1.08);
   }
   to {
-    transform: scale(1.08);
+    transform: scale(1);
   }
 }
 
@@ -132,5 +136,92 @@ button:focus-visible {
 @media (min-width: 768px) {
   :root {
     --header-h: 5.75rem;
+  }
+}
+
+/* Trusted-partners logo marquee — two rows, opposite directions. Each
+   track's content is the same logo list duplicated exactly twice, so
+   translating by -50% of the track's own width always lands the second copy
+   exactly where the first began: a seamless loop with no jump-cut, however
+   many logos are in the list. `no-preference` gating (same convention as
+   the ecosystem-drift ambient animation above) means a reduced-motion user
+   gets no animation property at all, not just a slowed one — the row still
+   renders, just static. */
+@keyframes marquee-ltr {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes marquee-rtl {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .partner-marquee-track {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  .partner-marquee-track.partner-marquee-ltr {
+    animation-name: marquee-ltr;
+    animation-duration: 46s;
+  }
+
+  .partner-marquee-track.partner-marquee-rtl {
+    animation-name: marquee-rtl;
+    animation-duration: 52s;
+  }
+
+  .partner-marquee-row:hover .partner-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Bisnis & Ekosistem's central-hub orbit (Section 2) — brand logos sweep
+   slowly around the group as one rigid formation (.ecosystem-orbit), while
+   each logo's own wrapper spins the exact opposite direction at the same
+   rate (.ecosystem-orbit-counter) so the logo itself never appears to
+   rotate, only its position. Hovering any node pauses the whole orbit via
+   the shared parent, same technique as the partner marquee above. */
+@keyframes ecosystem-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ecosystem-orbit-spin-reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ecosystem-orbit {
+    animation: ecosystem-orbit-spin 38s linear infinite;
+  }
+
+  .ecosystem-orbit-counter {
+    animation: ecosystem-orbit-spin-reverse 38s linear infinite;
+  }
+
+  .ecosystem-orbit-group:hover .ecosystem-orbit,
+  .ecosystem-orbit-group:hover .ecosystem-orbit-counter {
+    animation-play-state: paused;
   }
 }
