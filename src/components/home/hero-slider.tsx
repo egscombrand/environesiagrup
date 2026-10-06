@@ -95,15 +95,19 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   // a time: its cleanup (always run before a new instance starts, on any
   // dependency change) cancels the previous loop, so there is never more
   // than one timer per slide.
+  // Reduced motion does not stop the sequence: the timer still runs, and a
+  // video that is held still falls back to the default slide length.
+  const timerDurationMs = knownDurationMs ?? (reducedMotion ? DEFAULT_IMAGE_DURATION_MS : null);
+
   useEffect(() => {
-    if (!current || paused || reducedMotion || slides.length === 0 || knownDurationMs == null) return;
+    if (!current || paused || slides.length === 0 || timerDurationMs == null) return;
 
     let raf = 0;
     let lastUpdateAt = 0;
-    const start = performance.now() - (progressRef.current / 100) * knownDurationMs;
+    const start = performance.now() - (progressRef.current / 100) * timerDurationMs;
 
     const tick = (now: number) => {
-      const pct = Math.min(((now - start) / knownDurationMs) * 100, 100);
+      const pct = Math.min(((now - start) / timerDurationMs) * 100, 100);
       if (pct >= 100) {
         setProgressValue(100);
         goNext();
@@ -122,12 +126,13 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, paused, reducedMotion, knownDurationMs, index]);
+  }, [current, paused, timerDurationMs, index]);
 
   // Video with no CMS duration override: progress follows real playback
-  // position instead of a timer.
+  // position instead of a timer. Under reduced motion the video is held still,
+  // so the timer above drives the slide instead.
   useEffect(() => {
-    if (!current || current.type !== 'video' || knownDurationMs != null) return;
+    if (!current || current.type !== 'video' || knownDurationMs != null || reducedMotion) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -136,7 +141,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     };
     video.addEventListener('timeupdate', onTimeUpdate);
     return () => video.removeEventListener('timeupdate', onTimeUpdate);
-  }, [current, knownDurationMs]);
+  }, [current, knownDurationMs, reducedMotion]);
 
   // Changing the `autoPlay` attribute on an already-playing <video> has no
   // effect — pausing/resuming needs an imperative call via a ref. Only the
@@ -169,7 +174,10 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <section
-      className="relative -mt-[var(--header-h)] h-dvh min-h-[560px] w-full overflow-hidden bg-pine-ink"
+      // Phones use the small viewport height, which doesn't change when the
+      // browser toolbar shows or hides, so the slide never jumps and its
+      // progress bar stays above the fold. Desktop keeps the original sizing.
+      className="relative -mt-[var(--header-h)] h-[100svh] w-full overflow-hidden bg-pine-ink md:h-dvh md:min-h-[560px]"
       onFocus={() => setFocusPaused(true)}
       onBlur={() => setFocusPaused(false)}
       onTouchStart={(e) => {
@@ -197,7 +205,12 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         const src = slideSrc(slide, useMobileSrc);
         const showVideo = slide.type === 'video' && !(useMobileSrc && saveData);
         const imageSrc = slide.type === 'video' ? slide.videoPosterUrl : src;
-        const kenBurnsClass = !reducedMotion && isActive ? 'animate-[kenburns_6s_ease-out_forwards]' : '';
+        // Reduced motion drops the drift entirely. Phones get a shorter zoom
+        // (kenburns-mobile); desktop keeps the original cinematic one.
+        const kenBurnsClass =
+          !reducedMotion && isActive
+            ? 'animate-[kenburns-mobile_6s_ease-out_forwards] md:animate-[kenburns_6s_ease-out_forwards]'
+            : '';
 
         return (
           <div
@@ -247,7 +260,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
       {/* Labels (direct navigation) above a full-width, synced timeline —
           no separate title/description block underneath. */}
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(11,43,34,0.9)] via-[rgba(11,43,34,0.4)] to-transparent pb-5 pt-10 md:pb-6">
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(11,43,34,0.9)] via-[rgba(11,43,34,0.4)] to-transparent pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-10 md:pb-6">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12">
           <div className="flex items-center gap-2">
             {slides.length > 1 ? (
@@ -261,15 +274,15 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               </button>
             ) : null}
 
-            <div className="flex flex-1 flex-col gap-1.5">
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5">
               {slides.length > 1 ? (
-                <div className="flex gap-1.5">
+                <div className="flex min-w-0 gap-1.5">
                   {slides.map((slide, i) => (
                     <button
                       key={slide.id}
                       type="button"
                       onClick={() => goTo(i)}
-                      className={`tap-target flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
+                      className={`tap-target min-w-0 flex-1 truncate text-left font-mono text-[10px] uppercase tracking-[0.06em] transition-colors motion-reduce:transition-none ${
                         i === index ? 'text-canvas' : 'text-canvas/40 hover:text-canvas/70'
                       }`}
                     >
@@ -284,7 +297,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   {slides.map((slide, i) => {
                     const isPast = i < index;
                     const isActive = i === index;
-                    const pct = isPast ? 100 : isActive ? (reducedMotion ? 100 : progress) : 0;
+                    const pct = isPast ? 100 : isActive ? progress : 0;
 
                     return (
                       <button

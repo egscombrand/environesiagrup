@@ -97,6 +97,17 @@ button:focus-visible {
   }
 }
 
+/* Hero slider on phones: the same drift as kenburns, but a much smaller zoom
+   so the subject is never pushed out of frame on a narrow screen. */
+@keyframes kenburns-mobile {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 /* Section 02 "Company Discovery" — every ambient/idle animation here is
    gated behind `@media (prefers-reduced-motion: no-preference)` so it does
    not exist at all (not just "slowed down") for users who asked for less

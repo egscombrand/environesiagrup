@@ -218,8 +218,9 @@ describe('HeroSlider', () => {
     expect(fillSpanFor('Slide 1 / 2').style.width).toBe('0%');
   });
 
-  it('keeps manual slide controls under prefers-reduced-motion and never auto-advances', async () => {
+  it('keeps manual slide controls under prefers-reduced-motion and keeps the timer running', () => {
     restoreGlobalMocks = mockReducedMotion();
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame', 'performance'] });
     render(<HeroSlider slides={slides} />);
 
     // Manual navigation affordance must still be present for reduced-motion users —
@@ -227,17 +228,23 @@ describe('HeroSlider', () => {
     const jumpToSlideTwo = screen.getByRole('button', { name: 'Eyebrow Dua' });
     expect(jumpToSlideTwo).toBeInTheDocument();
 
-    // Automatic rotation must be disabled: waiting well past the 6s image
-    // duration must NOT change the active slide.
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 300));
-    });
-    expect(fillSpanFor('Slide 1 / 2').style.width).toBe('100%');
+    // Reduced motion removes the zoom, not the sequence: slide 1's progress
+    // runs on its own, and the slide advances when its duration ends.
+    act(() => vi.advanceTimersByTime(1500));
+    const progressPct = parseFloat(fillSpanFor('Slide 1 / 2').style.width);
+    expect(progressPct).toBeGreaterThan(0);
+    expect(progressPct).toBeLessThan(100);
+
+    act(() => vi.advanceTimersByTime(5000));
+    expect(fillSpanFor('Slide 2 / 2').style.width).toBe('0%');
 
     // Manual click must still work: reduced motion disables automatic motion,
-    // not user-initiated navigation.
-    fireEvent.click(jumpToSlideTwo);
-    expect(fillSpanFor('Slide 2 / 2').style.width).toBe('100%');
+    // not user-initiated navigation. Jumping back to slide 1 restarts its timer.
+    fireEvent.click(screen.getByRole('button', { name: 'Eyebrow Satu' }));
+    act(() => vi.advanceTimersByTime(1500));
+    const restartedPct = parseFloat(fillSpanFor('Slide 1 / 2').style.width);
+    expect(restartedPct).toBeGreaterThan(0);
+    expect(restartedPct).toBeLessThan(100);
   });
 
   it('falls back to the poster image, not the video URL, when saveData is on for mobile', () => {
