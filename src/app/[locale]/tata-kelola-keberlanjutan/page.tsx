@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/metadata';
 import { TataKelolaHero } from '@/components/tata-kelola-keberlanjutan/hero';
+import { TataKelolaGovernanceSection } from '@/components/tata-kelola-keberlanjutan/governance-section';
 
 export async function generateMetadata({
   params,
@@ -18,5 +19,10 @@ export async function generateMetadata({
 }
 
 export default function TataKelolaKeberlanjutanPage() {
-  return <TataKelolaHero />;
+  return (
+    <>
+      <TataKelolaHero />
+      <TataKelolaGovernanceSection />
+    </>
+  );
 }
