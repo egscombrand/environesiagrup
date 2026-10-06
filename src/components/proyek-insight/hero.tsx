@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { HeroPhoto } from '@/components/hero-photo';
 import { findProyekInsightRoute } from '@/lib/proyek-insight-routes';
 
 // Same real office building photo and full-bleed hero pattern as Tentang
@@ -19,15 +19,11 @@ import { findProyekInsightRoute } from '@/lib/proyek-insight-routes';
 // identity it belongs to.
 export function ProyekInsightHero({ activeSlug }: { activeSlug: string }) {
   const route = findProyekInsightRoute(activeSlug);
-  const PHOTO_ASPECT = '3640/1610';
 
   return (
     <section className="relative -mt-[var(--header-h)] grid w-full bg-pine-ink">
-      <div
-        className="relative col-start-1 row-start-1 w-full self-start overflow-hidden"
-        style={{ aspectRatio: PHOTO_ASPECT }}
-      >
-        <Image src="/BannerS2.jpg" alt="" fill priority quality={100} sizes="100vw" className="object-cover object-center" />
+      <div className="relative col-start-1 row-start-1 w-full self-stretch overflow-hidden md:aspect-[3640/1610] md:self-start">
+        <HeroPhoto />
         <div className="absolute inset-0 bg-gradient-to-b from-pine-ink/40 via-pine-ink/5 to-pine-ink/60" />
       </div>
 

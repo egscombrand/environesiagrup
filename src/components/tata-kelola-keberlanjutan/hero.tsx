@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
+import { HeroPhoto } from '@/components/hero-photo';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -20,7 +20,7 @@ export function TataKelolaHero() {
 
   return (
     <section className="relative -mt-[var(--header-h)] flex min-h-[460px] w-full items-center overflow-hidden bg-pine-ink md:min-h-[560px]">
-      <Image src="/BannerS2.jpg" alt="" fill priority quality={100} sizes="100vw" className="object-cover object-center" />
+      <HeroPhoto />
       <div className="absolute inset-0 bg-pine-ink/25" />
 
       <div className="relative z-10 w-full px-6 pt-[var(--header-h)] text-center md:px-8">

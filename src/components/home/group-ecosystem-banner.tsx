@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { HeroPhoto } from '@/components/hero-photo';
 import { getPublishedNavigationUrlsBySlug } from '@/lib/cms/navigation';
 import { Reveal } from '@/components/motion/reveal';
 import { messagesFor } from '@/i18n/messages';
@@ -29,14 +29,7 @@ export async function GroupEcosystemBanner({ locale, title }: { locale: string; 
   return (
     <section className="relative w-full overflow-hidden bg-pine-ink">
       <div className="relative min-h-[440px] w-full md:min-h-[520px]">
-        <Image
-          src="/BannerS2.jpg"
-          alt="Gedung kantor Environesia dengan langit cerah — merepresentasikan ekosistem bisnis Environesia Group"
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-          priority={false}
-        />
+        <HeroPhoto alt="Gedung kantor Environesia dengan langit cerah — merepresentasikan ekosistem bisnis Environesia Group" />
         {/* A very subtle, even wash for text contrast — the building on the
             left stays fully visible as the banner's main visual; the
             content box (right) carries most of the contrast work itself. */}

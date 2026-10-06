@@ -1,12 +1,5 @@
-import Image from 'next/image';
 import { messagesFor } from '@/i18n/messages';
-
-// The real photo's own proportions (3640×1610) — used to lock the photo
-// layer's height to its true aspect ratio at whatever width it renders,
-// so it is always shown complete: full width, no crop, no zoom past its
-// own resolution, and (unlike a fixed-height box) never letterboxed with
-// empty bars on the sides either.
-const PHOTO_ASPECT = '3640/1610';
+import { HeroPhoto } from '@/components/hero-photo';
 
 /**
  * Tentang Kami's own full-bleed hero — the real office building photo
@@ -14,18 +7,13 @@ const PHOTO_ASPECT = '3640/1610';
  * fixed header floating transparent over it.
  *
  * The photo and the title live in the same CSS grid cell (stacked, not
- * one constraining the other's box): the photo layer is `self-start` and
- * aspect-ratio-locked, so its own height is always exactly
- * width ÷ 3640/1610 — never stretched, never cropped to fill a taller
- * box. The title layer instead carries a `min-height`, so on a wide
- * screen (where the photo's natural height already exceeds that
- * minimum) the grid row's height is driven by the photo and the title
- * overlays it centered, the classic hero look; on a narrow, tall mobile
- * screen (where a 2.26:1 photo is naturally quite short at full width)
- * the row instead grows to the title's minimum, and the extra height
- * beneath the now-short photo is filled by the section's own solid
- * pine-ink background — a soft gradient blends the two — rather than
- * ever stretching or cropping the photo to reach a fixed height.
+ * one constraining the other's box). From md up the photo layer is
+ * aspect-ratio-locked to the real photo's 3640/1610 proportions, so it is
+ * never stretched or cropped, and the title overlays it centered, the
+ * classic hero look. On a narrow, tall mobile screen the photo layer
+ * instead stretches to the full height of the row, which the title's
+ * minimum height sets. It fills the whole hero with `object-cover`, so no
+ * solid pine-ink band shows beneath a short photo.
  *
  * `-mt-[var(--header-h)]` cancels the layout's usual header offset so
  * the photo sits directly under the header rather than below a gap; the
@@ -38,11 +26,10 @@ export function TentangKamiHero({ locale }: { locale: string }) {
 
   return (
     <section className="relative -mt-[var(--header-h)] grid w-full bg-pine-ink">
-      <div
-        className="relative col-start-1 row-start-1 w-full self-start overflow-hidden"
-        style={{ aspectRatio: PHOTO_ASPECT }}
-      >
-        <Image src="/BannerS2.jpg" alt="" fill priority quality={100} sizes="100vw" className="object-cover object-center" />
+      <div className="relative col-start-1 row-start-1 w-full self-stretch overflow-hidden md:aspect-[3640/1610] md:self-start">
+        {/* Phones: the photo fills the whole hero, so no solid green band shows
+            beneath it. md and up keep the photo's true proportions. */}
+        <HeroPhoto />
         <div className="absolute inset-0 bg-gradient-to-b from-pine-ink/40 via-pine-ink/5 to-pine-ink/60" />
       </div>
 
