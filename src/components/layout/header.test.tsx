@@ -31,7 +31,7 @@ vi.mock('@/lib/cms/navigation', async (importOriginal) => ({
 vi.mock('@/lib/cms/settings', () => ({
   getSiteSettings: vi.fn().mockResolvedValue({
     id: 1,
-    site_name: 'Environesia Company Group',
+    site_name: 'Environesia',
     logoUrl: undefined,
   }),
 }));
@@ -61,7 +61,7 @@ describe('Header', () => {
 
   it('renders the logo with explicit dimensions so it cannot shift the layout', async () => {
     render(await Header({ locale: 'id' }));
-    const logo = screen.getByRole('img', { name: 'Environesia Company Group' });
+    const logo = screen.getByRole('img', { name: 'Environesia' });
 
     expect(logo).toHaveAttribute('width');
     expect(logo).toHaveAttribute('height');

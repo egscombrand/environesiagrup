@@ -42,7 +42,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             role="status"
-            className={`pointer-events-auto flex items-start gap-3 rounded-[10px] border bg-paper px-4 py-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)] ${
+            className={`pointer-events-auto flex items-start gap-3 rounded-[10px] border bg-white px-4 py-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)] ${
               t.kind === 'success' ? 'border-success/20' : 'border-danger/20'
             }`}
           >
@@ -56,7 +56,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => dismiss(t.id)}
               aria-label="Tutup notifikasi"
-              className="text-slate hover:text-ink"
+              className="text-[#64748b] hover:text-ink"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>

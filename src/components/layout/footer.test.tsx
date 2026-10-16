@@ -51,7 +51,7 @@ vi.mock('@/lib/cms/navigation', async (importOriginal) => ({
 vi.mock('@/lib/cms/settings', () => ({
   getSiteSettings: vi.fn().mockResolvedValue({
     id: 1,
-    site_name: 'Environesia Company Group',
+    site_name: 'Environesia',
     logoUrl: undefined,
     footer_copyright: null,
     address: 'Grha Environesia\nJl. Jati Mataram No. 284B, Karangjati\nSinduadi, Mlati, Sleman\nDaerah Istimewa Yogyakarta 55284',
@@ -66,7 +66,7 @@ const { Footer } = await import('./footer');
 describe('Footer', () => {
   it('renders the group logo with an accessible name', async () => {
     render(await Footer({ locale: 'id' }));
-    expect(screen.getByRole('img', { name: 'Environesia Company Group' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Environesia' })).toBeInTheDocument();
   });
 
   it('does not show the brand tagline beneath the logo', async () => {

@@ -7,7 +7,7 @@ const MUTED = '#666666';
 const BORDER = '#E5E7EB';
 
 const BRANDS = [
-  { slug: 'environesia', name: 'Environesia Consultant' },
+  { slug: 'environesia-consultant', name: 'Environesia Consultant' },
   { slug: 'greenlab', name: 'GreenLab' },
   { slug: 'greenskill', name: 'GreenSkill' },
   { slug: 'lsp-praktisi-lingkungan', name: 'LSP Praktisi Lingkungan Indonesia' },
@@ -31,7 +31,7 @@ export function ProyekContactDirectory({ locale }: { locale: string }) {
       >
         {t.proyek.belumMenemukanJudul}
       </h2>
-      <p className="mt-3 max-w-[650px] text-[15px] leading-[1.6]" style={{ color: TEXT }}>
+      <p className="mt-3 max-w-[650px] text-body" style={{ color: TEXT }}>
         {t.proyek.belumMenemukanDeskripsi}
       </p>
 
@@ -47,7 +47,7 @@ export function ProyekContactDirectory({ locale }: { locale: string }) {
                 <p className="text-[16px] font-semibold leading-[1.35]" style={{ color: PRIMARY }}>
                   {brand.name}
                 </p>
-                <p className="mt-1 text-[14px] leading-[1.5]" style={{ color: MUTED }}>
+                <p className="mt-1 text-small" style={{ color: MUTED }}>
                   {t.proyek.kontakCakupan[brand.slug]}
                 </p>
                 <a

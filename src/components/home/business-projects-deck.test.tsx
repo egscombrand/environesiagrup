@@ -22,7 +22,7 @@ describe('BusinessProjectsDeck', () => {
 
   it("renders Environesia's real project data by default when it's the only entity", async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
     ]);
 
     render(await BusinessProjectsDeck({ locale: 'id' }));
@@ -40,7 +40,7 @@ describe('BusinessProjectsDeck', () => {
       makeEntity({
         id: 'e1',
         name: 'Environesia',
-        slug: 'environesia',
+        slug: 'environesia-consultant',
         short_description: 'Konsultan lingkungan terintegrasi.',
       }),
     ]);
@@ -60,7 +60,7 @@ describe('BusinessProjectsDeck', () => {
 
   it('skips a metadata field entirely when it has no known value, rather than showing a bare "-"', async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
     ]);
 
     render(await BusinessProjectsDeck({ locale: 'id' }));
@@ -75,7 +75,7 @@ describe('BusinessProjectsDeck', () => {
 
   it('opens with the 3rd entity centered as the active one when at least 3 are published', async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab' }),
       makeEntity({ id: 'e3', name: 'LSP Praktisi Lingkungan Indonesia', slug: 'lsp-praktisi-lingkungan' }),
       makeEntity({ id: 'e4', name: 'GreenSkill', slug: 'greenskill' }),
@@ -95,7 +95,7 @@ describe('BusinessProjectsDeck', () => {
 
   it('only shows a coverflow card for an entity that actually has a matching published CMS record — never a fabricated one', async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab' }),
     ]);
 
@@ -111,7 +111,7 @@ describe('BusinessProjectsDeck', () => {
   it("clicking an entity card swaps the panel to that entity's own projects", async () => {
     const user = userEvent.setup();
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab' }),
     ]);
 
@@ -132,7 +132,7 @@ describe('BusinessProjectsDeck', () => {
   it('hovering a non-active entity card gives it a subtle lift without making it the active one', async () => {
     const user = userEvent.setup();
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab' }),
     ]);
 
@@ -152,7 +152,7 @@ describe('BusinessProjectsDeck', () => {
   it('the entity arrows step to the previous/next card and wrap around at the ends', async () => {
     const user = userEvent.setup();
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab' }),
       makeEntity({ id: 'e3', name: 'LSP Praktisi Lingkungan Indonesia', slug: 'lsp-praktisi-lingkungan' }),
     ]);
@@ -188,7 +188,7 @@ describe('BusinessProjectsDeck', () => {
 
   it('never renders the "Bikin Indonesia Berdaya" entity name as the "BIB" abbreviation', async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
       makeEntity({ id: 'e5', name: 'Bikin Indonesia Berdaya', slug: 'bikin-indonesia-berdaya' }),
     ]);
 
@@ -200,7 +200,7 @@ describe('BusinessProjectsDeck', () => {
 
   it('shows the active project photo distinguished by aria-current', async () => {
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
     ]);
 
     render(await BusinessProjectsDeck({ locale: 'id' }));
@@ -211,7 +211,7 @@ describe('BusinessProjectsDeck', () => {
   it('the project carousel arrows step to the previous/next project and disable at the ends', async () => {
     const user = userEvent.setup();
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
     ]);
 
     render(await BusinessProjectsDeck({ locale: 'id' }));
@@ -235,7 +235,7 @@ describe('BusinessProjectsDeck', () => {
   it('clicking a peeking project photo jumps straight to it and updates the detail panel', async () => {
     const user = userEvent.setup();
     vi.mocked(getPublishedEntities).mockResolvedValue([
-      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia' }),
+      makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia-consultant' }),
     ]);
 
     render(await BusinessProjectsDeck({ locale: 'id' }));

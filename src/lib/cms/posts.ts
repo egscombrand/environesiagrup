@@ -11,14 +11,18 @@ function mapPost(row: PostRow): Post {
   return { ...row, coverImageUrl: publicMediaUrl(row.cover_image_path) };
 }
 
-export async function getPublishedPosts(): Promise<Post[]> {
+/**
+ * `postType` splits this one table into Siaran Pers (press clippings) vs
+ * Berita Perusahaan (self-authored news) for callers that need just one —
+ * the Proyek & Insight tabs (src/components/proyek-insight/hub-view.tsx).
+ * Omit it for a combined "every published article" list, e.g. /berita and
+ * the sitemap, which intentionally still span both.
+ */
+export async function getPublishedPosts(postType?: 'siaran_pers' | 'berita_perusahaan'): Promise<Post[]> {
   const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('status', 'published')
-    .is('deleted_at', null)
-    .order('published_at', { ascending: false });
+  let query = supabase.from('posts').select('*').eq('status', 'published').is('deleted_at', null);
+  if (postType) query = query.eq('post_type', postType);
+  const { data, error } = await query.order('published_at', { ascending: false });
 
   if (error) throw new Error(`Failed to load posts: ${error.message}`);
   return (data ?? []).map(mapPost);

@@ -1,19 +1,6 @@
-// Clients & Partners has no CMS backing anywhere in this project — no table,
-// no admin resource, no query function (confirmed by a full-codebase audit).
-// This adapter exists so the section is genuinely "CMS-ready" per the
-// landing-page blueprint's Data Source -> Adapter -> Section Data -> UI
-// Component architecture: swapping this for a real getPublishedClients()
-// later requires zero changes to clients-partners.tsx.
-//
-// Migration requirement for Phase 2: a `clients` table (client_name, logo,
-// order, active) plus an admin resource config, following the exact same
-// pattern as entities/pillars/leadership.
-//
-// Deliberately returns an empty array rather than invented company names —
-// fabricating plausible-sounding clients would be exactly the kind of false
-// business claim the blueprint prohibits elsewhere (fake projects, fake ESG
-// numbers). The section renders its own honest empty state until real data
-// exists.
+import { createPublicClient } from '@/lib/supabase/public';
+import { publicMediaUrl } from '@/lib/cms/media';
+
 export type ClientLogo = {
   id: string;
   name: string;
@@ -21,6 +8,28 @@ export type ClientLogo = {
   order: number;
 };
 
+/**
+ * Active clients and partners, in the order set in wp-admin (migration 0028).
+ * If the table is missing or the read fails, this returns an empty list, and the
+ * section shows its own empty state. No client is ever invented.
+ */
 export async function getClientsAndPartners(): Promise<ClientLogo[]> {
-  return [];
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from('clients')
+      .select('id, client_name, logo_path, sort_order')
+      .eq('active', true)
+      .order('sort_order', { ascending: true });
+    if (error || !data) return [];
+
+    return data.map((row) => ({
+      id: row.id,
+      name: row.client_name,
+      logoUrl: publicMediaUrl(row.logo_path),
+      order: row.sort_order,
+    }));
+  } catch {
+    return [];
+  }
 }

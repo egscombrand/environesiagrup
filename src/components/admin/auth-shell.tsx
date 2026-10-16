@@ -36,7 +36,7 @@ export function AuthShell({
             transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute bottom-[-10%] right-[-10%] h-[480px] w-[480px] rounded-full bg-forest/40 blur-[140px]"
+            className="absolute bottom-[-10%] right-[-10%] h-[480px] w-[480px] rounded-full bg-[#2a7793]/40 blur-[140px]"
             animate={shouldReduceMotion ? undefined : { opacity: [0.6, 0.3, 0.6], scale: [1, 1.1, 1] }}
             transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -55,10 +55,10 @@ export function AuthShell({
           transition={{ duration: 0.6, ease: EASE }}
           className="relative"
         >
-          <p className="font-mono text-label uppercase tracking-[0.08em] text-paper/60">
-            Environesia Company Group
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] tracking-[0.08em] text-white/60">
+            Environesia
           </p>
-          <p className="mt-1 font-mono text-label uppercase tracking-[0.08em] text-paper/60">
+          <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.08em] tracking-[0.08em] text-white/60">
             Admin Workspace
           </p>
         </motion.div>
@@ -69,10 +69,10 @@ export function AuthShell({
           transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
           className="relative max-w-md"
         >
-          <h1 className="font-display text-display text-paper" style={{ fontVariationSettings: '"wght" 600' }}>
+          <h1 className="font-display text-display text-white" style={{ fontVariationSettings: '"wght" 600' }}>
             Satu grup, satu sistem.
           </h1>
-          <p className="mt-4 text-body text-paper/70">
+          <p className="mt-4 text-body text-white/70">
             Kelola entitas, proyek, berita, dan seluruh konten publik grup dari satu tempat.
           </p>
           {accentColors.length > 0 ? (
@@ -91,7 +91,7 @@ export function AuthShell({
       </div>
 
       {/* Form panel */}
-      <div className="flex items-center justify-center bg-paper px-6 py-16 md:px-12">
+      <div className="flex items-center justify-center bg-white px-6 py-16 md:px-12">
         <motion.div
           initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -100,15 +100,15 @@ export function AuthShell({
         >
           <Image
             src="/brand/environesia-group.png"
-            alt="Environesia Company Group"
+            alt="Environesia"
             width={172}
             height={36}
             priority
             className="h-8 w-auto lg:hidden"
           />
-          <p className="mt-8 font-mono text-label uppercase text-slate lg:mt-0">{eyebrow}</p>
+          <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b] lg:mt-0">{eyebrow}</p>
           <h2 className="mt-3 font-display text-h2 text-ink">{title}</h2>
-          <p className="mt-2 text-body text-slate">{subtitle}</p>
+          <p className="mt-2 text-body text-[#64748b]">{subtitle}</p>
 
           <div className="mt-8">{children}</div>
 

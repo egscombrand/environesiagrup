@@ -47,7 +47,7 @@ const STATS: Stat[] = [
     icon: Building2,
     value: '5',
     unit: 'Perusahaan',
-    description: 'Lima perusahaan dalam ekosistem Environesia Company Group.',
+    description: 'Lima perusahaan dalam ekosistem Environesia.',
   },
 ];
 

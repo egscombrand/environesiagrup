@@ -3,13 +3,54 @@ import { describe, expect, it, vi } from 'vitest';
 import { makeMilestone } from '@/lib/cms/fixtures';
 import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
 
+vi.mock('server-only', () => ({}));
+vi.mock('@/lib/cms/legalitas-page', () => ({ getLegalitasPage: vi.fn().mockResolvedValue({ title: 'Legalitas & Sertifikasi', description: '', noteLabel: 'Legal Entity First', noteText: '', metaTitle: 'Legalitas & Sertifikasi', metaDescription: '' }) }));
+vi.mock('@/lib/cms/penghargaan', () => ({ getPenghargaan: vi.fn().mockResolvedValue({ title: 'Penghargaan', description: '', metaTitle: 'Penghargaan', metaDescription: '' }) }));
+vi.mock('@/lib/supabase/public', () => ({ createPublicClient: vi.fn() }));
+vi.mock('@/lib/cms/media', () => ({
+  publicMediaUrl: (path: string | null | undefined) => (path ? `https://media.test/${path}` : undefined),
+}));
+vi.mock('@/lib/cms/leadership-profile', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/cms/leadership-profile')>('@/lib/cms/leadership-profile');
+  return { ...actual, getDirektur: vi.fn().mockResolvedValue(actual.buildDirektur([], new Map(), null)) };
+});
+vi.mock('@/lib/cms/struktur-organisasi', async () => {
+  const { STRUKTUR_FALLBACK } = await import('@/lib/cms/struktur-organisasi-content');
+  return {
+    getStruktur: vi.fn().mockResolvedValue({ title: STRUKTUR_FALLBACK.title, imageSrc: null, imageAlt: STRUKTUR_FALLBACK.imageAlt }),
+  };
+});
+vi.mock('@/lib/cms/visi-misi', async () => {
+  const { VISI_MISI_FALLBACK } = await import('@/lib/cms/visi-misi-content');
+  return { getVisiMisi: vi.fn().mockResolvedValue(VISI_MISI_FALLBACK) };
+});
+vi.mock('@/lib/cms/sejarah', async () => {
+  const { SEJARAH_FALLBACK } = await import('@/lib/cms/sejarah-content');
+  return { getSejarah: vi.fn().mockResolvedValue({ ...SEJARAH_FALLBACK, photos: [null, null] }) };
+});
+vi.mock('@/lib/cms/makna-logo', () => ({
+  getMaknaLogo: vi.fn().mockResolvedValue({
+    eyebrow: 'Identitas Visual',
+    title: 'Makna Logo',
+    parts: [
+      { label: 'Simbol', description: '' },
+      { label: 'Tipografi', description: '' },
+      { label: 'Warna', description: '' },
+      { label: 'Kesatuan Identitas', description: '' },
+    ],
+    symbolSrc: null,
+    wordmarkSrc: null,
+  }),
+}));
+vi.mock('@/lib/cms/legal', () => ({ getLegalEntities: vi.fn().mockResolvedValue([]) }));
+
 let mockPathname = '/id/tentang-kami';
 vi.mock('next/navigation', () => ({ usePathname: () => mockPathname }));
 
 vi.mock('@/lib/cms/settings', () => ({
   getSiteSettings: vi.fn().mockResolvedValue({
     id: 1,
-    site_name: 'Environesia Company Group',
+    site_name: 'Environesia',
     logoUrl: 'https://example.com/logo.png',
   }),
 }));
@@ -35,7 +76,7 @@ describe('TentangKamiPage', () => {
     mockPathname = '/id/tentang-kami';
     render(await TentangKamiPage({ params: Promise.resolve({ locale: 'id' }) }));
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Tentang Environesia Group' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Tentang Environesia' })).toBeInTheDocument();
     expect(
       screen.getByText('Satu Grup, Beragam Keahlian, Terhubung dalam Satu Ekosistem.')
     ).toBeInTheDocument();

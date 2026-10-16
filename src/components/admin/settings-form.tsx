@@ -3,16 +3,17 @@
 import { useActionState, useEffect, useRef } from 'react';
 import type { SiteSettings } from '@/lib/cms/settings';
 import { updateSettingsAction, type SettingsFormState } from '@/app/wp-admin/(protected)/site/settings/actions';
+import { EditorFrameContent, EditorFrameFooter } from './editor-layout';
 import { ImageUploadField } from './image-upload-field';
 import { useToast } from './toast-provider';
 
 const inputClass =
-  'mt-2 w-full rounded-[10px] border border-line bg-paper px-4 py-2.5 text-body text-ink outline-none focus:border-forest';
+  'mt-2 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-2.5 text-body text-ink outline-none focus:border-[#2a7793]';
 
 function TextField({ name, label, defaultValue, textarea }: { name: string; label: string; defaultValue: string; textarea?: boolean }) {
   return (
     <div>
-      <label className="font-mono text-label uppercase text-slate">{label}</label>
+      <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">{label}</label>
       {textarea ? (
         <textarea name={name} defaultValue={defaultValue} rows={3} className={inputClass} />
       ) : (
@@ -24,7 +25,7 @@ function TextField({ name, label, defaultValue, textarea }: { name: string; labe
 
 function Section({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="scroll-mt-24 rounded-[14px] border border-line bg-paper p-6">
+    <section id={id} className="scroll-mt-24 rounded-[16px] border border-[#e3e8ee] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <h2 className="font-display text-h3 text-ink">{title}</h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">{children}</div>
     </section>
@@ -45,7 +46,9 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
   }, [state, toast]);
 
   return (
-    <form action={formAction} className="max-w-3xl space-y-6">
+    <form action={formAction} className="flex h-full min-h-0 w-full flex-col">
+      {/* The ONLY scrolling region in this form — see EditorFrameContent in editor-layout.tsx. */}
+      <EditorFrameContent className="space-y-6 pb-6">
       <Section title="General">
         <TextField name="site_name" label="Site Name" defaultValue={s('site_name')} />
         <TextField name="tagline" label="Tagline" defaultValue={s('tagline')} />
@@ -87,7 +90,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       </Section>
 
       <Section title="Capabilities Grid (Section 02)" id="capabilities-grid">
-        <p className="text-small text-slate sm:col-span-2">
+        <p className="text-small text-[#64748b] sm:col-span-2">
           Shown as the heading&apos;s supporting line, next to the capability cards. Each card&apos;s own logo, title,
           and description are edited per entity under Content → Entities.
         </p>
@@ -97,7 +100,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       </Section>
 
       <Section title="Company History / Our Journey" id="company-history">
-        <p className="text-small text-slate sm:col-span-2">
+        <p className="text-small text-[#64748b] sm:col-span-2">
           Shown above the milestones timeline. The individual milestones themselves (year, title, story, image) are
           managed under Content → Milestones, not here.
         </p>
@@ -114,15 +117,17 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </Section>
 
-      <div className="sticky bottom-0 -mx-6 flex items-center gap-3 border-t border-line bg-paper/95 px-6 py-4 backdrop-blur">
+      </EditorFrameContent>
+
+      <EditorFrameFooter>
         <button
           type="submit"
           disabled={pending}
-          className="rounded-[10px] bg-forest px-5 py-2.5 text-small font-medium text-paper hover:opacity-90 disabled:opacity-60"
+          className="rounded-[10px] bg-[#2a7793] px-5 py-2.5 text-small font-medium text-white hover:opacity-90 disabled:opacity-60"
         >
           {pending ? 'Saving…' : 'Save Settings'}
         </button>
-      </div>
+      </EditorFrameFooter>
     </form>
   );
 }

@@ -39,7 +39,7 @@ function isExternal(url: string | null): url is string {
   return !!url && /^https?:\/\//i.test(url);
 }
 
-export default async function BeritaPerusahaanListPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+export default async function SiaranPersListPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const { supabase } = await requireProfile();
   const params = await searchParams;
   const q = one(params.q).replace(/[%_]/g, '');
@@ -49,8 +49,15 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
   const page = Math.max(1, Number(one(params.page)) || 1);
 
   // Filter options come from the rows themselves, so a brand or outlet that
-  // only exists in an import shows up without any hard-coded list.
-  const { data: facets } = await supabase.from('posts').select('owner, media, published_at').is('deleted_at', null);
+  // only exists in an import shows up without any hard-coded list. Scoped to
+  // post_type='siaran_pers' so a Berita Perusahaan article never leaks into
+  // this list, its filters, or its facets — see src/lib/admin/resources/
+  // siaran-pers.ts and berita-perusahaan.ts for the editors this separates.
+  const { data: facets } = await supabase
+    .from('posts')
+    .select('owner, media, published_at')
+    .eq('post_type', 'siaran_pers')
+    .is('deleted_at', null);
   const owners = [...new Set((facets ?? []).map((r) => r.owner).filter((v): v is string => !!v))].sort();
   const medias = [...new Set((facets ?? []).map((r) => r.media).filter((v): v is string => !!v))].sort();
   const years = [
@@ -60,6 +67,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
   let query = supabase
     .from('posts')
     .select('id, title, owner, media, published_at, source_url, status, needs_review, thumbnail_status, thumbnail_error_reason', { count: 'exact' })
+    .eq('post_type', 'siaran_pers')
     .is('deleted_at', null)
     .order('published_at', { ascending: false, nullsFirst: false })
     .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
@@ -75,7 +83,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
   const pageHref = (p: number) => {
     const next = new URLSearchParams(baseParams);
     next.set('page', String(p));
-    return `/wp-admin/content/berita-perusahaan?${next.toString()}`;
+    return `/wp-admin/content/siaran-pers?${next.toString()}`;
   };
 
   return (
@@ -83,7 +91,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
       <PageHeader
         eyebrow="Content"
         title="Siaran Pers"
-        description="Seluruh berita dan siaran pers Environesia Company Group: kabar, kegiatan, pencapaian, dan informasi resmi."
+        description="Liputan media eksternal tentang Environesia — pemberitaan, bukan artikel yang ditulis sendiri."
       />
       <SiaranPersTabs active="list" />
 
@@ -93,9 +101,9 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
           name="q"
           defaultValue={q}
           placeholder="Cari judul berita…"
-          className="w-full max-w-xs rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          className="w-full max-w-xs rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink outline-none focus:border-[#2a7793]"
         />
-        <select name="owner" defaultValue={owner} className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink">
+        <select name="owner" defaultValue={owner} className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink">
           <option value="">Semua Owner</option>
           {owners.map((o) => (
             <option key={o} value={o}>
@@ -103,7 +111,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
             </option>
           ))}
         </select>
-        <select name="media" defaultValue={media} className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink">
+        <select name="media" defaultValue={media} className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink">
           <option value="">Semua Media</option>
           {medias.map((m) => (
             <option key={m} value={m}>
@@ -111,7 +119,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
             </option>
           ))}
         </select>
-        <select name="year" defaultValue={year} className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink">
+        <select name="year" defaultValue={year} className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink">
           <option value="">Semua Tahun</option>
           {years.map((y) => (
             <option key={y} value={y}>
@@ -119,7 +127,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
             </option>
           ))}
         </select>
-        <button type="submit" className="rounded-[10px] border border-line px-3.5 py-2 text-small text-ink hover:border-forest/40">
+        <button type="submit" className="rounded-[10px] border border-[#e3e8ee] px-3.5 py-2 text-small text-ink hover:border-[#2a7793]/40">
           Terapkan
         </button>
       </form>
@@ -129,10 +137,10 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
       {!rows || rows.length === 0 ? (
         <EmptyState icon={Inbox} title="Belum ada berita" description="Import dari Excel / CSV atau tambah berita baru." />
       ) : (
-        <div className="overflow-x-auto rounded-[14px] border border-line bg-paper">
+        <div className="overflow-x-auto rounded-[12px] border border-[#e3e8ee] bg-white">
           <table className="w-full min-w-[960px] text-left text-small">
             <thead>
-              <tr className="border-b border-line font-mono text-label uppercase text-slate">
+              <tr className="border-b border-[#e3e8ee] text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
                 <th className="px-4 py-3">Thumbnail</th>
                 <th className="px-4 py-3">Judul Press Release</th>
                 <th className="px-4 py-3">Owner</th>
@@ -145,8 +153,8 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.id} className="border-b border-line last:border-0 align-top hover:bg-stone/40">
-                  <td className="max-w-[220px] px-4 py-3 text-label text-slate" title={row.thumbnail_error_reason ?? undefined}>
+                <tr key={row.id} className="border-b border-[#e3e8ee] last:border-0 align-top hover:bg-[#f4f6f9]/40">
+                  <td className="max-w-[220px] px-4 py-3 text-label text-[#64748b]" title={row.thumbnail_error_reason ?? undefined}>
                     {row.thumbnail_status === 'found'
                       ? 'Ada'
                       : row.thumbnail_status === 'not_found'
@@ -161,8 +169,8 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
                       </span>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3 text-ink">{row.owner ?? <span className="text-slate">—</span>}</td>
-                  <td className="px-4 py-3 text-ink">{row.media ?? <span className="text-slate">—</span>}</td>
+                  <td className="px-4 py-3 text-ink">{row.owner ?? <span className="text-[#64748b]">—</span>}</td>
+                  <td className="px-4 py-3 text-ink">{row.media ?? <span className="text-[#64748b]">—</span>}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-ink">{formatDate(row.published_at)}</td>
                   <td className="px-4 py-3">
                     {isExternal(row.source_url) ? (
@@ -170,13 +178,13 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
                         href={row.source_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-forest hover:underline"
+                        className="inline-flex items-center gap-1 text-[#2a7793] hover:underline"
                       >
                         Lihat Berita
                         <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                       </a>
                     ) : (
-                      <span className="text-slate">—</span>
+                      <span className="text-[#64748b]">—</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -186,17 +194,17 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
                     <div className="flex items-center justify-end gap-2">
                       <StatusSelect
                         status={row.status}
-                        onChange={setStatusAction.bind(null, 'posts', row.id)}
+                        onChange={setStatusAction.bind(null, 'siaran-pers', row.id)}
                       />
                       <Link
-                        href={`/wp-admin/content/posts/${row.id}`}
+                        href={`/wp-admin/content/siaran-pers/${row.id}`}
                         aria-label={`Edit ${row.title}`}
                         title="Edit"
-                        className="rounded-[8px] p-1.5 text-slate hover:bg-forest/10 hover:text-forest"
+                        className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#2a7793]/10 hover:text-[#2a7793]"
                       >
                         <PenLine className="h-4 w-4" aria-hidden="true" />
                       </Link>
-                      <DeleteButton action={deleteAction.bind(null, 'posts', row.id)} itemLabel={row.title} iconOnly />
+                      <DeleteButton action={deleteAction.bind(null, 'siaran-pers', row.id)} itemLabel={row.title} iconOnly />
                       {row.source_url ? <ThumbnailRetryButton postId={row.id} /> : null}
                     </div>
                   </td>
@@ -216,7 +224,7 @@ export default async function BeritaPerusahaanListPage({ searchParams }: { searc
           ) : (
             <span />
           )}
-          <span className="text-slate">
+          <span className="text-[#64748b]">
             Halaman {page} dari {totalPages} · {total} berita
           </span>
           {page < totalPages ? (

@@ -169,6 +169,13 @@ export type Database = {
           deleted_at: string | null
           description: string | null
           email: string | null
+          explorer_category: string | null
+          explorer_description: string | null
+          explorer_contribution: string | null
+          explorer_focus: string[]
+          explorer_image_path: string | null
+          explorer_services: string[]
+          explorer_role: string | null
           id: string
           legalitas: string[]
           lini: string | null
@@ -178,12 +185,14 @@ export type Database = {
           services: string[]
           short_description: string | null
           slug: string
+          social_tiktok: string | null
+          social_youtube: string | null
           sort_order: number
           status: string
           tagline: string | null
           updated_at: string
           website: string | null
-        }
+        },
         Insert: {
           accent_color?: string | null
           capability_description?: string | null
@@ -193,6 +202,13 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           email?: string | null
+          explorer_category?: string | null
+          explorer_description?: string | null
+          explorer_contribution?: string | null
+          explorer_focus?: string[]
+          explorer_image_path?: string | null
+          explorer_services?: string[]
+          explorer_role?: string | null
           id?: string
           legalitas?: string[]
           lini?: string | null
@@ -202,12 +218,14 @@ export type Database = {
           services?: string[]
           short_description?: string | null
           slug: string
+          social_tiktok?: string | null
+          social_youtube?: string | null
           sort_order?: number
           status?: string
           tagline?: string | null
           updated_at?: string
           website?: string | null
-        }
+        },
         Update: {
           accent_color?: string | null
           capability_description?: string | null
@@ -217,6 +235,13 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           email?: string | null
+          explorer_category?: string | null
+          explorer_description?: string | null
+          explorer_contribution?: string | null
+          explorer_focus?: string[]
+          explorer_image_path?: string | null
+          explorer_services?: string[]
+          explorer_role?: string | null
           id?: string
           legalitas?: string[]
           lini?: string | null
@@ -226,12 +251,14 @@ export type Database = {
           services?: string[]
           short_description?: string | null
           slug?: string
+          social_tiktok?: string | null
+          social_youtube?: string | null
           sort_order?: number
           status?: string
           tagline?: string | null
           updated_at?: string
           website?: string | null
-        }
+        },
         Relationships: []
       }
       hero_slides: {
@@ -344,20 +371,302 @@ export type Database = {
           },
         ]
       }
+      clients: {
+        Row: {
+          active: boolean
+          client_name: string
+          created_at: string
+          id: string
+          logo_path: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          client_name: string
+          created_at?: string
+          id?: string
+          logo_path?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          client_name?: string
+          created_at?: string
+          id?: string
+          logo_path?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      legal_cards: {
+        Row: {
+          category: string
+          created_at: string
+          entity_id: string
+          id: string
+          intro: Json
+          logo: string | null
+          logo_alt: string
+          sort_order: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          entity_id: string
+          id: string
+          intro?: Json
+          logo?: string | null
+          logo_alt: string
+          sort_order?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          entity_id?: string
+          id?: string
+          intro?: Json
+          logo?: string | null
+          logo_alt?: string
+          sort_order?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      legal_documents: {
+        Row: {
+          card_id: string
+          cta_label: string | null
+          created_at: string
+          description: string | null
+          document_type: string | null
+          document_url: string | null
+          external_url: string | null
+          fields: Json
+          id: string
+          issuer: string | null
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          card_id: string
+          cta_label?: string | null
+          created_at?: string
+          description?: string | null
+          document_type?: string | null
+          document_url?: string | null
+          external_url?: string | null
+          fields?: Json
+          id: string
+          issuer?: string | null
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          card_id?: string
+          cta_label?: string | null
+          created_at?: string
+          description?: string | null
+          document_type?: string | null
+          document_url?: string | null
+          external_url?: string | null
+          fields?: Json
+          id?: string
+          issuer?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      legal_entities: {
+        Row: {
+          created_at: string
+          id: string
+          legal_name: string | null
+          name: string
+          short_name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          legal_name?: string | null
+          name: string
+          short_name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legal_name?: string | null
+          name?: string
+          short_name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      page_content: {
+        Row: {
+          images: Json
+          created_at: string
+          description: string | null
+          description_en: string | null
+          description_zh: string | null
+          extra_label: string | null
+          extra_label_en: string | null
+          extra_label_zh: string | null
+          extra_text: string | null
+          extra_text_en: string | null
+          extra_text_zh: string | null
+          eyebrow: string | null
+          eyebrow_en: string | null
+          eyebrow_zh: string | null
+          id: string
+          image_mobile_path: string | null
+          image_path: string | null
+          items: Json
+          items_en: Json
+          items_zh: Json
+          meta_description: string | null
+          meta_description_en: string | null
+          meta_description_zh: string | null
+          meta_title: string | null
+          meta_title_en: string | null
+          meta_title_zh: string | null
+          section_group: string
+          slug: string
+          sort_order: number
+          status: string
+          steps: Json
+          steps_en: Json
+          steps_zh: Json
+          tags: Json
+          tags_en: Json
+          tags_zh: Json
+          title: string
+          title_en: string | null
+          title_zh: string | null
+          updated_at: string
+        },
+        Insert: {
+          images?: Json
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          description_zh?: string | null
+          extra_label?: string | null
+          extra_label_en?: string | null
+          extra_label_zh?: string | null
+          extra_text?: string | null
+          extra_text_en?: string | null
+          extra_text_zh?: string | null
+          eyebrow?: string | null
+          eyebrow_en?: string | null
+          eyebrow_zh?: string | null
+          id?: string
+          image_mobile_path?: string | null
+          image_path?: string | null
+          items?: Json
+          items_en?: Json
+          items_zh?: Json
+          meta_description?: string | null
+          meta_description_en?: string | null
+          meta_description_zh?: string | null
+          meta_title?: string | null
+          meta_title_en?: string | null
+          meta_title_zh?: string | null
+          section_group: string
+          slug: string
+          sort_order?: number
+          status?: string
+          steps?: Json
+          steps_en?: Json
+          steps_zh?: Json
+          tags?: Json
+          tags_en?: Json
+          tags_zh?: Json
+          title: string
+          title_en?: string | null
+          title_zh?: string | null
+          updated_at?: string
+        },
+        Update: {
+          images?: Json
+          created_at?: string
+          description?: string | null
+          description_en?: string | null
+          description_zh?: string | null
+          extra_label?: string | null
+          extra_label_en?: string | null
+          extra_label_zh?: string | null
+          extra_text?: string | null
+          extra_text_en?: string | null
+          extra_text_zh?: string | null
+          eyebrow?: string | null
+          eyebrow_en?: string | null
+          eyebrow_zh?: string | null
+          id?: string
+          image_mobile_path?: string | null
+          image_path?: string | null
+          items?: Json
+          items_en?: Json
+          items_zh?: Json
+          meta_description?: string | null
+          meta_description_en?: string | null
+          meta_description_zh?: string | null
+          meta_title?: string | null
+          meta_title_en?: string | null
+          meta_title_zh?: string | null
+          section_group?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          steps?: Json
+          steps_en?: Json
+          steps_zh?: Json
+          tags?: Json
+          tags_en?: Json
+          tags_zh?: Json
+          title?: string
+          title_en?: string | null
+          title_zh?: string | null
+          updated_at?: string
+        },
+        Relationships: []
+      }
       jobs: {
         Row: {
           created_at: string
           created_by: string | null
           deadline: string | null
           deleted_at: string | null
-          description: string | null
+          division: string | null
+          open_date: string | null
+          cover_image_path: string | null
+          general_recruitment: string | null
+          specific_recruitment: string | null
+          google_form_url: string | null
           employment_type: string | null
           entity_id: string | null
           id: string
           location: string | null
           published_at: string | null
-          requirements: string | null
-          responsibilities: string | null
           slug: string
           status: string
           title: string
@@ -368,14 +677,17 @@ export type Database = {
           created_by?: string | null
           deadline?: string | null
           deleted_at?: string | null
-          description?: string | null
+          division?: string | null
+          open_date?: string | null
+          cover_image_path?: string | null
+          general_recruitment?: string | null
+          specific_recruitment?: string | null
+          google_form_url?: string | null
           employment_type?: string | null
           entity_id?: string | null
           id?: string
           location?: string | null
           published_at?: string | null
-          requirements?: string | null
-          responsibilities?: string | null
           slug: string
           status?: string
           title: string
@@ -386,14 +698,17 @@ export type Database = {
           created_by?: string | null
           deadline?: string | null
           deleted_at?: string | null
-          description?: string | null
+          division?: string | null
+          open_date?: string | null
+          cover_image_path?: string | null
+          general_recruitment?: string | null
+          specific_recruitment?: string | null
+          google_form_url?: string | null
           employment_type?: string | null
           entity_id?: string | null
           id?: string
           location?: string | null
           published_at?: string | null
-          requirements?: string | null
-          responsibilities?: string | null
           slug?: string
           status?: string
           title?: string
@@ -418,6 +733,7 @@ export type Database = {
       }
       leadership: {
         Row: {
+          profile: Json
           bio: string | null
           created_at: string
           entity_id: string | null
@@ -432,6 +748,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          profile?: Json
           bio?: string | null
           created_at?: string
           entity_id?: string | null
@@ -446,6 +763,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          profile?: Json
           bio?: string | null
           created_at?: string
           entity_id?: string | null
@@ -743,6 +1061,7 @@ export type Database = {
           thumbnail_detection_method: string | null
           thumbnail_error_reason: string | null
           thumbnail_extractor_version: number | null
+          post_type: string
         }
         Insert: {
           author?: string | null
@@ -774,6 +1093,7 @@ export type Database = {
           thumbnail_detection_method?: string | null
           thumbnail_error_reason?: string | null
           thumbnail_extractor_version?: number | null
+          post_type?: string
         }
         Update: {
           author?: string | null
@@ -805,6 +1125,7 @@ export type Database = {
           thumbnail_detection_method?: string | null
           thumbnail_error_reason?: string | null
           thumbnail_extractor_version?: number | null
+          post_type?: string
         }
         Relationships: [
           {

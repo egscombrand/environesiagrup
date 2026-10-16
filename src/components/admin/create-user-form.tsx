@@ -3,16 +3,28 @@
 import { useActionState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserAction, type CreateUserState } from '@/app/wp-admin/(protected)/users/actions';
+import { useRequiredFieldsValidation } from './use-required-fields';
+import { ValidationModal } from './validation-modal';
 import { useToast } from './toast-provider';
 
-const inputClass =
-  'mt-2 w-full rounded-[10px] border border-line bg-paper px-4 py-2.5 text-body text-ink outline-none focus:border-forest';
+const REQUIRED_FIELDS = [
+  { name: 'username', label: 'Username' },
+  { name: 'email', label: 'Email' },
+];
+
+function inputClass(hasError: boolean) {
+  return `mt-2 w-full rounded-[10px] border ${
+    hasError ? 'border-danger focus:border-danger' : 'border-[#e3e8ee] focus:border-[#2a7793]'
+  } bg-white px-4 py-2.5 text-body text-ink outline-none`;
+}
 
 export function CreateUserForm() {
   const router = useRouter();
   const toast = useToast();
   const [state, formAction, pending] = useActionState<CreateUserState, FormData>(createUserAction, {});
   const lastState = useRef(state);
+  const { formRef, errors, missing, modalOpen, validate, closeModal, goToField, handleFieldActivity } =
+    useRequiredFieldsValidation(REQUIRED_FIELDS);
 
   useEffect(() => {
     if (state === lastState.current) return;
@@ -22,8 +34,8 @@ export function CreateUserForm() {
 
   if (state.invited) {
     return (
-      <div className="rounded-[14px] border border-success/30 bg-success/5 p-6">
-        <p className="font-mono text-label uppercase text-success">Invitation sent</p>
+      <div className="rounded-[12px] border border-success/30 bg-success/5 p-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-success">Invitation sent</p>
         <p className="mt-2 text-body text-ink">
           An invite email was sent. The user sets their own password via the link in that email — this
           system never creates or sees a password for them.
@@ -31,7 +43,7 @@ export function CreateUserForm() {
         <button
           type="button"
           onClick={() => router.refresh()}
-          className="mt-4 rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90"
+          className="mt-4 rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90"
         >
           Done
         </button>
@@ -40,29 +52,46 @@ export function CreateUserForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form
+      ref={formRef}
+      action={formAction}
+      onSubmit={(e) => {
+        if (!validate()) {
+          e.preventDefault();
+          toast('error', 'Mohon lengkapi field yang wajib diisi.');
+        }
+      }}
+      onInput={handleFieldActivity}
+      onChange={handleFieldActivity}
+      className="space-y-4"
+    >
       <div>
-        <label className="font-mono text-label uppercase text-slate">
+        <label htmlFor="username" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           Username<span className="text-danger"> *</span>
         </label>
-        <input type="text" name="username" required className={inputClass} />
+        <input id="username" type="text" name="username" className={inputClass(errors.has('username'))} />
+        {errors.has('username') ? <p className="mt-1 text-small text-danger">Field ini wajib diisi.</p> : null}
       </div>
       <div>
-        <label className="font-mono text-label uppercase text-slate">
+        <label htmlFor="email" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           Email<span className="text-danger"> *</span>
         </label>
-        <input type="email" name="email" required className={inputClass} />
-        <p className="mt-1 text-small text-slate">The password-setup invitation is sent to this address.</p>
+        <input id="email" type="email" name="email" className={inputClass(errors.has('email'))} />
+        {errors.has('email') ? (
+          <p className="mt-1 text-small text-danger">Field ini wajib diisi.</p>
+        ) : (
+          <p className="mt-1 text-small text-[#64748b]">The password-setup invitation is sent to this address.</p>
+        )}
       </div>
       <div>
-        <label className="font-mono text-label uppercase text-slate">Full Name</label>
-        <input type="text" name="full_name" className={inputClass} />
+        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Full Name</label>
+        <input type="text" name="full_name" className={inputClass(false)} />
       </div>
       <div>
-        <label className="font-mono text-label uppercase text-slate">
+        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           Role<span className="text-danger"> *</span>
         </label>
-        <select name="role" defaultValue="author" className={inputClass}>
+        <select name="role" defaultValue="author" className={inputClass(false)}>
           <option value="super_admin">Super Admin</option>
           <option value="editor">Editor</option>
           <option value="author">Author</option>
@@ -71,10 +100,12 @@ export function CreateUserForm() {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-[10px] bg-forest px-5 py-2.5 text-small font-medium text-paper hover:opacity-90 disabled:opacity-60"
+        className="rounded-[10px] bg-[#2a7793] px-5 py-2.5 text-small font-medium text-white hover:opacity-90 disabled:opacity-60"
       >
         {pending ? 'Sending invite…' : 'Invite User'}
       </button>
+
+      <ValidationModal open={modalOpen} missing={missing} onSelectField={goToField} onClose={closeModal} />
     </form>
   );
 }

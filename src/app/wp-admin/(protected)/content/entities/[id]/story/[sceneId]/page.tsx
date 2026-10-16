@@ -8,7 +8,7 @@ import { PageHeader } from '@/components/admin/page-header';
 import { ResourceForm } from '@/components/admin/resource-form';
 import { updateStorySceneAction } from '../actions';
 
-export const metadata: Metadata = { title: 'Edit Scene' };
+export const metadata: Metadata = { title: 'Edit Foto Galeri' };
 
 export default async function EditStoryScenePage({
   params,
@@ -25,16 +25,17 @@ export default async function EditStoryScenePage({
   if (!scene || scene.entity_id !== id) notFound();
 
   return (
-    <div>
-      <PageHeader eyebrow={`Content / Entities / ${entity.name} / Story`} title="Edit Scene" />
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0">
+        <PageHeader eyebrow={`Content / Entities / ${entity.name} / Galeri`} title="Edit Foto Galeri" />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-8 min-h-0 flex-1">
         <ResourceForm
           fields={storySceneFields}
           initialValues={scene}
           action={updateStorySceneAction.bind(null, id, sceneId)}
           cancelHref={`/wp-admin/content/entities/${id}/story`}
-          successMessage="Scene updated."
         />
       </div>
     </div>

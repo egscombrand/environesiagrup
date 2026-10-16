@@ -29,7 +29,7 @@ export async function GroupEcosystemBanner({ locale, title }: { locale: string; 
   return (
     <section className="relative w-full overflow-hidden bg-pine-ink">
       <div className="relative min-h-[440px] w-full md:min-h-[520px]">
-        <HeroPhoto alt="Gedung kantor Environesia dengan langit cerah — merepresentasikan ekosistem bisnis Environesia Group" />
+        <HeroPhoto alt="Gedung kantor Environesia dengan langit cerah — merepresentasikan ekosistem bisnis Environesia" />
         {/* A very subtle, even wash for text contrast — the building on the
             left stays fully visible as the banner's main visual; the
             content box (right) carries most of the contrast work itself. */}
@@ -67,7 +67,7 @@ export async function GroupEcosystemBanner({ locale, title }: { locale: string; 
                     </Link>
                   ) : null}
                   <Link
-                    href={`/${locale}/pimpinan`}
+                    href={`/${locale}/tentang-kami/direktur`}
                     className="inline-flex items-center justify-center rounded-[14px] border border-canvas/50 px-6 py-3 text-small font-medium text-canvas hover:bg-canvas/10"
                   >
                     {t.beranda.groupEcosystemSecondaryCta}

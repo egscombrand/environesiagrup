@@ -13,16 +13,16 @@ export function StatCard({
   trend?: { value: string; direction: 'up' | 'down' | 'neutral' };
 }) {
   return (
-    <div className="rounded-[14px] border border-line bg-paper p-5">
+    <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-5">
       <div className="flex items-start justify-between">
-        <p className="font-mono text-label uppercase text-slate">{label}</p>
-        <Icon className="h-4 w-4 shrink-0 text-slate" strokeWidth={1.75} aria-hidden="true" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">{label}</p>
+        <Icon className="h-4 w-4 shrink-0 text-[#64748b]" strokeWidth={1.75} aria-hidden="true" />
       </div>
       <p className="mt-3 font-display text-h2 text-ink">{value}</p>
       {trend ? (
         <p
           className={`mt-1 text-small ${
-            trend.direction === 'up' ? 'text-success' : trend.direction === 'down' ? 'text-danger' : 'text-slate'
+            trend.direction === 'up' ? 'text-success' : trend.direction === 'down' ? 'text-danger' : 'text-[#64748b]'
           }`}
         >
           {trend.value}

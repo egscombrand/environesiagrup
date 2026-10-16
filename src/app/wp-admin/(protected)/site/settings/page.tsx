@@ -14,9 +14,11 @@ export default async function SiteSettingsPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div>
-      <PageHeader eyebrow="Website" title="Site Settings" description="General information, social links, SEO defaults, and footer content." />
-      <div className="mt-8">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0">
+        <PageHeader eyebrow="Website" title="Site Settings" description="General information, social links, SEO defaults, and footer content." />
+      </div>
+      <div className="mt-8 min-h-0 flex-1">
         <SettingsForm settings={settings} />
       </div>
     </div>

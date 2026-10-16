@@ -15,9 +15,10 @@ function isExternalUrl(value: string | null): value is string {
   }
 }
 
-// The "Berita Perusahaan" list — every published post, including what used to
-// be press releases. Same `posts` table and the same real detail route
-// (/berita/[slug], unchanged) as the standalone /berita page.
+// The "Berita Perusahaan" list — self-authored company news only (post_type
+// = 'berita_perusahaan'), never a press clipping. Same `posts` table and the
+// same real detail route (/berita/[slug], unchanged) as the standalone
+// /berita page, which still spans both content types.
 export function PostsListSection({ locale, posts, emptyMessage }: { locale: string; posts: Post[]; emptyMessage: string }) {
   return (
     <Section className="bg-stone">

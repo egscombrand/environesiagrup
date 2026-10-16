@@ -31,7 +31,7 @@ const CONFIDENCE_CLASS: Record<EditableCandidate['confidence'], string> = {
 };
 
 const inputClass =
-  'w-full rounded-[8px] border border-line bg-paper px-2.5 py-1.5 text-small text-ink outline-none focus:border-forest';
+  'w-full rounded-[8px] border border-[#e3e8ee] bg-white px-2.5 py-1.5 text-small text-ink outline-none focus:border-[#2a7793]';
 
 export function PdfImportWizard() {
   const toast = useToast();
@@ -187,7 +187,7 @@ export function PdfImportWizard() {
   if (step === 'upload') {
     return (
       <div className="max-w-2xl">
-        <label className="font-mono text-label uppercase text-slate">Upload Portfolio PDF</label>
+        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Upload Portfolio PDF</label>
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -201,13 +201,13 @@ export function PdfImportWizard() {
             if (file) handleFile(file);
           }}
           onClick={() => fileInputRef.current?.click()}
-          className={`mt-2 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[14px] border-2 border-dashed px-6 py-14 text-center transition-colors ${
-            dragOver ? 'border-forest bg-forest/5' : 'border-line bg-paper hover:border-forest/40'
+          className={`mt-2 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[12px] border-2 border-dashed px-6 py-14 text-center transition-colors ${
+            dragOver ? 'border-[#2a7793] bg-[#2a7793]/5' : 'border-[#e3e8ee] bg-white hover:border-[#2a7793]/40'
           }`}
         >
-          <UploadCloud className="h-8 w-8 text-slate" strokeWidth={1.5} aria-hidden="true" />
+          <UploadCloud className="h-8 w-8 text-[#64748b]" strokeWidth={1.5} aria-hidden="true" />
           <p className="text-body text-ink">Drag &amp; drop PDF di sini atau pilih file</p>
-          <p className="text-small text-slate">PDF only, maksimal {MAX_SIZE_LABEL}</p>
+          <p className="text-small text-[#64748b]">PDF only, maksimal {MAX_SIZE_LABEL}</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -231,14 +231,14 @@ export function PdfImportWizard() {
 
   if (step === 'processing') {
     return (
-      <div className="flex max-w-2xl flex-col items-center gap-4 rounded-[14px] border border-line bg-paper px-6 py-16 text-center">
-        <Loader2 className="h-6 w-6 animate-spin text-forest" aria-hidden="true" />
+      <div className="flex max-w-2xl flex-col items-center gap-4 rounded-[12px] border border-[#e3e8ee] bg-white px-6 py-16 text-center">
+        <Loader2 className="h-6 w-6 animate-spin text-[#2a7793]" aria-hidden="true" />
         <p className="font-display text-h3 text-ink">{PROCESSING_STAGES[stageIndex]}…</p>
         <div className="flex gap-1.5">
           {PROCESSING_STAGES.map((stage, i) => (
             <span
               key={stage}
-              className={`h-1.5 w-8 rounded-full ${i <= stageIndex ? 'bg-forest' : 'bg-stone'}`}
+              className={`h-1.5 w-8 rounded-full ${i <= stageIndex ? 'bg-[#2a7793]' : 'bg-[#f4f6f9]'}`}
               aria-hidden="true"
             />
           ))}
@@ -250,15 +250,15 @@ export function PdfImportWizard() {
   if (step === 'importing') {
     const pct = importProgress.total > 0 ? Math.round((importProgress.done / importProgress.total) * 100) : 0;
     return (
-      <div className="flex max-w-2xl flex-col items-center gap-4 rounded-[14px] border border-line bg-paper px-6 py-16 text-center">
-        <Loader2 className="h-6 w-6 animate-spin text-forest" aria-hidden="true" />
+      <div className="flex max-w-2xl flex-col items-center gap-4 rounded-[12px] border border-[#e3e8ee] bg-white px-6 py-16 text-center">
+        <Loader2 className="h-6 w-6 animate-spin text-[#2a7793]" aria-hidden="true" />
         <p className="font-display text-h3 text-ink">Mengimpor project…</p>
-        <p className="text-small text-slate">
+        <p className="text-small text-[#64748b]">
           {importProgress.done} / {importProgress.total}
         </p>
-        <div className="h-1.5 w-full max-w-xs rounded-full bg-stone">
+        <div className="h-1.5 w-full max-w-xs rounded-full bg-[#f4f6f9]">
           <div
-            className="h-1.5 rounded-full bg-forest transition-[width] duration-300 motion-reduce:transition-none"
+            className="h-1.5 rounded-full bg-[#2a7793] transition-[width] duration-300 motion-reduce:transition-none"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -268,23 +268,23 @@ export function PdfImportWizard() {
 
   if (step === 'done') {
     return (
-      <div className="flex max-w-2xl flex-col items-center gap-3 rounded-[14px] border border-line bg-paper px-6 py-16 text-center">
+      <div className="flex max-w-2xl flex-col items-center gap-3 rounded-[12px] border border-[#e3e8ee] bg-white px-6 py-16 text-center">
         <CheckCircle2 className="h-8 w-8 text-success" aria-hidden="true" />
         <p className="font-display text-h3 text-ink">{savedCount} proyek berhasil diimport sebagai Draft</p>
-        <p className="max-w-md text-small text-slate">
+        <p className="max-w-md text-small text-[#64748b]">
           Buka Projects untuk meninjau dan mempublikasikan proyek yang baru diimport.
         </p>
         <div className="mt-2 flex gap-3">
           <Link
             href="/wp-admin/content/projects"
-            className="rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90"
+            className="rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90"
           >
             Buka Projects
           </Link>
           <button
             type="button"
             onClick={reset}
-            className="rounded-[10px] border border-line px-4 py-2 text-small text-ink hover:border-forest/30"
+            className="rounded-[10px] border border-[#e3e8ee] px-4 py-2 text-small text-ink hover:border-[#2a7793]/30"
           >
             Import PDF Lain
           </button>
@@ -296,13 +296,13 @@ export function PdfImportWizard() {
   // step === 'review'
   return (
     <div>
-      <div className="rounded-[14px] border border-line bg-paper p-4">
+      <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-4">
         {/* Bulk selection is the primary, easiest path — one click selects
             everything (including rows that need review or look like a
             possible duplicate; the admin excludes any of those afterward
             with their own row checkbox), one click imports everything.
             Individual checkboxes below still work for a partial import. */}
-        <div className="flex flex-wrap items-center gap-4 border-b border-line pb-4">
+        <div className="flex flex-wrap items-center gap-4 border-b border-[#e3e8ee] pb-4">
           <label className="flex items-center gap-2 text-small font-medium text-ink">
             <input
               type="checkbox"
@@ -314,18 +314,18 @@ export function PdfImportWizard() {
             />
             Pilih Semua
           </label>
-          <p className="text-small text-slate">
+          <p className="text-small text-[#64748b]">
             {candidates.length} project ditemukan · {selectedCount} project dipilih
           </p>
           <div className="ml-auto flex items-center gap-3">
-            <button type="button" onClick={handleCancel} className="text-small text-slate hover:text-ink">
+            <button type="button" onClick={handleCancel} className="text-small text-[#64748b] hover:text-ink">
               Batal
             </button>
             <button
               type="button"
               disabled={saving || selectedCount === 0}
               onClick={handleSave}
-              className="rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90 disabled:opacity-40"
+              className="rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90 disabled:opacity-40"
             >
               {saving
                 ? 'Menyimpan…'
@@ -338,44 +338,44 @@ export function PdfImportWizard() {
 
         <div className="flex flex-wrap items-center gap-6 pt-4">
           <div>
-            <p className="font-mono text-label uppercase text-slate">Projects found</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Projects found</p>
             <p className="font-display text-h3 text-ink">{candidates.length}</p>
           </div>
           <div>
-            <p className="font-mono text-label uppercase text-slate">Ready to import</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Ready to import</p>
             <p className="font-display text-h3 text-ink">{readyCount}</p>
           </div>
           <div>
-            <p className="font-mono text-label uppercase text-slate">Need review</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Need review</p>
             <p className="font-display text-h3 text-ink">{needsReviewCount}</p>
           </div>
           <div>
-            <p className="font-mono text-label uppercase text-slate">Possible duplicates</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Possible duplicates</p>
             <p className="font-display text-h3 text-ink">{duplicateCount}</p>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-[14px] border border-line bg-paper">
+      <div className="mt-4 overflow-x-auto rounded-[12px] border border-[#e3e8ee] bg-white">
         <table className="w-full min-w-[1100px] text-left text-small">
           <thead>
-            <tr className="border-b border-line">
+            <tr className="border-b border-[#e3e8ee]">
               <th className="w-10 px-3 py-3" />
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Project</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Client</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Sector</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Location</th>
-              <th className="w-20 px-3 py-3 font-mono text-label uppercase text-slate">Year</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Service</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Company</th>
-              <th className="px-3 py-3 font-mono text-label uppercase text-slate">Status</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Project</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Client</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Sector</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Location</th>
+              <th className="w-20 px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Year</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Service</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Company</th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Status</th>
             </tr>
           </thead>
           <tbody>
             {candidates.map((row) => {
               const valid = isRowValid(row);
               return (
-                <tr key={row.key} className="border-b border-line align-top last:border-0">
+                <tr key={row.key} className="border-b border-[#e3e8ee] align-top last:border-0">
                   <td className="px-3 py-3">
                     <input
                       type="checkbox"
@@ -393,7 +393,7 @@ export function PdfImportWizard() {
                       placeholder="Nama proyek"
                     />
                     {row.source_page ? (
-                      <p className="mt-1 text-label text-slate">Hal. {row.source_page}</p>
+                      <p className="mt-1 text-label text-[#64748b]">Hal. {row.source_page}</p>
                     ) : null}
                   </td>
                   <td className="px-3 py-3">
@@ -456,7 +456,7 @@ export function PdfImportWizard() {
                     </select>
                   </td>
                   <td className="px-3 py-3">
-                    <p className={`flex items-center gap-1 font-mono text-label uppercase ${CONFIDENCE_CLASS[row.confidence]}`}>
+                    <p className={`flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.08em] ${CONFIDENCE_CLASS[row.confidence]}`}>
                       {CONFIDENCE_LABEL[row.confidence]}
                     </p>
                     {needsReview(row) ? (
@@ -478,7 +478,7 @@ export function PdfImportWizard() {
         </table>
       </div>
 
-      <p className="mt-3 flex items-center gap-1.5 text-small text-slate">
+      <p className="mt-3 flex items-center gap-1.5 text-small text-[#64748b]">
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
         Sumber: {sourceDocument?.split('/').pop()}
       </p>

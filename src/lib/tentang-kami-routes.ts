@@ -20,38 +20,38 @@ export const TENTANG_KAMI_ROUTES: readonly TentangKamiRoute[] = [
     slug: 'sejarah',
     label: 'Perjalanan Kami',
     deskripsi: 'Perjalanan grup dari tahun ke tahun.',
-    metaDescription: 'Perjalanan Environesia Group dari tahun ke tahun.',
+    metaDescription: 'Perjalanan Environesia dari tahun ke tahun.',
   },
   {
     slug: 'visi-misi-tatanilai',
     label: 'Visi, Misi & Tata Nilai',
     deskripsi: 'Arah dan prinsip kerja jangka panjang.',
-    metaDescription: 'Visi, misi, dan tata nilai Environesia Group.',
+    metaDescription: 'Visi, misi, dan tata nilai Environesia.',
   },
   {
     slug: 'struktur-organisasi',
     label: 'Struktur Organisasi',
     deskripsi: 'Susunan grup dan entitas di bawahnya.',
-    metaDescription: 'Susunan Environesia Group dan entitas di bawahnya.',
+    metaDescription: 'Susunan Environesia dan entitas di bawahnya.',
   },
   {
     slug: 'direktur',
     label: 'Direktur Utama & Dewan Direksi',
     deskripsi: 'Pimpinan yang mengarahkan grup.',
-    metaDescription: 'Direktur Utama dan Dewan Direksi Environesia Group.',
+    metaDescription: 'Direktur Utama dan Dewan Direksi Environesia.',
   },
   {
     slug: 'penghargaan',
     label: 'Penghargaan',
     deskripsi: 'Pengakuan dan apresiasi untuk grup.',
-    metaDescription: 'Pengakuan dan apresiasi untuk Environesia Group.',
+    metaDescription: 'Pengakuan dan apresiasi untuk Environesia.',
   },
   {
     slug: 'legalitas',
     label: 'Legalitas & Sertifikasi',
     deskripsi:
-      'Legalitas, perizinan, sertifikasi, dan akreditasi yang mendukung operasional setiap entitas dalam Environesia Company Group.',
-    metaDescription: 'Legalitas, perizinan, sertifikasi, dan akreditasi setiap entitas Environesia Company Group.',
+      'Legalitas, perizinan, sertifikasi, dan akreditasi yang mendukung operasional setiap entitas dalam Environesia.',
+    metaDescription: 'Legalitas, perizinan, sertifikasi, dan akreditasi setiap entitas Environesia.',
   },
 ] as const;
 

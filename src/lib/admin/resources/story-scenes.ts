@@ -14,9 +14,9 @@ const STATUS_OPTIONS = [
 // field/column/schema definitions directly instead — entity_id is supplied
 // by the route, never a form field an admin edits.
 export const storySceneFields: FieldConfig[] = [
-  { name: 'headline', label: 'Headline', type: 'text', section: 'Content' },
-  { name: 'description', label: 'Deskripsi', type: 'textarea', section: 'Content' },
-  { name: 'image_path', label: 'Gambar', type: 'image', mediaFolder: 'story-scenes', section: 'Content' },
+  { name: 'image_path', label: 'Foto', type: 'image', mediaFolder: 'story-scenes', section: 'Content' },
+  { name: 'headline', label: 'Keterangan (opsional)', type: 'text', section: 'Content' },
+  { name: 'description', label: 'Deskripsi (opsional)', type: 'textarea', section: 'Content' },
   {
     name: 'cta_label',
     label: 'CTA Label',

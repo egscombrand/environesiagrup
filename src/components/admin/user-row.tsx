@@ -21,19 +21,19 @@ export function UserRow({
   const toast = useToast();
 
   return (
-    <tr className="border-b border-line last:border-0 hover:bg-stone/40">
+    <tr className="border-b border-[#e3e8ee] last:border-0 hover:bg-[#f4f6f9]/40">
       <td className="px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-forest text-[11px] font-medium text-paper">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a7793] text-[11px] font-medium text-white">
             {profile.username.slice(0, 1).toUpperCase()}
           </span>
           <span className="text-ink">
             {profile.username}
-            {isSelf ? <span className="ml-2 text-small text-slate">(You)</span> : null}
+            {isSelf ? <span className="ml-2 text-small text-[#64748b]">(You)</span> : null}
           </span>
         </div>
       </td>
-      <td className="px-4 py-3 text-slate">{profile.full_name ?? '—'}</td>
+      <td className="px-4 py-3 text-[#64748b]">{profile.full_name ?? '—'}</td>
       <td className="px-4 py-3">
         {isSelf ? (
           ROLE_LABELS[profile.role]
@@ -47,7 +47,7 @@ export function UserRow({
                 router.refresh();
               })
             }
-            className="rounded-[8px] border border-line bg-paper px-2 py-1 text-small text-ink"
+            className="rounded-[8px] border border-[#e3e8ee] bg-white px-2 py-1 text-small text-ink"
           >
             <option value="super_admin">Super Admin</option>
             <option value="editor">Editor</option>
@@ -55,7 +55,7 @@ export function UserRow({
           </select>
         )}
       </td>
-      <td className="px-4 py-3 text-slate">{new Date(profile.created_at).toLocaleDateString('id-ID')}</td>
+      <td className="px-4 py-3 text-[#64748b]">{new Date(profile.created_at).toLocaleDateString('id-ID')}</td>
       <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-2">
           {isSelf ? null : (
@@ -75,7 +75,7 @@ export function UserRow({
               }
               aria-label="Reset password"
               title="Reset password"
-              className="rounded-[8px] p-1.5 text-slate hover:bg-forest/10 hover:text-forest disabled:opacity-50"
+              className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#2a7793]/10 hover:text-[#2a7793] disabled:opacity-50"
             >
               <KeyRound className="h-4 w-4" aria-hidden="true" />
             </button>

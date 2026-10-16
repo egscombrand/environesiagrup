@@ -11,7 +11,7 @@ describe('Section', () => {
     );
 
     const container = screen.getByText('Hello').parentElement;
-    expect(container).toHaveClass('max-w-[1280px]', 'px-6', 'md:px-12');
+    expect(container).toHaveClass('max-w-[1280px]', 'px-6', 'md:px-8', 'lg:px-12');
   });
 
   it('applies standard vertical padding by default', () => {

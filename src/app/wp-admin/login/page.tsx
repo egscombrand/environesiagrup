@@ -16,15 +16,15 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-stone px-6 py-16">
-      <div className="w-full max-w-sm rounded-[16px] border border-line bg-paper p-8 shadow-sm sm:p-10">
-        <p className="text-center font-mono text-label uppercase tracking-[0.14em] text-slate">ENVIROnesia</p>
-        <p className="mt-1 text-center font-mono text-label uppercase tracking-[0.14em] text-slate/50">
+    <div className="flex min-h-screen items-center justify-center bg-[#f4f6f9] px-6 py-16">
+      <div className="w-full max-w-sm rounded-[16px] border border-[#e3e8ee] bg-white p-8 shadow-sm sm:p-10">
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.08em] tracking-[0.14em] text-[#64748b]">ENVIROnesia</p>
+        <p className="mt-1 text-center text-[11px] font-semibold uppercase tracking-[0.08em] tracking-[0.14em] text-[#64748b]/50">
           Admin Portal
         </p>
 
         <h1 className="mt-8 text-center font-display text-h2 text-ink">Welcome back</h1>
-        <p className="mt-2 text-center text-body text-slate">Masuk ke panel administrasi.</p>
+        <p className="mt-2 text-center text-body text-[#64748b]">Masuk ke panel administrasi.</p>
 
         <div className="mt-8">
           <LoginForm next={next} error={error} />

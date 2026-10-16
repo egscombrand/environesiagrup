@@ -13,7 +13,7 @@ export function LoginForm({ next, error }: { next?: string; error?: string }) {
       <input type="hidden" name="next" value={next ?? '/wp-admin/dashboard'} />
 
       <div>
-        <label htmlFor="admin-username" className="font-mono text-label uppercase text-slate">
+        <label htmlFor="admin-username" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           Username
         </label>
         <input
@@ -23,16 +23,16 @@ export function LoginForm({ next, error }: { next?: string; error?: string }) {
           autoComplete="username"
           autoFocus
           required
-          className="mt-2 w-full rounded-[10px] border border-line bg-paper px-4 py-3 text-body text-ink outline-none transition-colors focus:border-forest"
+          className="mt-2 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-3 text-body text-ink outline-none transition-colors focus:border-[#2a7793]"
         />
       </div>
 
       <div>
         <div className="flex items-center justify-between">
-          <label htmlFor="admin-password" className="font-mono text-label uppercase text-slate">
+          <label htmlFor="admin-password" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
             Password
           </label>
-          <Link href="/wp-admin/forgot-password" className="text-small text-forest hover:underline">
+          <Link href="/wp-admin/forgot-password" className="text-small text-[#2a7793] hover:underline">
             Lupa password?
           </Link>
         </div>
@@ -42,7 +42,7 @@ export function LoginForm({ next, error }: { next?: string; error?: string }) {
           type="password"
           autoComplete="current-password"
           required
-          className="mt-2 w-full rounded-[10px] border border-line bg-paper px-4 py-3 text-body text-ink outline-none transition-colors focus:border-forest"
+          className="mt-2 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-3 text-body text-ink outline-none transition-colors focus:border-[#2a7793]"
         />
       </div>
 
@@ -54,7 +54,7 @@ export function LoginForm({ next, error }: { next?: string; error?: string }) {
 
       <button
         type="submit"
-        className="w-full rounded-[10px] bg-forest px-4 py-3 text-small font-medium text-paper transition-opacity hover:opacity-90"
+        className="w-full rounded-[10px] bg-[#2a7793] px-4 py-3 text-small font-medium text-white transition-opacity hover:opacity-90"
       >
         Masuk
       </button>

@@ -34,7 +34,7 @@ const PAGE_SIZE = 20;
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
 function SaveIndicator({ state }: { state: SaveState }) {
-  if (state === 'saving') return <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-slate" aria-hidden="true" />;
+  if (state === 'saving') return <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-[#64748b]" aria-hidden="true" />;
   if (state === 'saved') return <Check className="h-3.5 w-3.5 shrink-0 text-success" aria-hidden="true" />;
   if (state === 'error') return <AlertCircle className="h-3.5 w-3.5 shrink-0 text-danger" aria-label="Gagal menyimpan" />;
   return null;
@@ -90,7 +90,7 @@ function TitleCell({
         onKeyDown={(e) => {
           if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
         }}
-        className="w-full min-w-[180px] rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-line focus:border-forest focus:bg-paper"
+        className="w-full min-w-[180px] rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-[#e3e8ee] focus:border-[#2a7793] focus:bg-white"
       />
       <SaveIndicator state={state} />
     </div>
@@ -168,7 +168,7 @@ function YearCell({
         onKeyDown={(e) => {
           if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
         }}
-        className="w-20 rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-line focus:border-forest focus:bg-paper"
+        className="w-20 rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-[#e3e8ee] focus:border-[#2a7793] focus:bg-white"
       />
       <SaveIndicator state={state} />
     </div>
@@ -195,7 +195,7 @@ function StatusCell({
           const next = e.target.value as 'draft' | 'published';
           run(() => updateProjectStatusAction(row.id, next), () => onSaved(next));
         }}
-        className="rounded-[8px] border border-line bg-paper px-2 py-1 text-small text-ink outline-none focus:border-forest"
+        className="rounded-[8px] border border-[#e3e8ee] bg-white px-2 py-1 text-small text-ink outline-none focus:border-[#2a7793]"
       >
         <option value="draft">Draft</option>
         <option value="published">Published</option>
@@ -222,13 +222,13 @@ function BulkFieldControl({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center gap-1 rounded-[8px] border border-line bg-paper px-3 py-1.5 text-small text-ink hover:border-forest/30"
+        className="inline-flex items-center gap-1 rounded-[8px] border border-[#e3e8ee] bg-white px-3 py-1.5 text-small text-ink hover:border-[#2a7793]/30"
       >
         {label}
         <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
       {open ? (
-        <div className="absolute right-0 top-full z-30 mt-1 w-64 rounded-[10px] border border-line bg-paper p-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
+        <div className="absolute right-0 top-full z-30 mt-1 w-64 rounded-[10px] border border-[#e3e8ee] bg-white p-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
           <ComboboxField
             value={value}
             options={options.map((o) => o.value)}
@@ -245,7 +245,7 @@ function BulkFieldControl({
               setOpen(false);
               setValue('');
             }}
-            className="mt-2 w-full rounded-[8px] bg-forest px-3 py-1.5 text-small font-medium text-paper disabled:opacity-40"
+            className="mt-2 w-full rounded-[8px] bg-[#2a7793] px-3 py-1.5 text-small font-medium text-white disabled:opacity-40"
           >
             Terapkan
           </button>
@@ -264,17 +264,17 @@ function BulkStatusControl({ onApply }: { onApply: (status: 'draft' | 'published
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center gap-1 rounded-[8px] border border-line bg-paper px-3 py-1.5 text-small text-ink hover:border-forest/30"
+        className="inline-flex items-center gap-1 rounded-[8px] border border-[#e3e8ee] bg-white px-3 py-1.5 text-small text-ink hover:border-[#2a7793]/30"
       >
         Ubah Status
         <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
       {open ? (
-        <div className="absolute right-0 top-full z-30 mt-1 w-56 rounded-[10px] border border-line bg-paper p-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
+        <div className="absolute right-0 top-full z-30 mt-1 w-56 rounded-[10px] border border-[#e3e8ee] bg-white p-3 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
           <select
             value={value}
             onChange={(e) => setValue(e.target.value as 'draft' | 'published')}
-            className="w-full rounded-[8px] border border-line bg-paper px-2 py-1.5 text-small text-ink outline-none focus:border-forest"
+            className="w-full rounded-[8px] border border-[#e3e8ee] bg-white px-2 py-1.5 text-small text-ink outline-none focus:border-[#2a7793]"
           >
             <option value="published">Published</option>
             <option value="draft">Draft</option>
@@ -285,7 +285,7 @@ function BulkStatusControl({ onApply }: { onApply: (status: 'draft' | 'published
               onApply(value);
               setOpen(false);
             }}
-            className="mt-2 w-full rounded-[8px] bg-forest px-3 py-1.5 text-small font-medium text-paper"
+            className="mt-2 w-full rounded-[8px] bg-[#2a7793] px-3 py-1.5 text-small font-medium text-white"
           >
             Terapkan
           </button>
@@ -436,20 +436,20 @@ export function ProjectsTableEditor({
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="relative w-full max-w-sm">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate" aria-hidden="true" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748b]" aria-hidden="true" />
           <input
             type="search"
             value={filters.search}
             onChange={(e) => updateFilters({ search: e.target.value })}
             placeholder="Cari nama proyek, klien, atau lokasi…"
-            className="w-full rounded-[10px] border border-line bg-paper py-2 pl-9 pr-3 text-small text-ink outline-none focus:border-forest"
+            className="w-full rounded-[10px] border border-[#e3e8ee] bg-white py-2 pl-9 pr-3 text-small text-ink outline-none focus:border-[#2a7793]"
           />
         </div>
 
         <select
           value={filters.status}
           onChange={(e) => updateFilters({ status: e.target.value as ProjectEditorFilters['status'] })}
-          className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink outline-none focus:border-[#2a7793]"
         >
           <option value="all">Semua Status</option>
           <option value="draft">Draft</option>
@@ -460,7 +460,7 @@ export function ProjectsTableEditor({
         <select
           value={filters.sector}
           onChange={(e) => updateFilters({ sector: e.target.value })}
-          className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink outline-none focus:border-[#2a7793]"
         >
           <option value="all">Semua Sektor</option>
           {SECTOR_OPTIONS.map((o) => (
@@ -473,7 +473,7 @@ export function ProjectsTableEditor({
         <select
           value={filters.company}
           onChange={(e) => updateFilters({ company: e.target.value })}
-          className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink outline-none focus:border-[#2a7793]"
         >
           <option value="all">Semua Perusahaan</option>
           {COMPANY_OPTIONS.map((o) => (
@@ -486,7 +486,7 @@ export function ProjectsTableEditor({
         <select
           value={filters.year}
           onChange={(e) => updateFilters({ year: e.target.value })}
-          className="rounded-[10px] border border-line bg-paper px-3 py-2 text-small text-ink outline-none focus:border-forest"
+          className="rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-small text-ink outline-none focus:border-[#2a7793]"
         >
           <option value="all">Semua Tahun</option>
           {years.map((y) => (
@@ -498,9 +498,9 @@ export function ProjectsTableEditor({
       </div>
 
       {canWrite && selectedCount > 0 ? (
-        <div className="mb-3 flex flex-wrap items-center gap-2 rounded-[10px] border border-forest/20 bg-forest/5 px-4 py-3">
+        <div className="mb-3 flex flex-wrap items-center gap-2 rounded-[10px] border border-[#2a7793]/20 bg-[#2a7793]/5 px-4 py-3">
           <span className="text-small font-medium text-ink">{selectedCount} project dipilih</span>
-          {bulkRunning ? <Loader2 className="h-4 w-4 animate-spin text-forest" aria-hidden="true" /> : null}
+          {bulkRunning ? <Loader2 className="h-4 w-4 animate-spin text-[#2a7793]" aria-hidden="true" /> : null}
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <BulkStatusControl onApply={applyBulkStatus} />
             <BulkFieldControl label="Ubah Sektor" options={SECTOR_OPTIONS} onApply={(v) => requestBulkField('sector', v)} />
@@ -518,14 +518,14 @@ export function ProjectsTableEditor({
       ) : null}
 
       {filtered.length === 0 ? (
-        <div className="rounded-[14px] border border-line bg-paper p-8 text-center text-small text-slate">
+        <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-8 text-center text-small text-[#64748b]">
           Tidak ada project yang cocok dengan pencarian/filter.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-[14px] border border-line bg-paper">
+        <div className="overflow-x-auto rounded-[12px] border border-[#e3e8ee] bg-white">
           <table className="w-full min-w-[960px] text-left text-small">
-            <thead className="sticky top-0 z-10 bg-paper">
-              <tr className="border-b border-line">
+            <thead className="sticky top-0 z-10 bg-white">
+              <tr className="border-b border-[#e3e8ee]">
                 {canWrite ? (
                   <th className="px-4 py-3">
                     <input
@@ -534,12 +534,12 @@ export function ProjectsTableEditor({
                       aria-label="Pilih Semua"
                       checked={allFilteredSelected}
                       onChange={(e) => toggleSelectAllFiltered(e.target.checked)}
-                      className="h-4 w-4 rounded border-line"
+                      className="h-4 w-4 rounded border-[#e3e8ee]"
                     />
                   </th>
                 ) : null}
                 {['Nama Proyek', 'Klien', 'Sektor', 'Lokasi', 'Tahun', 'Layanan', 'Perusahaan', 'Status'].map((label) => (
-                  <th key={label} className="px-4 py-3 font-mono text-label uppercase text-slate">
+                  <th key={label} className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
                     {label}
                   </th>
                 ))}
@@ -548,7 +548,7 @@ export function ProjectsTableEditor({
             </thead>
             <tbody>
               {pageRows.map((row) => (
-                <tr key={row.id} className="border-b border-line last:border-0 hover:bg-stone/40">
+                <tr key={row.id} className="border-b border-[#e3e8ee] last:border-0 hover:bg-[#f4f6f9]/40">
                   {canWrite ? (
                     <td className="px-4 py-3">
                       <input
@@ -556,7 +556,7 @@ export function ProjectsTableEditor({
                         aria-label={`Pilih ${row.title}`}
                         checked={selected.has(row.id)}
                         onChange={(e) => toggleRow(row.id, e.target.checked)}
-                        className="h-4 w-4 rounded border-line"
+                        className="h-4 w-4 rounded border-[#e3e8ee]"
                       />
                     </td>
                   ) : null}
@@ -624,7 +624,7 @@ export function ProjectsTableEditor({
                       href={`/wp-admin/content/projects/${row.id}`}
                       aria-label={`Edit lengkap ${row.title}`}
                       title="Edit lengkap"
-                      className="rounded-[8px] p-1.5 text-slate hover:bg-forest/10 hover:text-forest"
+                      className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#2a7793]/10 hover:text-[#2a7793]"
                     >
                       <PenLine className="h-4 w-4" aria-hidden="true" />
                     </Link>
@@ -637,7 +637,7 @@ export function ProjectsTableEditor({
       )}
 
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-small text-slate">
+        <p className="text-small text-[#64748b]">
           {filtered.length} project{selectedCount > 0 ? ` · ${selectedCount} dipilih` : ''}
         </p>
         {totalPages > 1 ? (
@@ -646,18 +646,18 @@ export function ProjectsTableEditor({
               type="button"
               disabled={page === 0}
               onClick={() => setPage((p) => Math.max(0, p - 1))}
-              className="rounded-[8px] border border-line px-3 py-1.5 text-small text-ink disabled:opacity-40"
+              className="rounded-[8px] border border-[#e3e8ee] px-3 py-1.5 text-small text-ink disabled:opacity-40"
             >
               Previous
             </button>
-            <span className="text-small text-slate">
+            <span className="text-small text-[#64748b]">
               Page {page + 1} / {totalPages}
             </span>
             <button
               type="button"
               disabled={page >= totalPages - 1}
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-              className="rounded-[8px] border border-line px-3 py-1.5 text-small text-ink disabled:opacity-40"
+              className="rounded-[8px] border border-[#e3e8ee] px-3 py-1.5 text-small text-ink disabled:opacity-40"
             >
               Next
             </button>

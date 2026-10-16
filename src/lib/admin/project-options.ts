@@ -21,7 +21,7 @@ export const SECTOR_OPTIONS = SECTOR_VALUES.map((v) => ({ value: v, label: v }))
 // assumption that every project belongs to Environesia Consultant.
 export const COMPANY_VALUES = [
   'Belum Ditentukan',
-  'Environesia Company Group',
+  'Environesia',
   'Environesia Consultant',
   'GreenLab',
   'GreenSkill',

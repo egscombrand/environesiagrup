@@ -20,7 +20,7 @@ describe('GroupEcosystemBanner', () => {
     ).toBeInTheDocument();
 
     const secondary = screen.getByRole('link', { name: 'Direksi & Manajemen' });
-    expect(secondary).toHaveAttribute('href', '/id/pimpinan');
+    expect(secondary).toHaveAttribute('href', '/id/tentang-kami/direktur');
   });
 
   it('shows the primary CTA only when a navigation item resolves the Environesia profile URL — never a hardcoded route', async () => {

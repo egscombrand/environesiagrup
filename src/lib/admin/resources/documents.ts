@@ -35,7 +35,7 @@ export const documentsResource: ResourceConfig = {
   ],
   fields: [
     { name: 'title', label: 'Judul', type: 'text', required: true, section: 'Basic Information' },
-    { name: 'slug', label: 'Slug', type: 'text', section: 'Basic Information' },
+    { name: 'slug', label: 'Slug', type: 'slug', section: 'Basic Information' },
     { name: 'description', label: 'Deskripsi', type: 'textarea', section: 'Basic Information' },
     { name: 'category', label: 'Kategori', type: 'select', options: CATEGORY_OPTIONS, required: true, section: 'Basic Information' },
     { name: 'file_path', label: 'File', type: 'file', mediaFolder: 'documents', section: 'File' },

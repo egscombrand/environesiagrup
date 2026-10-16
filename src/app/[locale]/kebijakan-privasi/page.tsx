@@ -11,7 +11,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: 'Kebijakan Privasi',
-    description: 'Kebijakan privasi Environesia Company Group.',
+    description: 'Kebijakan privasi Environesia.',
     locale,
     path: '/kebijakan-privasi',
   });

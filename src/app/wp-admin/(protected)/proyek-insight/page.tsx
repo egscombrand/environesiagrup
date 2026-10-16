@@ -33,61 +33,61 @@ export default async function ProyekInsightPage() {
       <PageHeader
         eyebrow="Proyek & Insight"
         title="Proyek & Insight"
-        description="Kelola konten proyek, portofolio, dan insight Environesia Company Group."
+        description="Kelola konten proyek, portofolio, dan insight Environesia."
       />
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <Link
           href="/wp-admin/content/projects"
-          className="group flex flex-col rounded-[14px] border border-line bg-paper p-6 transition-colors hover:border-forest/30"
+          className="group flex flex-col rounded-[16px] border border-[#e3e8ee] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors hover:border-[#2a7793]/30"
         >
           <div className="flex items-start justify-between">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-forest/10">
-              <Briefcase className="h-5 w-5 text-forest" strokeWidth={1.75} aria-hidden="true" />
+            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2a7793]/10">
+              <Briefcase className="h-5 w-5 text-[#2a7793]" strokeWidth={1.75} aria-hidden="true" />
             </span>
             <ArrowRight
-              className="h-4 w-4 text-slate transition-transform group-hover:translate-x-0.5 group-hover:text-forest"
+              className="h-4 w-4 text-[#64748b] transition-transform group-hover:translate-x-0.5 group-hover:text-[#2a7793]"
               aria-hidden="true"
             />
           </div>
           <p className="mt-4 font-display text-h3 text-ink">Portofolio Proyek</p>
-          <p className="mt-1 text-small text-slate">
+          <p className="mt-1 text-small text-[#64748b]">
             Untuk mengelola data proyek yang akan ditampilkan pada halaman publik Portofolio Proyek.
           </p>
-          <p className="mt-4 font-mono text-label uppercase text-slate">
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
             {publishedProjects} published · {draftProjects} draft
           </p>
         </Link>
 
-        <div className="flex flex-col rounded-[14px] border border-dashed border-line bg-paper/60 p-6">
+        <div className="flex flex-col rounded-[12px] border border-dashed border-[#e3e8ee] bg-white/60 p-6">
           <div className="flex items-start justify-between">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-stone">
-              <Handshake className="h-5 w-5 text-slate" strokeWidth={1.75} aria-hidden="true" />
+            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#f4f6f9]">
+              <Handshake className="h-5 w-5 text-[#64748b]" strokeWidth={1.75} aria-hidden="true" />
             </span>
           </div>
           <p className="mt-4 font-display text-h3 text-ink">Klien & Mitra</p>
-          <p className="mt-1 text-small text-slate">Untuk pengelolaan data klien dan mitra di masa mendatang.</p>
-          <p className="mt-4 font-mono text-label uppercase text-slate">Belum tersedia</p>
+          <p className="mt-1 text-small text-[#64748b]">Untuk pengelolaan data klien dan mitra di masa mendatang.</p>
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Belum tersedia</p>
         </div>
 
         <Link
           href="/wp-admin/content/siaran-pers"
-          className="group flex flex-col rounded-[14px] border border-line bg-paper p-6 transition-colors hover:border-forest/30"
+          className="group flex flex-col rounded-[16px] border border-[#e3e8ee] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors hover:border-[#2a7793]/30"
         >
           <div className="flex items-start justify-between">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-forest/10">
-              <Newspaper className="h-5 w-5 text-forest" strokeWidth={1.75} aria-hidden="true" />
+            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2a7793]/10">
+              <Newspaper className="h-5 w-5 text-[#2a7793]" strokeWidth={1.75} aria-hidden="true" />
             </span>
             <ArrowRight
-              className="h-4 w-4 text-slate transition-transform group-hover:translate-x-0.5 group-hover:text-forest"
+              className="h-4 w-4 text-[#64748b] transition-transform group-hover:translate-x-0.5 group-hover:text-[#2a7793]"
               aria-hidden="true"
             />
           </div>
           <p className="mt-4 font-display text-h3 text-ink">Siaran Pers</p>
-          <p className="mt-1 text-small text-slate">
+          <p className="mt-1 text-small text-[#64748b]">
             Berita dan siaran pers — dikelola dari satu menu Siaran Pers.
           </p>
-          <p className="mt-4 font-mono text-label uppercase text-slate">{totalPosts} total posts</p>
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">{totalPosts} total posts</p>
         </Link>
 
       </div>

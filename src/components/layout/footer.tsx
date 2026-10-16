@@ -4,11 +4,10 @@ import { getPublishedNavigation, navigationLabel } from '@/lib/cms/navigation';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { messagesFor } from '@/i18n/messages';
 
-// Sampled directly (pixel-measured) from the approved reference comp for
-// this footer — same one-off-color convention already used for
-// capabilities-grid's heading and the leadership-message section.
-const BG = '#2E7692';
-const BG_DARK = '#255D6E';
+// Environesia design system — Primary Blue (--color-ink) and a darker
+// shade of it for the copyright strip underneath.
+const BG = '#2A7793';
+const BG_DARK = '#1E5569';
 
 function PhoneIcon() {
   return (

@@ -21,9 +21,9 @@ export function NavigationSortableRow({ item, highlighted = false }: { item: Nav
     <div
       ref={setNodeRef}
       style={style}
-      className={`grid grid-cols-[1fr_1fr_120px_140px] items-center gap-4 rounded-[10px] border border-line bg-paper px-3 py-2.5 ${
+      className={`grid grid-cols-[1fr_1fr_120px_140px] items-center gap-4 rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2.5 ${
         isDragging ? 'z-10 shadow-md' : ''
-      } ${highlighted ? 'ring-2 ring-forest bg-forest/5' : ''}`}
+      } ${highlighted ? 'ring-2 ring-[#2a7793] bg-[#2a7793]/5' : ''}`}
     >
       <div className="flex items-center gap-2">
         <button
@@ -31,13 +31,13 @@ export function NavigationSortableRow({ item, highlighted = false }: { item: Nav
           {...attributes}
           {...listeners}
           aria-label={`Reorder ${item.label}`}
-          className="cursor-grab touch-none rounded-[6px] p-1 text-slate hover:bg-stone hover:text-ink active:cursor-grabbing"
+          className="cursor-grab touch-none rounded-[6px] p-1 text-[#64748b] hover:bg-[#f4f6f9] hover:text-ink active:cursor-grabbing"
         >
           <GripVertical className="h-4 w-4" aria-hidden="true" />
         </button>
         <span className="text-ink">{item.label}</span>
       </div>
-      <span className="truncate text-slate">{item.url}</span>
+      <span className="truncate text-[#64748b]">{item.url}</span>
       <StatusBadge status={item.status} />
       <div className="flex items-center justify-end gap-1">
         {item.parent_id === null ? (
@@ -45,7 +45,7 @@ export function NavigationSortableRow({ item, highlighted = false }: { item: Nav
             href={`/wp-admin/site/navigation/new?menu=${item.menu}&parent_id=${item.id}`}
             aria-label={`Add submenu under ${item.label}`}
             title="Add Submenu"
-            className="rounded-[8px] p-1.5 text-slate hover:bg-forest/10 hover:text-forest"
+            className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#2a7793]/10 hover:text-[#2a7793]"
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -54,7 +54,7 @@ export function NavigationSortableRow({ item, highlighted = false }: { item: Nav
           href={`/wp-admin/site/navigation/${item.id}`}
           aria-label={`Edit ${item.label}`}
           title="Edit"
-          className="rounded-[8px] p-1.5 text-slate hover:bg-forest/10 hover:text-forest"
+          className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#2a7793]/10 hover:text-[#2a7793]"
         >
           <PenLine className="h-4 w-4" aria-hidden="true" />
         </Link>

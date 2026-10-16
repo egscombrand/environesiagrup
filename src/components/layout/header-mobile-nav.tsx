@@ -163,7 +163,7 @@ function MobileNavItem({
 }) {
   const label = navigationLabel(item, locale);
   const rowClass =
-    'flex min-h-[44px] flex-1 items-center break-words py-2 text-[16px] font-semibold leading-snug text-[#2A7793] transition-colors hover:text-[#01B3A1] motion-reduce:transition-none';
+    'flex min-h-[44px] flex-1 items-center break-words py-2 text-[16px] font-semibold leading-snug tracking-[-0.01em] text-[#1A1A1A] transition-colors hover:text-[#01B3A1] motion-reduce:transition-none';
 
   if (item.children.length === 0) {
     return (
@@ -235,7 +235,7 @@ function MobileNavItem({
                 href={hrefFor(child.url, locale)}
                 target={child.open_new_tab ? '_blank' : undefined}
                 rel={child.open_new_tab ? 'noreferrer' : undefined}
-                className="flex min-h-[44px] items-center break-words py-2 text-[15px] leading-snug text-[#444444] transition-colors hover:text-[#01B3A1] motion-reduce:transition-none"
+                className="flex min-h-[44px] items-center break-words py-2 text-[15px] leading-snug tracking-[-0.01em] text-[#444444] transition-colors hover:text-[#01B3A1] motion-reduce:transition-none"
                 onClick={onNavigate}
               >
                 {navigationLabel(child, locale)}

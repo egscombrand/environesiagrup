@@ -10,7 +10,7 @@ function row(overrides: Partial<ProjectEditorRow> = {}): ProjectEditorRow {
     city: 'Jawa Barat',
     year: 2022,
     services: 'AMDAL',
-    company: 'Environesia Company Group',
+    company: 'Environesia',
     status: 'draft',
     ...overrides,
   };

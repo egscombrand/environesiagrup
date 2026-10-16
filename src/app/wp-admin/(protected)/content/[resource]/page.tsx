@@ -65,7 +65,7 @@ export default async function ResourceListPage({
             <div className="flex flex-wrap gap-2">
               <Link
                 href={`/wp-admin/content/${resourceSlug}/new`}
-                className="inline-flex items-center gap-1.5 rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90"
+                className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90"
               >
                 <Plus className="h-4 w-4" aria-hidden="true" />
                 Add {resource.singular}
@@ -76,7 +76,7 @@ export default async function ResourceListPage({
               {resourceSlug === 'projects' ? (
                 <Link
                   href="/wp-admin/content/projects/import"
-                  className="inline-flex items-center gap-1.5 rounded-[10px] border border-line bg-paper px-4 py-2 text-small font-medium text-ink hover:border-forest/30"
+                  className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-2 text-small font-medium text-ink hover:border-[#2a7793]/30"
                 >
                   <FileUp className="h-4 w-4" aria-hidden="true" />
                   Import PDF

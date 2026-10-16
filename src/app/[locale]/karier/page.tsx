@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { getOpenPublishedJobs } from '@/lib/cms/jobs';
+import Link from 'next/link';
+import { getOpenPublishedJobs, employmentTypeLabel } from '@/lib/cms/jobs';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
@@ -14,7 +15,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: 'Karier',
-    description: 'Peluang berkarier bersama Environesia Company Group.',
+    description: 'Peluang berkarier bersama Environesia.',
     locale,
     path: '/karier',
   });
@@ -41,7 +42,7 @@ export default async function KarierPage({ params }: { params: Promise<{ locale:
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.karier.judul}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.karier.judul}</h1>
@@ -54,15 +55,17 @@ export default async function KarierPage({ params }: { params: Promise<{ locale:
           <ul>
             {jobs.map((job) => (
               <li key={job.id} className="border-b border-line py-4">
-                <p className="font-display text-h3 text-ink">{job.title}</p>
-                <p className="mt-1 font-mono text-label uppercase text-slate">
-                  {[job.location, job.employment_type].filter(Boolean).join(' · ')}
-                </p>
-                {job.deadline ? (
-                  <p className="mt-1 text-small text-slate">
-                    Batas lamaran: {dateFormatter.format(new Date(job.deadline))}
+                <Link href={`/${locale}/karier/${job.slug}`} className="group block">
+                  <p className="font-display text-h3 text-ink group-hover:text-forest">{job.title}</p>
+                  <p className="mt-1 font-mono text-label uppercase text-slate">
+                    {[job.division, job.location, employmentTypeLabel(job.employment_type)].filter(Boolean).join(' · ')}
                   </p>
-                ) : null}
+                  {job.deadline ? (
+                    <p className="mt-1 text-small text-slate">
+                      Batas lamaran: {dateFormatter.format(new Date(job.deadline))}
+                    </p>
+                  ) : null}
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,9 +1,8 @@
 import { getPublishedMilestones } from '@/lib/cms/milestones';
-import { getPublishedEntities } from '@/lib/cms/entities';
-import { getPublishedLeadership } from '@/lib/cms/leadership';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { TentangKamiHero } from '@/components/tentang-kami/hero-banner';
 import { MaknaLogoSection } from '@/components/tentang-kami/makna-logo-section';
+import { getMaknaLogo } from '@/lib/cms/makna-logo';
 import { TentangKamiTabsClient } from '@/components/tentang-kami/tabs-controller';
 import { PerjalananKamiSection } from '@/components/tentang-kami/perjalanan-kami-section';
 import { VisiMisiSection } from '@/components/tentang-kami/sections/visi-misi-section';
@@ -24,29 +23,28 @@ import { LegalitasSection } from '@/components/tentang-kami/sections/legalitas-s
  * navigates again; it's the same client-side swap either way.
  */
 export async function TentangKamiHubView({ locale, initialTab }: { locale: string; initialTab: string }) {
-  const [milestones, entities, dewanDireksi, settings] = await Promise.all([
+  const [milestones, settings, maknaLogo] = await Promise.all([
     getPublishedMilestones(),
-    getPublishedEntities(),
-    getPublishedLeadership('direksi'),
     getSiteSettings(),
+    getMaknaLogo(),
   ]);
 
   const tabsContent = {
     sejarah: await PerjalananKamiSection({ locale, milestones }),
-    'visi-misi-tatanilai': <VisiMisiSection locale={locale} />,
-    'struktur-organisasi': await StrukturOrganisasiSection({ locale, entities }),
-    direktur: await DirekturSection({ locale, dewanDireksi }),
-    penghargaan: <PenghargaanSection locale={locale} />,
-    legalitas: <LegalitasSection locale={locale} />,
+    'visi-misi-tatanilai': await VisiMisiSection({ locale }),
+    'struktur-organisasi': await StrukturOrganisasiSection({ locale }),
+    direktur: await DirekturSection({ locale }),
+    penghargaan: await PenghargaanSection({ locale }),
+    legalitas: await LegalitasSection({ locale }),
   };
 
   return (
     <>
-      {/* 01 — Hero: Tentang Environesia Group */}
+      {/* 01 — Hero: Tentang Environesia */}
       <TentangKamiHero locale={locale} />
 
       {/* 02 — Makna Logo, directly below the intro, not one of the tabs */}
-      <MaknaLogoSection logoUrl={settings.logoUrl ?? '/brand/environesia-group.png'} logoAlt={settings.site_name} />
+      <MaknaLogoSection content={maknaLogo} logoAlt={settings.site_name} />
 
       {/* 03 — Single unified navigation rail + conditional tab content */}
       <TentangKamiTabsClient locale={locale} initialTab={initialTab} tabs={tabsContent} />

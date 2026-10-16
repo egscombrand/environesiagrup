@@ -17,7 +17,7 @@ export async function generateMetadata({
 
   return buildMetadata({
     title: 'Berita & Insight',
-    description: 'Kabar dan wawasan dari Environesia Company Group.',
+    description: 'Kabar dan wawasan dari Environesia.',
     locale,
     path: '/berita',
   });
@@ -34,7 +34,7 @@ export default async function BeritaPage({
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.berita.eyebrow}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.berita.judul}</h1>

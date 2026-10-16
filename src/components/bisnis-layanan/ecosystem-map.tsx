@@ -12,13 +12,18 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const ORBIT_TIER = [43, 34, 43, 34, 43];
 
 // Optical size compensation, per entity slug — not all logos fill their
-// canvas the same way. Measured directly (PIL bounding-box vs canvas): the
-// other four entity logos draw content across ~94% of their canvas width,
-// but GreenLab's only reaches ~78%, so at an identical rendered width it
-// visibly reads smaller. Scaled up to match; everyone else is left at 1
-// (no entry needed) since they already measured consistent with each other.
+// canvas the same way. Measured directly (PIL bounding-box vs canvas):
+// width is already consistent (~94%) across every logo except GreenLab
+// (~78%, scaled up below to match). Height is the other axis, and there
+// Bikin.co (~93%) and LSP (~91%) — both set in all-caps/stacked wordmarks
+// with little vertical padding — draw noticeably taller than Environesia's
+// own logo (~80%, the reference every other entity is compared against),
+// so at an identical rendered width they read visibly larger. Scaled down
+// to match; everyone else is left at 1 (no entry needed).
 const OPTICAL_SCALE: Record<string, number> = {
   greenlab: 1.18,
+  'bikin-indonesia-berdaya': 0.86,
+  'lsp-praktisi-lingkungan': 0.87,
 };
 
 function nodePosition(index: number, total: number) {
@@ -59,14 +64,20 @@ export function EcosystemMap({ entities }: { entities: Entity[] }) {
       {/* Step 1 — inner circle, filled, very soft accent tint. Sized with
           headroom around the logo below (not a tight fit) so the full
           wordmark+tagline lockup always has room to sit inside it rather
-          than visually crowding or appearing to spill past its edge. */}
+          than visually crowding or appearing to spill past its edge.
+          Shrunk from the original 205/245/285px — at that size this circle
+          (and the logo lockup inside it) reached close enough to the 34%
+          orbit tier that a wide brand logo rotating through could visibly
+          clip it; this smaller footprint keeps clear of every orbiting
+          logo at every breakpoint without touching the orbit radius
+          itself. */}
       <motion.div
         variants={innerCircleStep}
-        className="absolute left-1/2 top-1/2 h-[205px] w-[205px] -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-[245px] sm:w-[245px] md:h-[285px] md:w-[285px]"
+        className="absolute left-1/2 top-1/2 h-[135px] w-[135px] -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-[165px] sm:w-[165px] md:h-[190px] md:w-[190px]"
         style={{ backgroundColor: 'rgba(42, 119, 147, 0.07)' }}
       />
 
-      {/* Step 2 — full Environesia Group logo, the focal point and anchor:
+      {/* Step 2 — full Environesia logo, the focal point and anchor:
           stays put, never rotates, never scales. The icon mark
           (public/brand/environesia-symbol.png, the standalone teal swoosh
           glyph — a real, separate brand asset, not a redraw) sits to the
@@ -90,14 +101,14 @@ export function EcosystemMap({ entities }: { entities: Entity[] }) {
           alt="Lambang Environesia"
           width={1424}
           height={1523}
-          className="h-auto w-[26px] object-contain sm:w-[31px] md:w-[36px]"
+          className="h-auto w-[17px] object-contain sm:w-[20px] md:w-[24px]"
         />
         <Image
           src="/brand/environesia-wordmark.png"
           alt="Environesia — The World-Class Integrated Green Ecosystem"
           width={5466}
           height={1260}
-          className="h-auto w-[150px] object-contain sm:w-[180px] md:w-[205px]"
+          className="h-auto w-[100px] object-contain sm:w-[120px] md:w-[135px]"
         />
       </motion.div>
 

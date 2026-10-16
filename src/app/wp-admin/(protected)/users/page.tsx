@@ -20,14 +20,14 @@ export default async function UsersPage() {
     <div>
       <PageHeader eyebrow="System" title="Users" description="Manage who can access wp-admin and what they can do." />
 
-      <div className="mt-6 overflow-x-auto rounded-[14px] border border-line bg-paper">
+      <div className="mt-6 overflow-x-auto rounded-[12px] border border-[#e3e8ee] bg-white">
         <table className="w-full min-w-[560px] text-left text-small">
           <thead>
-            <tr className="border-b border-line">
-              <th className="px-4 py-3 font-mono text-label uppercase text-slate">Username</th>
-              <th className="px-4 py-3 font-mono text-label uppercase text-slate">Name</th>
-              <th className="px-4 py-3 font-mono text-label uppercase text-slate">Role</th>
-              <th className="px-4 py-3 font-mono text-label uppercase text-slate">Created</th>
+            <tr className="border-b border-[#e3e8ee]">
+              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Username</th>
+              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Name</th>
+              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Role</th>
+              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Created</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
@@ -39,9 +39,9 @@ export default async function UsersPage() {
         </table>
       </div>
 
-      <div className="mt-10 max-w-md rounded-[14px] border border-line bg-paper p-6">
+      <div className="mt-10 max-w-md rounded-[16px] border border-[#e3e8ee] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <p className="font-display text-h3 text-ink">Invite a User</p>
-        <p className="mt-1 text-small text-slate">They&apos;ll receive an email to set their own password.</p>
+        <p className="mt-1 text-small text-[#64748b]">They&apos;ll receive an email to set their own password.</p>
         <div className="mt-5">
           <CreateUserForm />
         </div>

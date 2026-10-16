@@ -12,7 +12,7 @@ import { StorySceneList } from '@/components/admin/story-scene-list';
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const entity = await getEntityByIdForAdmin(id);
-  return { title: entity ? `Company Story — ${entity.name}` : 'Company Story' };
+  return { title: entity ? `Galeri Perusahaan — ${entity.name}` : 'Galeri Perusahaan' };
 }
 
 export default async function CompanyStoryPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,20 +23,21 @@ export default async function CompanyStoryPage({ params }: { params: Promise<{ i
   if (!entity) notFound();
 
   const scenes = await listStoryScenesForAdmin(id);
+  const countLabel = scenes.length === 1 ? '1 foto tersimpan' : `${scenes.length} foto tersimpan`;
 
   return (
     <div>
       <PageHeader
         eyebrow={`Content / Entities / ${entity.name}`}
-        title="Company Story"
-        description="The ordered scenes shown when a visitor opens this company's story on the homepage. Drag to reorder."
+        title="Galeri Perusahaan"
+        description={`Foto galeri yang tampil pada kartu perusahaan ini di section "Environesia". Terpisah dari Logo dan Foto Showcase. ${countLabel} — drag untuk mengatur urutan.`}
         action={
           <Link
             href={`/wp-admin/content/entities/${id}/story/new`}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90"
+            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90"
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
-            Add Scene
+            Tambah Foto
           </Link>
         }
       />
@@ -45,8 +46,8 @@ export default async function CompanyStoryPage({ params }: { params: Promise<{ i
         {scenes.length === 0 ? (
           <EmptyState
             icon={BookOpen}
-            title="No scenes yet"
-            description="This company's story is empty — the homepage falls back to its short description until at least one scene is added."
+            title="Belum ada foto galeri"
+            description="Galeri perusahaan ini masih kosong — Front End menampilkan placeholder bermerek sampai setidaknya satu foto ditambahkan di sini."
           />
         ) : (
           <StorySceneList entityId={id} scenes={scenes} />

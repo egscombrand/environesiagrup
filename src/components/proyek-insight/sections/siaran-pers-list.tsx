@@ -109,18 +109,18 @@ function FeaturedStory({ locale, post }: { locale: string; post: Post }) {
   return (
     <article className="grid overflow-hidden rounded-[18px] border bg-white md:grid-cols-[45fr_55fr]" style={{ borderColor: BORDER }}>
       {thumb ? (
-        <div className="relative aspect-video overflow-hidden md:aspect-auto md:min-h-full">
-          <Image src={thumb} alt="" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+        <div className="relative aspect-video overflow-hidden" style={{ backgroundColor: SURFACE }}>
+          <Image src={thumb} alt="" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-contain" />
         </div>
       ) : (
-        <MediaPanel media={post.media} owner={post.owner} className="aspect-video md:aspect-auto md:min-h-full" />
+        <MediaPanel media={post.media} owner={post.owner} className="aspect-video" />
       )}
 
       <div className="flex flex-col justify-center gap-4 p-6 sm:p-10">
         <p className="text-[12px] font-medium uppercase tracking-[0.06em]" style={{ color: MUTED }}>
           {post.published_at ? dateFormatter.format(new Date(post.published_at)) : ''}
         </p>
-        <h3 className="text-[22px] font-bold leading-[1.25] sm:text-[28px] md:text-[32px]" style={{ color: PRIMARY }}>
+        <h3 className="text-h3 font-bold" style={{ color: PRIMARY }}>
           {post.title}
         </h3>
         <Attribution owner={post.owner} media={post.media} />
@@ -140,13 +140,13 @@ function CoverageCard({ locale, post }: { locale: string; post: Post }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-[14px] border bg-white transition-[border-color] duration-300 hover:border-[#01B3A1]/60" style={{ borderColor: BORDER }}>
       {thumb ? (
-        <div className="relative aspect-video overflow-hidden">
+        <div className="relative aspect-video overflow-hidden" style={{ backgroundColor: SURFACE }}>
           <Image
             src={thumb}
             alt=""
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className="object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </div>
       ) : (
@@ -189,14 +189,14 @@ export function SiaranPersList({ locale, posts, emptyMessage }: { locale: string
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>
             Pemberitaan Media
           </p>
-          <h2 className="mt-3 text-[clamp(32px,4.5vw,48px)] font-bold leading-[1.1]" style={{ color: PRIMARY }}>
+          <h2 className="mt-3 text-h2 font-bold" style={{ color: PRIMARY }}>
             Siaran Pers
           </h2>
           <p className="mt-4 text-[clamp(18px,2.2vw,22px)] font-semibold leading-[1.35]" style={{ color: TEXT }}>
             Aktivitas Environesia yang Mendapat <span style={{ color: ACCENT }}>Sorotan Media</span>
           </p>
           <p className="mt-3 max-w-[650px] text-[16px] leading-[1.6]" style={{ color: MUTED }}>
-            Berbagai kegiatan, kolaborasi, dan aktivitas Environesia Company Group yang telah diberitakan oleh media
+            Berbagai kegiatan, kolaborasi, dan aktivitas Environesia yang telah diberitakan oleh media
             eksternal.
           </p>
         </header>

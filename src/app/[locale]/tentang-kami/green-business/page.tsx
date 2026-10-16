@@ -18,7 +18,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: LABEL,
-    description: 'Manifesto keberlanjutan Environesia Group.',
+    description: 'Manifesto keberlanjutan Environesia.',
     locale,
     path: '/tentang-kami/green-business',
   });

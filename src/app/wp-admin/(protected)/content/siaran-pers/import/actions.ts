@@ -116,7 +116,7 @@ export async function importNewsAction(storagePath: string, fileName: string): P
         media: item.media,
         source_url: item.source_url,
         published_at: item.published_at,
-        category: 'berita-perusahaan',
+        post_type: 'siaran_pers',
         status: 'published',
         needs_review: item.status === 'need_review',
         thumbnail_status: 'pending',

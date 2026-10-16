@@ -4,6 +4,10 @@ vi.mock('@/lib/cms/entities', () => ({
   getPublishedEntitySlugs: vi.fn().mockResolvedValue(['environesia', 'greenlab', 'greenskill', 'lsp-praktisi-lingkungan', 'bikin-indonesia-berdaya']),
 }));
 
+vi.mock('@/lib/cms/jobs', () => ({
+  getPublishedJobSlugs: vi.fn().mockResolvedValue(['staff-lapangan']),
+}));
+
 vi.mock('@/lib/cms/pillars', () => ({
   getPublishedPillarSlugs: vi.fn().mockResolvedValue(['konsultasi', 'pengujian-sampling', 'pelatihan-kompetensi', 'sertifikasi-profesi']),
 }));
@@ -37,6 +41,12 @@ describe('sitemap', () => {
     const urls = (await sitemap()).map((entry) => entry.url);
     expect(urls).toContain('https://example.invalid/id/bisnis/konsultasi');
     expect(urls).toContain('https://example.invalid/en/bisnis/sertifikasi-profesi');
+  });
+
+  it('includes every open job detail page in both locales', async () => {
+    const urls = (await sitemap()).map((entry) => entry.url);
+    expect(urls).toContain('https://example.invalid/id/karier/staff-lapangan');
+    expect(urls).toContain('https://example.invalid/en/karier/staff-lapangan');
   });
 
   it('never emits a duplicate url', async () => {

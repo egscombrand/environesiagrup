@@ -99,16 +99,16 @@ export function DetailButton({
                   <p id={titleId} className="mt-2 font-landing-display text-[19px] font-bold leading-snug text-[#111111]">
                     {doc.title}
                   </p>
-                  <p className="mt-3 text-[15px] leading-[1.7] text-[#444444]">{doc.description}</p>
+                  <p className="mt-3 text-body text-[#444444]">{doc.description}</p>
 
                   {doc.fields.length || doc.issuer ? (
                     <div className="mt-4 space-y-0.5 border-t border-[#E5E7EB] pt-4">
                       {doc.fields.map((field) => (
-                        <p key={field.label} className="text-[14px] leading-[1.5] text-[#666666]">
+                        <p key={field.label} className="text-small text-[#666666]">
                           {field.label}: {field.value}
                         </p>
                       ))}
-                      {doc.issuer ? <p className="text-[14px] leading-[1.5] text-[#666666]">Penerbit: {doc.issuer}</p> : null}
+                      {doc.issuer ? <p className="text-small text-[#666666]">Penerbit: {doc.issuer}</p> : null}
                     </div>
                   ) : null}
                 </motion.div>

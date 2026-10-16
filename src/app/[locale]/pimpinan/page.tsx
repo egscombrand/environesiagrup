@@ -13,7 +13,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: 'Pimpinan',
-    description: 'Jajaran kepemimpinan Environesia Company Group.',
+    description: 'Jajaran kepemimpinan Environesia.',
     locale,
     path: '/pimpinan',
   });
@@ -33,7 +33,7 @@ export default async function PimpinanPage({
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.pimpinan.eyebrow}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.pimpinan.judul}</h1>

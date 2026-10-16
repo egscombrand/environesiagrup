@@ -16,7 +16,7 @@ type SectionProps = {
 export function Section({ children, className = '', as: Tag = 'section', id, innerStyle }: SectionProps) {
   return (
     <Tag id={id} className={`py-14 md:py-24 ${className}`.trim()}>
-      <div className="mx-auto max-w-[1280px] px-6 md:px-12" style={innerStyle}>
+      <div className="mx-auto max-w-[1280px] px-6 md:px-8 lg:px-12" style={innerStyle}>
         {children}
       </div>
     </Tag>

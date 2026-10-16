@@ -29,10 +29,10 @@ export const pillarsResource: ResourceConfig = {
   ],
   fields: [
     { name: 'name', label: 'Nama', type: 'text', required: true, section: 'Basic Information' },
-    { name: 'slug', label: 'Slug', type: 'text', section: 'Basic Information' },
+    { name: 'slug', label: 'Slug', type: 'slug', section: 'Basic Information' },
     { name: 'icon', label: 'Ikon', type: 'icon', help: 'Ditampilkan di kartu pilar pada beranda.', section: 'Basic Information' },
     { name: 'short_description', label: 'Deskripsi Singkat', type: 'textarea', section: 'Details' },
-    { name: 'description', label: 'Deskripsi Lengkap', type: 'richtext', section: 'Details' },
+    { name: 'description', label: 'Deskripsi Lengkap', type: 'html', section: 'Details' },
     { name: 'services', label: 'Layanan', type: 'tags', section: 'Details' },
     { name: 'relatedEntities', label: 'Entitas Terkait', type: 'entity-multiselect', section: 'Relations' },
     { name: 'status', label: 'Status', type: 'select', options: STATUS_OPTIONS, required: true, section: 'Publishing' },

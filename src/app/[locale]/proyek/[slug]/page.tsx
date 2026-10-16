@@ -8,7 +8,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { routing } from '@/i18n/routing';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
-import { RichText } from '@/components/cms/rich-text';
+import { ARTICLE_HTML_CLASS, SanitizedHtml } from '@/components/cms/sanitized-html';
 import { EntityCard } from '@/components/entitas/entity-card';
 import { messagesFor } from '@/i18n/messages';
 
@@ -96,7 +96,7 @@ export default async function ProyekDetailPage({
         <Section className="bg-stone">
           <Reveal>
             <div className="mx-auto max-w-2xl">
-              <RichText content={project.content} />
+              <SanitizedHtml html={project.content} className={ARTICLE_HTML_CLASS} />
             </div>
           </Reveal>
         </Section>

@@ -37,17 +37,22 @@ export default async function NewResourcePage({
     : [];
 
   return (
-    <div>
-      <PageHeader eyebrow={`Content / ${resource.title}`} title={`Add ${resource.singular}`} />
+    // h-full + flex-col: PageHeader never scrolls, ResourceForm gets a real
+    // bounded height to scroll its own content within (see EditorFrame in
+    // editor-layout.tsx and admin-shell.tsx for where that h-full comes from).
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0">
+        <PageHeader eyebrow={`Content / ${resource.title}`} title={`Add ${resource.singular}`} />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-8 min-h-0 flex-1">
         <ResourceForm
           fields={resource.fields}
           initialValues={resource.hasStatus ? { status: 'draft' } : {}}
           entities={entities}
+          slugSource={resource.slugSource}
           action={createAction.bind(null, resourceSlug)}
           cancelHref={`/wp-admin/content/${resourceSlug}`}
-          successMessage={`${resource.singular} created successfully.`}
         />
       </div>
     </div>

@@ -8,7 +8,7 @@ import { messagesFor } from '@/i18n/messages';
 // this section — same convention already used for capabilities-grid's own
 // one-off heading color. Reserved for the heading and the signature box's
 // title line only.
-const HEADING_COLOR = '#2E7692';
+const HEADING_COLOR = '#2A7793';
 
 function Strong({ children }: { children: ReactNode }) {
   return <strong className="font-semibold text-pine-ink">{children}</strong>;

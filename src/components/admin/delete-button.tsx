@@ -10,12 +10,12 @@ export function DeleteButton({
   action,
   label,
   itemLabel,
-  successMessage = 'Deleted successfully.',
+  successMessage = 'Berhasil dihapus.',
   iconOnly = false,
 }: {
   action: () => Promise<{ error?: string } | void>;
   label?: string;
-  /** Name of the specific item being deleted, e.g. the row's title. */
+  /** Name of the specific item being deleted, e.g. the row's title — used only for the icon's own aria-label, not shown in the confirm dialog. */
   itemLabel: string;
   successMessage?: string;
   iconOnly?: boolean;
@@ -43,21 +43,31 @@ export function DeleteButton({
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        aria-label={iconOnly ? (label ?? 'Delete') : undefined}
-        title={iconOnly ? (label ?? 'Delete') : undefined}
+        onClick={(e) => {
+          // This button is sometimes placed inside a clickable row/card
+          // that opens its own detail view on click (e.g. a table row) —
+          // without this, that ambient click handler would also fire,
+          // opening that view instead of (or right under) this confirm
+          // dialog. ConfirmDialog's own AdminModal stops the rest of that
+          // click's journey once the dialog is open; this stops the very
+          // first click, before the dialog exists yet.
+          e.stopPropagation();
+          setOpen(true);
+        }}
+        aria-label={iconOnly ? `${label ?? 'Hapus'} ${itemLabel}` : undefined}
+        title={iconOnly ? (label ?? 'Hapus') : undefined}
         className={
           iconOnly
-            ? 'rounded-[8px] p-1.5 text-slate hover:bg-danger/10 hover:text-danger'
+            ? 'rounded-[8px] p-1.5 text-[#64748b] hover:bg-danger/10 hover:text-danger'
             : 'text-small text-danger hover:underline'
         }
       >
-        {iconOnly ? <Trash2 className="h-4 w-4" aria-hidden="true" /> : (label ?? 'Delete')}
+        {iconOnly ? <Trash2 className="h-4 w-4" aria-hidden="true" /> : (label ?? 'Hapus')}
       </button>
       <ConfirmDialog
         open={open}
-        title={`Delete "${itemLabel}"?`}
-        description="This action cannot be undone."
+        title="Hapus Data?"
+        description="Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan."
         pending={pending}
         onConfirm={handleConfirm}
         onCancel={() => setOpen(false)}

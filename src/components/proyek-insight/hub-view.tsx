@@ -15,19 +15,24 @@ import { ProyekInsightTabsClient } from './tabs-controller';
  * this section's hero changes with the active tab instead of staying fixed.
  */
 export async function ProyekInsightHubView({ locale, initialTab }: { locale: string; initialTab: string }) {
-  const [projects, posts] = await Promise.all([getPublishedProjects(), getPublishedPosts()]);
+  const [projects, siaranPersPosts, beritaPosts] = await Promise.all([
+    getPublishedProjects(),
+    getPublishedPosts('siaran_pers'),
+    getPublishedPosts('berita_perusahaan'),
+  ]);
 
-  // Siaran Pers is the single source for all news — every published article
-  // is listed there. The Berita Perusahaan tab stays in place but has nothing
-  // of its own to repeat, so it points to Siaran Pers instead of duplicating it.
+  // Siaran Pers (press clippings) and Berita Perusahaan (self-authored news)
+  // are separate content types — each tab reads only its own, never the
+  // other's. See src/lib/admin/resources/siaran-pers.ts and
+  // berita-perusahaan.ts for the editors that keep them apart.
   const tabsContent = {
     'portofolio-proyek': <PortofolioProyekSection locale={locale} projects={projects} />,
     'klien-mitra': await ClientsPartners({ locale }),
     'berita-perusahaan': (
-      <PostsListSection locale={locale} posts={[]} emptyMessage="Seluruh berita kini tersedia di Siaran Pers." />
+      <PostsListSection locale={locale} posts={beritaPosts} emptyMessage="Belum ada berita perusahaan." />
     ),
     'siaran-pers': (
-      <SiaranPersList locale={locale} posts={posts} emptyMessage="Siaran pers sedang disiapkan." />
+      <SiaranPersList locale={locale} posts={siaranPersPosts} emptyMessage="Siaran pers sedang disiapkan." />
     ),
   };
 

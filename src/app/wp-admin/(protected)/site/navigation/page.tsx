@@ -27,7 +27,7 @@ function MenuSection({
         <h2 className="font-display text-h3 text-ink">{title}</h2>
         <Link
           href={`/wp-admin/site/navigation/new?menu=${menu}`}
-          className="inline-flex items-center gap-1.5 rounded-[10px] border border-line px-3 py-1.5 text-small text-ink hover:bg-stone"
+          className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#e3e8ee] px-3 py-1.5 text-small text-ink hover:bg-[#f4f6f9]"
         >
           <Plus className="h-3.5 w-3.5" aria-hidden="true" />
           Add Item

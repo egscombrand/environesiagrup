@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPublishedEntities, type Entity } from '@/lib/cms/entities';
+import { getPublishedCoreEntities, type Entity } from '@/lib/cms/entities';
 import { getSiteSettings } from '@/lib/cms/settings';
 import { getPublishedNavigationUrlsBySlug } from '@/lib/cms/navigation';
 import { Section } from '@/components/layout/section';
@@ -22,9 +22,9 @@ function localeHref(url: string, locale: string) {
 // company names (Level 2) and capability titles (Level 3) intentionally use
 // more subdued, standard site colors instead of this one, per the section's
 // typography hierarchy.
-const HEADING_COLOR = 'text-[#2E7692]';
+const HEADING_COLOR = 'text-[#2A7793]';
 const BODY_COLOR = 'text-[#6F6F6F]';
-const CTA_COLOR = 'text-[#06B2A0]';
+const CTA_COLOR = 'text-[#01B3A1]';
 
 function EntityCard({
   entity,
@@ -96,7 +96,7 @@ function EntityCard({
 export async function CapabilitiesGrid({ locale, title }: { locale: string; title?: string }) {
   const t = messagesFor(locale);
   const [entities, settings, urlsBySlug] = await Promise.all([
-    getPublishedEntities(),
+    getPublishedCoreEntities(),
     getSiteSettings(),
     getPublishedNavigationUrlsBySlug('header'),
   ]);

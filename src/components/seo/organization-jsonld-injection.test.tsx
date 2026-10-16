@@ -3,13 +3,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { makeEntity } from '@/lib/cms/fixtures';
 
 // OrganizationJsonLd takes only { locale } — there is no prop-level injection
-// point for entity data, it reads getPublishedEntities() internally. To feed
-// it a controlled, adversarial `short_description` we mock the CMS module
-// for this file only (kept out of organization-jsonld.test.tsx so the mock
-// doesn't shadow getPublishedEntities for the tests that assert against the
-// real five-entity collection).
+// point for entity data, it reads getPublishedCoreEntities() internally. To
+// feed it a controlled, adversarial `short_description` we mock the CMS
+// module for this file only (kept out of organization-jsonld.test.tsx so the
+// mock doesn't shadow getPublishedCoreEntities for the tests that assert
+// against the real five-entity collection).
 vi.mock('@/lib/cms/entities', () => ({
-  getPublishedEntities: vi.fn().mockResolvedValue([
+  getPublishedCoreEntities: vi.fn().mockResolvedValue([
     makeEntity({
       name: 'Evil Co',
       slug: 'evil-co',

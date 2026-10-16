@@ -26,7 +26,7 @@ const STATUS_LABEL: Record<NewsRowStatus, string> = {
 const STATUS_STYLE: Record<NewsRowStatus, string> = {
   ready: 'border-success/30 text-success',
   need_review: 'border-amber-500/40 text-amber-700',
-  duplicate: 'border-slate/30 text-slate',
+  duplicate: 'border-slate/30 text-[#64748b]',
   error: 'border-danger/30 text-danger',
 };
 
@@ -117,11 +117,11 @@ export function NewsImportWizard() {
   if (step === 'select' || step === 'uploading') {
     return (
       <div className="space-y-4">
-        <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[14px] border border-dashed border-line bg-paper px-6 py-12 text-center hover:border-forest/40">
+        <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[12px] border border-dashed border-[#e3e8ee] bg-white px-6 py-12 text-center hover:border-[#2a7793]/40">
           {step === 'uploading' ? (
-            <Loader2 className="h-6 w-6 animate-spin text-forest" aria-hidden="true" />
+            <Loader2 className="h-6 w-6 animate-spin text-[#2a7793]" aria-hidden="true" />
           ) : (
-            <Upload className="h-6 w-6 text-slate" aria-hidden="true" />
+            <Upload className="h-6 w-6 text-[#64748b]" aria-hidden="true" />
           )}
           <span className="text-small text-ink">
             {step === 'uploading' ? `Mengunggah dan membaca ${fileName}…` : 'Pilih file Excel (.xlsx, .xls) atau CSV (.csv)'}
@@ -141,7 +141,7 @@ export function NewsImportWizard() {
 
         {error ? <p className="text-small text-danger">{error}</p> : null}
 
-        <div className="rounded-[14px] border border-line bg-paper p-5 text-small text-slate">
+        <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-5 text-small text-[#64748b]">
           <p className="font-medium text-ink">Kolom yang dibaca dari baris pertama file</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>
@@ -163,29 +163,29 @@ export function NewsImportWizard() {
 
   if (step === 'done' && result) {
     return (
-      <div className="rounded-[14px] border border-line bg-paper p-8 text-center">
+      <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-8 text-center">
         <CheckCircle2 className="mx-auto h-8 w-8 text-success" aria-hidden="true" />
         <p className="mt-3 font-display text-h3 text-ink">{result.imported} berita berhasil diimport.</p>
         {result.failed > 0 ? (
           <p className="mt-1 text-small text-danger">{result.failed} baris gagal disimpan — periksa file dan coba lagi.</p>
         ) : null}
         {thumbnails ? (
-          <p className="mt-2 text-small text-slate">
+          <p className="mt-2 text-small text-[#64748b]">
             {thumbnails.remaining > 0
               ? `Mengambil thumbnail… ${thumbnails.found} ditemukan, ${thumbnails.remaining} tersisa`
               : `Thumbnail: ${thumbnails.processed} diproses · ${thumbnails.found} ditemukan · ${thumbnails.unavailable} masih tidak tersedia · ${thumbnails.failed} gagal`}
           </p>
         ) : (
-          <p className="mt-2 text-small text-slate">Mengambil thumbnail dari link berita…</p>
+          <p className="mt-2 text-small text-[#64748b]">Mengambil thumbnail dari link berita…</p>
         )}
         <div className="mt-6 flex justify-center gap-3">
           <Link
             href="/wp-admin/content/siaran-pers"
-            className="rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90"
+            className="rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90"
           >
             Lihat Daftar Berita
           </Link>
-          <button type="button" onClick={reset} className="rounded-[10px] border border-line px-4 py-2 text-small text-ink">
+          <button type="button" onClick={reset} className="rounded-[10px] border border-[#e3e8ee] px-4 py-2 text-small text-ink">
             Import file lain
           </button>
         </div>
@@ -199,13 +199,13 @@ export function NewsImportWizard() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-3 rounded-[14px] border border-line bg-paper p-4">
-        <FileSpreadsheet className="h-5 w-5 text-forest" aria-hidden="true" />
+      <div className="flex flex-wrap items-center gap-3 rounded-[12px] border border-[#e3e8ee] bg-white p-4">
+        <FileSpreadsheet className="h-5 w-5 text-[#2a7793]" aria-hidden="true" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-small font-medium text-ink">{preview.fileName}</p>
-          <p className="text-small text-slate">Ditemukan {summary.found} berita</p>
+          <p className="text-small text-[#64748b]">Ditemukan {summary.found} berita</p>
         </div>
-        <button type="button" onClick={reset} className="text-small text-slate hover:text-ink">
+        <button type="button" onClick={reset} className="text-small text-[#64748b] hover:text-ink">
           Ganti file
         </button>
       </div>
@@ -217,7 +217,7 @@ export function NewsImportWizard() {
         <SummaryCard label="Error" value={summary.errors} hint="Judul kosong" />
       </div>
 
-      <p className="text-small text-slate">
+      <p className="text-small text-[#64748b]">
         Kolom terdeteksi: Judul
         {preview.columns.owner ? ', Owner' : ''}
         {preview.columns.media ? ', Media' : ''}
@@ -225,10 +225,10 @@ export function NewsImportWizard() {
         {preview.columns.source_url ? ', Link Berita' : ''}. Menampilkan {preview.sample.length} baris pertama sebagai pratinjau.
       </p>
 
-      <div className="overflow-x-auto rounded-[14px] border border-line bg-paper">
+      <div className="overflow-x-auto rounded-[12px] border border-[#e3e8ee] bg-white">
         <table className="w-full min-w-[720px] text-left text-small">
           <thead>
-            <tr className="border-b border-line font-mono text-label uppercase text-slate">
+            <tr className="border-b border-[#e3e8ee] text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
               <th className="px-4 py-3">Judul Press Release</th>
               <th className="px-4 py-3">Owner</th>
               <th className="px-4 py-3">Media</th>
@@ -245,16 +245,16 @@ export function NewsImportWizard() {
         </table>
       </div>
 
-      <div className="flex flex-col items-start justify-between gap-3 rounded-[14px] border border-line bg-paper p-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col items-start justify-between gap-3 rounded-[12px] border border-[#e3e8ee] bg-white p-4 sm:flex-row sm:items-center">
         <p className="text-small text-ink">
           <span className="font-medium">{importCount} data siap diimport</span>
-          <span className="text-slate"> · possible duplicate tidak ikut diimport</span>
+          <span className="text-[#64748b]"> · possible duplicate tidak ikut diimport</span>
         </p>
         <button
           type="button"
           onClick={handleImport}
           disabled={importCount === 0 || step === 'importing'}
-          className="inline-flex items-center gap-2 rounded-[10px] bg-forest px-5 py-2.5 text-small font-medium text-paper hover:opacity-90 disabled:opacity-40"
+          className="inline-flex items-center gap-2 rounded-[10px] bg-[#2a7793] px-5 py-2.5 text-small font-medium text-white hover:opacity-90 disabled:opacity-40"
         >
           {step === 'importing' ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
           {step === 'importing' ? 'Mengimpor…' : 'Import Semua Data Baru'}
@@ -266,20 +266,20 @@ export function NewsImportWizard() {
 
 function SummaryCard({ label, value, hint }: { label: string; value: number; hint?: string }) {
   return (
-    <div className="rounded-[14px] border border-line bg-paper p-4">
-      <p className="font-mono text-label uppercase text-slate">{label}</p>
+    <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">{label}</p>
       <p className="mt-2 font-display text-h3 text-ink">{value}</p>
-      {hint ? <p className="mt-1 text-label text-slate">{hint}</p> : null}
+      {hint ? <p className="mt-1 text-label text-[#64748b]">{hint}</p> : null}
     </div>
   );
 }
 
 function PreviewRow({ item }: { item: NewsPreviewItem }) {
   return (
-    <tr className="border-b border-line last:border-0 align-top">
-      <td className="max-w-[280px] px-4 py-3 text-ink">{item.title || <span className="text-slate">—</span>}</td>
-      <td className="px-4 py-3 text-ink">{item.owner ?? <span className="text-slate">—</span>}</td>
-      <td className="px-4 py-3 text-ink">{item.media ?? <span className="text-slate">—</span>}</td>
+    <tr className="border-b border-[#e3e8ee] last:border-0 align-top">
+      <td className="max-w-[280px] px-4 py-3 text-ink">{item.title || <span className="text-[#64748b]">—</span>}</td>
+      <td className="px-4 py-3 text-ink">{item.owner ?? <span className="text-[#64748b]">—</span>}</td>
+      <td className="px-4 py-3 text-ink">{item.media ?? <span className="text-[#64748b]">—</span>}</td>
       <td className="whitespace-nowrap px-4 py-3 text-ink">{formatDate(item.published_at)}</td>
       <td className="px-4 py-3">
         {item.source_url && /^https?:\/\//i.test(item.source_url) ? (
@@ -287,19 +287,19 @@ function PreviewRow({ item }: { item: NewsPreviewItem }) {
             href={item.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-forest underline-offset-4 hover:underline"
+            className="text-[#2a7793] underline-offset-4 hover:underline"
           >
             Lihat berita
           </a>
         ) : (
-          <span className="text-slate">{item.source_url ?? '—'}</span>
+          <span className="text-[#64748b]">{item.source_url ?? '—'}</span>
         )}
       </td>
       <td className="px-4 py-3">
         <span className={`inline-block rounded-full border px-2.5 py-0.5 text-label font-medium ${STATUS_STYLE[item.status]}`}>
           {STATUS_LABEL[item.status]}
         </span>
-        {item.issues.length > 0 ? <p className="mt-1 max-w-[220px] text-label text-slate">{item.issues.join(' ')}</p> : null}
+        {item.issues.length > 0 ? <p className="mt-1 max-w-[220px] text-label text-[#64748b]">{item.issues.join(' ')}</p> : null}
       </td>
     </tr>
   );

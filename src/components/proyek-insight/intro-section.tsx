@@ -20,7 +20,7 @@ export function ProyekInsightIntroSection() {
         <div className="w-full md:w-[45%]">
           <Image
             src="/bannerinsight.png"
-            alt="Tim Environesia Company Group mengerjakan proyek lingkungan di berbagai sektor"
+            alt="Tim Environesia mengerjakan proyek lingkungan di berbagai sektor"
             width={7620}
             height={2932}
             className="h-auto w-full object-contain"

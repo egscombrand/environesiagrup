@@ -26,7 +26,7 @@ export function ThumbnailRetryButton({ postId }: { postId: string }) {
           router.refresh();
         })
       }
-      className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-label text-ink hover:border-forest/40 disabled:opacity-40"
+      className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#e3e8ee] px-2.5 py-1.5 text-label text-ink hover:border-[#2a7793]/40 disabled:opacity-40"
     >
       {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />}
       Ambil Ulang Thumbnail
@@ -65,12 +65,12 @@ export function ThumbnailBatchButton() {
             router.refresh();
           }
         }}
-        className="inline-flex items-center gap-2 rounded-[10px] border border-line px-3.5 py-2 text-small text-ink hover:border-forest/40 disabled:opacity-40"
+        className="inline-flex items-center gap-2 rounded-[10px] border border-[#e3e8ee] px-3.5 py-2 text-small text-ink hover:border-[#2a7793]/40 disabled:opacity-40"
       >
         {running ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
         Ambil Thumbnail yang Tertunda
       </button>
-      {progress ? <span className="text-small text-slate">{progress}</span> : null}
+      {progress ? <span className="text-small text-[#64748b]">{progress}</span> : null}
     </div>
   );
 }

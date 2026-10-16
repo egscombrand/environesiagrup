@@ -1,17 +1,16 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { AlertTriangle } from 'lucide-react';
+import { AdminModal } from './editor-layout';
 
-// Built on the native <dialog> element rather than a modal library: it gives
-// us ESC-to-close, a real ::backdrop, and focus trapping for free, which
-// covers everything this needs without a new dependency.
+// Built on the shared AdminModal (a native <dialog>): Escape and a click on the
+// backdrop cancel, and focus stays inside the dialog while it is open.
 export function ConfirmDialog({
   open,
   title,
   description,
-  confirmLabel = 'Delete',
-  cancelLabel = 'Cancel',
+  confirmLabel = 'Ya, Hapus',
+  cancelLabel = 'Batal',
   destructive = true,
   pending = false,
   onConfirm,
@@ -27,26 +26,34 @@ export function ConfirmDialog({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
   return (
-    <dialog
-      ref={ref}
-      onCancel={(e) => {
-        e.preventDefault();
-        onCancel();
-      }}
-      onClick={(e) => {
-        if (e.target === ref.current) onCancel();
-      }}
-      className="m-auto w-full max-w-sm rounded-[14px] border border-line bg-paper p-6 backdrop:bg-ink/40"
+    <AdminModal
+      open={open}
+      title={title}
+      onClose={onCancel}
+      width="sm"
+      footer={
+        <>
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={pending}
+            className="rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-2 text-small text-ink transition-colors hover:bg-[#f4f6f9] disabled:opacity-60"
+          >
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={pending}
+            className={`rounded-[10px] px-4 py-2 text-small font-medium text-white transition-opacity disabled:opacity-60 ${
+              destructive ? 'bg-danger hover:opacity-90' : 'bg-[#2a7793] hover:opacity-90'
+            }`}
+          >
+            {pending ? 'Memproses…' : confirmLabel}
+          </button>
+        </>
+      }
     >
       <div className="flex items-start gap-3">
         {destructive ? (
@@ -54,32 +61,8 @@ export function ConfirmDialog({
             <AlertTriangle className="h-4 w-4 text-danger" aria-hidden="true" />
           </div>
         ) : null}
-        <div>
-          <p className="font-display text-h3 text-ink">{title}</p>
-          {description ? <p className="mt-1 text-small text-slate">{description}</p> : null}
-        </div>
+        {description ? <p className="text-body text-[#475569]">{description}</p> : null}
       </div>
-
-      <div className="mt-6 flex justify-end gap-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={pending}
-          className="rounded-[10px] border border-line px-4 py-2 text-small text-ink hover:bg-stone disabled:opacity-60"
-        >
-          {cancelLabel}
-        </button>
-        <button
-          type="button"
-          onClick={onConfirm}
-          disabled={pending}
-          className={`rounded-[10px] px-4 py-2 text-small font-medium text-paper disabled:opacity-60 ${
-            destructive ? 'bg-danger hover:opacity-90' : 'bg-forest hover:opacity-90'
-          }`}
-        >
-          {pending ? 'Please wait…' : confirmLabel}
-        </button>
-      </div>
-    </dialog>
+    </AdminModal>
   );
 }

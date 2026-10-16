@@ -45,7 +45,7 @@ export function ProjectGallery({ projectId, images }: { projectId: string; image
 
   return (
     <div className="mt-10 max-w-2xl">
-      <p className="font-mono text-label uppercase text-slate">Galeri Proyek</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Galeri Proyek</p>
 
       {images.length > 0 ? (
         <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
@@ -56,7 +56,7 @@ export function ProjectGallery({ projectId, images }: { projectId: string; image
                 alt={image.alt_text ?? ''}
                 width={160}
                 height={120}
-                className="h-24 w-full rounded-[10px] border border-line object-cover"
+                className="h-24 w-full rounded-[10px] border border-[#e3e8ee] object-cover"
               />
               <button
                 type="button"
@@ -67,7 +67,7 @@ export function ProjectGallery({ projectId, images }: { projectId: string; image
                     router.refresh();
                   })
                 }
-                className="absolute right-1 top-1 rounded-full bg-danger px-2 py-0.5 text-small text-paper disabled:opacity-60"
+                className="absolute right-1 top-1 rounded-full bg-danger px-2 py-0.5 text-small text-white disabled:opacity-60"
               >
                 ×
               </button>
@@ -75,7 +75,7 @@ export function ProjectGallery({ projectId, images }: { projectId: string; image
           ))}
         </div>
       ) : (
-        <p className="mt-2 text-small text-slate">Belum ada foto galeri.</p>
+        <p className="mt-2 text-small text-[#64748b]">Belum ada foto galeri.</p>
       )}
 
       <div className="mt-3">
@@ -87,9 +87,9 @@ export function ProjectGallery({ projectId, images }: { projectId: string; image
             const file = e.target.files?.[0];
             if (file) handleFile(file);
           }}
-          className="text-small text-ink file:mr-3 file:rounded-[8px] file:border file:border-line file:bg-paper file:px-3 file:py-1.5 file:text-small"
+          className="text-small text-ink file:mr-3 file:rounded-[8px] file:border file:border-[#e3e8ee] file:bg-white file:px-3 file:py-1.5 file:text-small"
         />
-        {uploading ? <p className="mt-1 text-small text-slate">Mengunggah…</p> : null}
+        {uploading ? <p className="mt-1 text-small text-[#64748b]">Mengunggah…</p> : null}
         {error ? <p className="mt-1 text-small text-danger">{error}</p> : null}
       </div>
     </div>

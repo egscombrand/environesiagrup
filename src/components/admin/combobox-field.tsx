@@ -82,10 +82,10 @@ export function ComboboxField({
             setOpen(false);
           }
         }}
-        className="w-full rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-line focus:border-forest focus:bg-paper"
+        className="w-full rounded-[8px] border border-transparent bg-transparent px-2 py-1 text-small text-ink outline-none hover:border-[#e3e8ee] focus:border-[#2a7793] focus:bg-white"
       />
       {open && filtered.length > 0 ? (
-        <ul className="absolute left-0 top-full z-20 mt-1 max-h-48 w-max min-w-full overflow-y-auto rounded-[8px] border border-line bg-paper py-1 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
+        <ul className="absolute left-0 top-full z-20 mt-1 max-h-48 w-max min-w-full overflow-y-auto rounded-[8px] border border-[#e3e8ee] bg-white py-1 shadow-[0_8px_24px_rgba(16,34,28,0.12)]">
           {filtered.map((option, i) => (
             <li key={option}>
               <button
@@ -93,7 +93,7 @@ export function ComboboxField({
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => commit(option)}
                 className={`block w-full whitespace-nowrap px-3 py-1.5 text-left text-small ${
-                  i === highlight ? 'bg-forest/10 text-forest' : 'text-ink hover:bg-stone'
+                  i === highlight ? 'bg-[#2a7793]/10 text-[#2a7793]' : 'text-ink hover:bg-[#f4f6f9]'
                 }`}
               >
                 {option}

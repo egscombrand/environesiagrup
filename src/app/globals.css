@@ -7,13 +7,22 @@
      leave the two out of sync. */
   --header-h: 5.25rem;
 
-  --color-ink: #10221C;
-  --color-forest: #0F4C3A;
-  --color-moss: #2F7D5E;
-  --color-paper: #FBFBF9;
-  --color-stone: #EDEEEA;
-  --color-slate: #5C635E;
-  --color-line: rgba(16, 34, 28, 0.10);
+  /* Environesia Group design system (2026-10 rebrand, refined) — text
+     (headings, body, labels, nav) is near-black, never the brand blue;
+     Bright Teal is reserved for CTAs and interactive/accent elements only.
+     Semantic roles unchanged (ink = primary text/heading, forest = primary
+     action/accent, moss = brighter hover/secondary accent, paper = main
+     background, stone = soft secondary background, slate = muted/body
+     text) — only the hex values move, so every one of the ~80 files
+     already styled with text-ink/bg-forest/text-slate/etc. picks up the
+     palette with no per-file edits. */
+  --color-ink: #1A1A1A;
+  --color-forest: #01B3A1;
+  --color-moss: #17C9B6;
+  --color-paper: #FFFFFF;
+  --color-stone: #F0F2F3;
+  --color-slate: #707070;
+  --color-line: rgba(0, 0, 0, 0.1);
 
   /* Semantic status colors for wp-admin — deliberately reuse the same hues
      already assigned to entity accents elsewhere on the site (project.md §2)
@@ -26,15 +35,18 @@
   --color-danger: #A8482D;
 
   /* Landing-page blueprint palette (environesia-landing-page-master-prompt
-     skill) — additive, scoped to the homepage + shared header/footer only.
-     Every other public page and wp-admin keep the tokens above untouched. */
-  --color-pine-ink: #0B2B22;
-  --color-emerald-pulse: #0FA96B;
+     skill) — in practice used far beyond just the homepage (every section
+     hero across the site: Tentang Kami, Proyek & Insight, Tata Kelola,
+     plus the header/footer). Rebranded in step with the tokens above:
+     pine-ink/emerald-pulse are this palette's primary-text/accent pair,
+     same role as ink/forest, so they move to the same two hex values. */
+  --color-pine-ink: #1A1A1A;
+  --color-emerald-pulse: #01B3A1;
   --color-sky-aqua: #33C4C9;
   --color-sunrise-amber: #F2A93B;
   --color-coral-flare: #FF6B57;
-  --color-canvas: #F6F8F3;
-  --color-sage-mist: #D8E4DA;
+  --color-canvas: #FFFFFF;
+  --color-sage-mist: #F0F2F3;
 
   /* One global typography system: every font role — including the
      "landing"/"mono" names kept below purely so the ~50+ components
@@ -47,22 +59,53 @@
   --font-landing-display: var(--font-sans-src), ui-sans-serif, sans-serif;
   --font-landing-body: var(--font-sans-src), ui-sans-serif, sans-serif;
 
-  --text-display: clamp(36px, 5vw, 56px);
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.02em;
+  /* H1–Caption global typography scale (2026-10 design system, final pass)
+     — one token per hierarchy level, every file that already uses these
+     classes (text-display/text-h2/text-h3/text-h4/text-p1/text-body/
+     text-small/text-caption) picks up the standardized size with no
+     per-file edits. Fluid clamps land on the spec's desktop value at wide
+     viewports and its mobile value at narrow ones. Headings keep a subtle
+     negative letter-spacing; paragraphs and Caption use normal (0) —
+     per the spec's own "letter spacing negatif hanya untuk heading"
+     guidance, confirmed again in this pass. */
+  --text-display: clamp(32px, 5vw, 48px); /* H1 */
+  --text-display--line-height: 1.125; /* 54px at 48px */
+  --text-display--letter-spacing: -0.03em;
 
-  --text-h2: clamp(28px, 3.5vw, 36px);
-  --text-h2--line-height: 1.15;
-  --text-h2--letter-spacing: -0.01em;
+  --text-h2: clamp(26px, 3vw, 32px);
+  --text-h2--line-height: 1.25; /* 40px at 32px */
+  --text-h2--letter-spacing: -0.02em;
 
-  --text-h3: 24px;
-  --text-h3--line-height: 1.3;
+  --text-h3: clamp(22px, 2.5vw, 24px);
+  --text-h3--line-height: 1.292; /* 31px at 24px */
+  --text-h3--letter-spacing: -0.02em;
 
+  --text-h4: clamp(18px, 2vw, 20px);
+  --text-h4--line-height: 1.4; /* 28px at 20px */
+  --text-h4--letter-spacing: -0.01em;
+
+  /* P1 — lead/intro paragraphs. */
+  --text-p1: clamp(17px, 1vw, 18px);
+  --text-p1--line-height: 1.611; /* 29px at 18px */
+  --text-p1--letter-spacing: 0;
+
+  /* P2 (body) and P3 (small) are flat (same desktop/mobile size) per the
+     spec's own responsive table. */
   --text-body: 16px;
-  --text-body--line-height: 1.7;
+  --text-body--line-height: 1.625; /* 26px */
+  --text-body--letter-spacing: 0;
 
   --text-small: 14px;
-  --text-small--line-height: 1.6;
+  --text-small--line-height: 1.5; /* 21px */
+  --text-small--letter-spacing: 0;
+
+  /* Caption — small print/image captions, normal tracking. Distinct from
+     Label below (uppercase eyebrow tags, which keep their wide tracking —
+     changing that would un-style ~50 files' kicker labels for no reason;
+     this spec's "Caption" is a different, new role those never used). */
+  --text-caption: 12px;
+  --text-caption--line-height: 1.5; /* 18px */
+  --text-caption--letter-spacing: 0;
 
   --text-label: 12px;
   --text-label--line-height: 1.4;
@@ -94,6 +137,125 @@ button:focus-visible {
   }
   to {
     transform: scale(1);
+  }
+}
+
+/* Tata Kelola section 02 — governance line and node reveal. The hidden start
+   state only applies once JavaScript marks the section ready, so content is
+   visible without JS. Everything is off under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .gov-ready .gov-line-x {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .gov-ready .gov-line-y {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .gov-ready .gov-node,
+  .gov-ready .gov-principle {
+    opacity: 0;
+  }
+
+  .gov-in .gov-line-x {
+    animation: gov-line-x 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .gov-in .gov-line-y {
+    animation: gov-line-y 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .gov-in .gov-node {
+    animation: gov-node 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .gov-in .gov-principle {
+    animation: gov-principle 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes gov-line-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes gov-line-y {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes gov-node {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gov-principle {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tata Kelola & Keberlanjutan navigation (Section 3): heading and boxed tabs fade
+   up once on load. Reduced motion shortens every transition and animation to
+   effectively instant, but keeps the end state. */
+@media (prefers-reduced-motion: no-preference) {
+  .gov-nav-heading {
+    animation: gov-fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .gov-nav-box {
+    animation: gov-fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+  }
+}
+
+.gov-nav-root .governance-tab {
+  transition-property: background-color, color, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+/* Short fade-up for a block that opens a section, such as a description. */
+@media (prefers-reduced-motion: no-preference) {
+  .gov-fade-on-load {
+    animation: gov-fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes gov-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .governance-overview *,
+  .gov-nav-root,
+  .gov-nav-root *,
+  .gov-nav-root *::before,
+  .gov-nav-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

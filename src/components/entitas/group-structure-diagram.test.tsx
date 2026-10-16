@@ -14,7 +14,9 @@ const entities = [
 describe('GroupStructureDiagram', () => {
   it('renders the group name and links every entity', () => {
     render(<GroupStructureDiagram entities={entities} locale="id" />);
-    expect(screen.getByText('Environesia Group')).toBeInTheDocument();
+    // Disambiguated by tag from the "Environesia" entity card's own name, which renders
+    // the same text inside a `p` — the diagram's root label is specifically a `div`.
+    expect(screen.getByText('Environesia', { selector: 'div' })).toBeInTheDocument();
     entities.forEach((entity) => {
       expect(screen.getByRole('link', { name: entity.name })).toHaveAttribute(
         'href',

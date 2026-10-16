@@ -61,11 +61,11 @@ export function ProyekInsightSubNav({ locale, activeSlug }: { locale: string; ac
   return (
     <nav
       aria-label="Navigasi Proyek & Insight"
-      className="sticky z-[9990] w-full border-b border-pine-ink/10 bg-stone/50"
+      className="sticky z-[9990] w-full border-b border-pine-ink/10 bg-stone"
       style={{ top: headerHeight }}
     >
       <div className="mx-auto max-w-[1280px] px-4 py-2.5 md:px-8 md:py-3">
-        <ul className="flex flex-wrap justify-center gap-2">
+        <ul className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-2">
           {PROYEK_INSIGHT_ROUTES.map((route) => {
             const href = `/${locale}/proyek-insight/${route.slug}`;
             const active = currentActiveSlug === route.slug;
@@ -76,7 +76,7 @@ export function ProyekInsightSubNav({ locale, activeSlug }: { locale: string; ac
                 <Link
                   href={href}
                   aria-current={active ? 'page' : undefined}
-                  className="group relative flex h-full items-center gap-2 rounded-[11px] border px-3.5 py-2.5 transition-colors duration-[180ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  className="group relative flex h-full items-center justify-center gap-1.5 rounded-[11px] border px-2 py-2 text-center transition-colors duration-[180ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:gap-2 sm:px-3.5 sm:py-2.5"
                   style={{
                     borderColor: active ? `${ACCENT}4D` : 'rgba(11,43,34,0.10)',
                     ['--tw-ring-color' as string]: `${ACCENT}80`,
@@ -95,7 +95,7 @@ export function ProyekInsightSubNav({ locale, activeSlug }: { locale: string; ac
 
                   {Icon ? (
                     <Icon
-                      className="relative h-[18px] w-[18px] shrink-0 transition-colors duration-[180ms]"
+                      className="relative hidden h-[18px] w-[18px] shrink-0 transition-colors duration-[180ms] sm:block"
                       style={{ color: active ? ACCENT : 'rgba(11,43,34,0.55)' }}
                       strokeWidth={1.75}
                       aria-hidden="true"
@@ -103,8 +103,8 @@ export function ProyekInsightSubNav({ locale, activeSlug }: { locale: string; ac
                   ) : null}
 
                   <span
-                    className={`relative whitespace-nowrap tracking-[0.005em] transition-colors duration-[180ms] ${
-                      active ? 'text-[14px] font-semibold' : 'text-[14px] font-medium'
+                    className={`relative leading-tight tracking-[0.005em] transition-colors duration-[180ms] sm:whitespace-nowrap ${
+                      active ? 'text-[13px] font-semibold sm:text-[14px]' : 'text-[13px] font-medium sm:text-[14px]'
                     }`}
                     style={{ color: active ? ACCENT : '#0B2B22' }}
                   >

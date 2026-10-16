@@ -11,7 +11,7 @@ const entities = [
 ];
 
 vi.mock('@/lib/cms/entities', () => ({
-  getPublishedEntities: vi.fn().mockResolvedValue(entities),
+  getPublishedCoreEntities: vi.fn().mockResolvedValue(entities),
 }));
 
 vi.mock('@/lib/cms/settings', () => ({
@@ -34,7 +34,7 @@ describe('OrganizationJsonLd', () => {
     const payload = parsePayload(container);
 
     expect(payload['@type']).toBe('Organization');
-    expect(payload.name).toBe('Environesia Company Group');
+    expect(payload.name).toBe('Environesia');
     expect(payload.address.streetAddress).toContain('55284');
     expect(payload.address.addressCountry).toBe('ID');
   });

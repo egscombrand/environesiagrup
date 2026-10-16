@@ -4,6 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/lib/supabase/database.types';
 import type { ResourceConfig, FieldConfig } from './resources/types';
 import { slugify, ensureUniqueSlug } from './slug';
+import { sanitizeRichTextHtml } from './sanitize-html';
 import { writeAuditLog } from './audit';
 import { revalidatePublicSite } from './revalidate';
 
@@ -46,6 +47,14 @@ function parseFormData(fields: FieldConfig[], formData: FormData): Record<string
         result[field.name] = raw === null || raw === '' ? undefined : raw;
         break;
       }
+      case 'html': {
+        // Sanitized again here regardless of what the editor's own client-side
+        // output already was — a save action is never trusted to have come
+        // only from that editor. See lib/admin/sanitize-html.ts.
+        const raw = formData.get(field.name);
+        result[field.name] = raw === null ? undefined : sanitizeRichTextHtml(String(raw));
+        break;
+      }
       default: {
         const raw = formData.get(field.name);
         result[field.name] = raw === null ? undefined : String(raw);
@@ -60,6 +69,7 @@ function parseFormData(fields: FieldConfig[], formData: FormData): Record<string
 export async function listResourceRows(resource: ResourceConfig, supabase: SupabaseClient<Database>) {
   let query = dyn(supabase).from(resource.table).select('*');
   if (resource.softDelete) query = query.is('deleted_at', null);
+  if (resource.scope) query = query.eq(resource.scope.column, resource.scope.value);
   query = query.order(resource.defaultSort.column, { ascending: resource.defaultSort.ascending });
 
   const { data, error } = await query;
@@ -72,7 +82,9 @@ export async function getResourceRow(
   id: string,
   supabase: SupabaseClient<Database>
 ): Promise<Record<string, unknown> | null> {
-  const { data, error } = await dyn(supabase).from(resource.table).select('*').eq('id', id).maybeSingle();
+  let query = dyn(supabase).from(resource.table).select('*').eq('id', id);
+  if (resource.scope) query = query.eq(resource.scope.column, resource.scope.value);
+  const { data, error } = await query.maybeSingle();
   if (error) throw new Error(`Failed to load ${resource.singular}: ${error.message}`);
   if (!data) return null;
 
@@ -128,6 +140,11 @@ export async function createResourceRow(
     values.slug = await ensureUniqueSlug(supabase, resource.table, base);
   }
 
+  // Forced, never taken from the submitted form — this is what keeps a
+  // split resource (e.g. Siaran Pers vs Berita Perusahaan, both on "posts")
+  // from ever creating a row as the other one's type.
+  if (resource.scope) values[resource.scope.column] = resource.scope.value;
+
   if (resource.authorScoped) values.created_by = userId;
 
   const { data, error } = await dyn(supabase).from(resource.table).insert(values).select('id').single();
@@ -162,9 +179,19 @@ export async function updateResourceRow(
     values.slug = await ensureUniqueSlug(supabase, resource.table, base, id);
   }
 
-  const { data: before } = await dyn(supabase).from(resource.table).select('*').eq('id', id).maybeSingle();
+  // Forced, never taken from the submitted form — see createResourceRow.
+  // Also used to scope the row lookup and the update's WHERE clause below,
+  // so a crafted request can never reach into, let alone change, a row that
+  // belongs to the other resource sharing this table.
+  if (resource.scope) values[resource.scope.column] = resource.scope.value;
 
-  const { error } = await dyn(supabase).from(resource.table).update(values).eq('id', id);
+  let beforeQuery = dyn(supabase).from(resource.table).select('*').eq('id', id);
+  if (resource.scope) beforeQuery = beforeQuery.eq(resource.scope.column, resource.scope.value);
+  const { data: before } = await beforeQuery.maybeSingle();
+
+  let updateQuery = dyn(supabase).from(resource.table).update(values).eq('id', id);
+  if (resource.scope) updateQuery = updateQuery.eq(resource.scope.column, resource.scope.value);
+  const { error } = await updateQuery;
   if (error) return { error: error.message };
 
   if (resource.relation && relatedIds) await syncRelation(resource, id, relatedIds, supabase);
@@ -187,11 +214,15 @@ export async function deleteResourceRow(
   supabase: SupabaseClient<Database>,
   userId: string
 ): Promise<ActionResult> {
-  const { data: before } = await dyn(supabase).from(resource.table).select('*').eq('id', id).maybeSingle();
+  let beforeQuery = dyn(supabase).from(resource.table).select('*').eq('id', id);
+  if (resource.scope) beforeQuery = beforeQuery.eq(resource.scope.column, resource.scope.value);
+  const { data: before } = await beforeQuery.maybeSingle();
 
-  const { error } = resource.softDelete
-    ? await dyn(supabase).from(resource.table).update({ deleted_at: new Date().toISOString() }).eq('id', id)
-    : await dyn(supabase).from(resource.table).delete().eq('id', id);
+  let deleteQuery = resource.softDelete
+    ? dyn(supabase).from(resource.table).update({ deleted_at: new Date().toISOString() }).eq('id', id)
+    : dyn(supabase).from(resource.table).delete().eq('id', id);
+  if (resource.scope) deleteQuery = deleteQuery.eq(resource.scope.column, resource.scope.value);
+  const { error } = await deleteQuery;
 
   if (error) return { error: error.message };
 
@@ -207,7 +238,9 @@ export async function setResourceStatus(
   supabase: SupabaseClient<Database>,
   userId: string
 ): Promise<ActionResult> {
-  const { error } = await dyn(supabase).from(resource.table).update({ status }).eq('id', id);
+  let query = dyn(supabase).from(resource.table).update({ status }).eq('id', id);
+  if (resource.scope) query = query.eq(resource.scope.column, resource.scope.value);
+  const { error } = await query;
   if (error) return { error: error.message };
 
   await writeAuditLog(supabase, {

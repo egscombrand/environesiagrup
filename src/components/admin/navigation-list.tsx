@@ -86,7 +86,7 @@ function GroupRows({
 
   return (
     <SortableContext items={ids} strategy={verticalListSortingStrategy}>
-      <div className={groupKey === ROOT ? 'space-y-2' : 'ml-8 mt-2 space-y-2 border-l border-line pl-4'}>
+      <div className={groupKey === ROOT ? 'space-y-2' : 'ml-8 mt-2 space-y-2 border-l border-[#e3e8ee] pl-4'}>
         {ids.map((id) => (
           <div key={id}>
             <NavigationSortableRow item={tree.nodesById[id]} highlighted={nestTargetId === id} />
@@ -186,11 +186,11 @@ export function NavigationList({ menu, roots }: { menu: 'header' | 'footer'; roo
   }
 
   return (
-    <div className="rounded-[14px] border border-line bg-paper p-3">
+    <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-3">
       <div className="mb-2 grid grid-cols-[1fr_1fr_120px_140px] gap-4 px-3">
-        <span className="font-mono text-label uppercase text-slate">Label</span>
-        <span className="font-mono text-label uppercase text-slate">URL</span>
-        <span className="font-mono text-label uppercase text-slate">Status</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Label</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">URL</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Status</span>
         <span />
       </div>
       <DndContext

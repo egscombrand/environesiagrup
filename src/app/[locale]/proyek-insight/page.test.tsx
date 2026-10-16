@@ -17,11 +17,20 @@ vi.mock('@/lib/cms/projects', () => ({
   getPublishedProjectPins: vi.fn().mockResolvedValue([makeProjectPin({ country: 'Indonesia' })]),
 }));
 
+// Siaran Pers (press clippings) and Berita Perusahaan (self-authored news)
+// are fetched separately — getPublishedPosts(postType) returns only that
+// type's rows, exactly like the real reader (src/lib/cms/posts.ts).
 vi.mock('@/lib/cms/posts', () => ({
-  getPublishedPosts: vi.fn().mockResolvedValue([
-    makePost({ title: 'Environesia Raih Sertifikasi Baru', slug: 'environesia-raih-sertifikasi-baru', category: null }),
-    makePost({ title: 'Peluncuran Layanan Baru', slug: 'peluncuran-layanan-baru', category: 'siaran-pers' }),
-  ]),
+  getPublishedPosts: vi.fn().mockImplementation((postType?: 'siaran_pers' | 'berita_perusahaan') => {
+    if (postType === 'berita_perusahaan') {
+      return Promise.resolve([
+        makePost({ title: 'Environesia Raih Sertifikasi Baru', slug: 'environesia-raih-sertifikasi-baru', post_type: 'berita_perusahaan' }),
+      ]);
+    }
+    return Promise.resolve([
+      makePost({ title: 'Peluncuran Layanan Baru', slug: 'peluncuran-layanan-baru', post_type: 'siaran_pers' }),
+    ]);
+  }),
 }));
 
 vi.mock('@/lib/landing/clients-adapter', () => ({
@@ -84,7 +93,7 @@ describe('ProyekInsightPage (hub)', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Proyek Nyata')).toBeInTheDocument();
     expect(
-      screen.getByText('Jelajahi pengalaman Environesia Company Group berdasarkan sektor, wilayah, dan periode pelaksanaan.')
+      screen.getByText('Jelajahi pengalaman Environesia berdasarkan sektor, wilayah, dan periode pelaksanaan.')
     ).toBeInTheDocument();
 
     // The directory is numbered, non-navigational rows — the project name
@@ -107,7 +116,7 @@ describe('ProyekInsightPage (hub)', () => {
     render(await ProyekInsightPage({ params }));
 
     const image = screen.getByRole('img', {
-      name: 'Tim Environesia Company Group mengerjakan proyek lingkungan di berbagai sektor',
+      name: 'Tim Environesia mengerjakan proyek lingkungan di berbagai sektor',
     });
     expect(image).toHaveAttribute('src', expect.stringContaining('bannerinsight.png'));
 
@@ -146,7 +155,7 @@ describe('ProyekInsightPage (hub)', () => {
     expect(screen.getByText('38 Provinsi')).toBeInTheDocument();
     expect(screen.getByText('10 Negara')).toBeInTheDocument();
     expect(screen.getByText('5 Perusahaan')).toBeInTheDocument();
-    expect(screen.getByText('Lima perusahaan dalam ekosistem Environesia Company Group.')).toBeInTheDocument();
+    expect(screen.getByText('Lima perusahaan dalam ekosistem Environesia.')).toBeInTheDocument();
 
     expect(screen.queryByText('Sejak 2016', { selector: 'p' })).not.toBeInTheDocument();
 
@@ -198,26 +207,24 @@ describe('Proyek & Insight sub-pages', () => {
     expect(screen.getByText('Klien & Mitra', { selector: 'p' })).toBeInTheDocument();
   });
 
-  it('Berita Perusahaan tab stays in place but does not repeat articles already listed in Siaran Pers', async () => {
+  it('Berita Perusahaan shows only its own self-authored articles, never a Siaran Pers press clipping', async () => {
     mockPathname = '/id/proyek-insight/berita-perusahaan';
     render(await BeritaPerusahaanPage({ params }));
 
     expect(screen.getByRole('heading', { level: 1, name: 'Proyek & Insight' })).toBeInTheDocument();
     expect(screen.getByText('Berita Perusahaan', { selector: 'p' })).toBeInTheDocument();
-    expect(screen.getByText('Seluruh berita kini tersedia di Siaran Pers.')).toBeInTheDocument();
-    expect(screen.queryByText('Environesia Raih Sertifikasi Baru')).not.toBeInTheDocument();
+    expect(screen.getByText('Environesia Raih Sertifikasi Baru')).toBeInTheDocument();
     expect(screen.queryByText('Peluncuran Layanan Baru')).not.toBeInTheDocument();
-    expect(screen.queryByText('Baca Berita')).not.toBeInTheDocument();
   });
 
-  it('Siaran Pers lists each article exactly once, linking to the real /berita detail route', async () => {
+  it('Siaran Pers shows only its own press clippings, never a Berita Perusahaan article, linking to the real /berita detail route', async () => {
     mockPathname = '/id/proyek-insight/siaran-pers';
     render(await SiaranPersPage({ params }));
 
-    expect(screen.getAllByText('Environesia Raih Sertifikasi Baru')).toHaveLength(1);
     expect(screen.getAllByText('Peluncuran Layanan Baru')).toHaveLength(1);
+    expect(screen.queryByText('Environesia Raih Sertifikasi Baru')).not.toBeInTheDocument();
     const link = screen.getAllByText(/Baca Berita/)[0].closest('a');
-    expect(link).toHaveAttribute('href', '/id/berita/environesia-raih-sertifikasi-baru');
+    expect(link).toHaveAttribute('href', '/id/berita/peluncuran-layanan-baru');
   });
 
   it('Siaran Pers links "Baca Berita" straight to the original article, in a new tab, when a source link exists', async () => {

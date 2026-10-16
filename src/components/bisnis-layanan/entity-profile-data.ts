@@ -15,10 +15,10 @@ export type EntityProfileData = {
 // details all belong on each brand's own website, not duplicated here.
 // Keyed by the same real slugs the `entities` CMS table already uses.
 export const ENTITY_PROFILES: Record<string, EntityProfileData> = {
-  environesia: {
+  'environesia-consultant': {
     category: 'Environmental Consulting & Sustainability',
     description:
-      'Environesia merupakan perusahaan inti Environesia Group yang berfokus pada konsultansi dan pendampingan lingkungan untuk membantu organisasi memahami, mengelola, dan memenuhi kebutuhan lingkungan dalam pengembangan proyek dan kegiatan usaha.',
+      'Environesia merupakan perusahaan inti dalam ekosistem yang berfokus pada konsultansi dan pendampingan lingkungan untuk membantu organisasi memahami, mengelola, dan memenuhi kebutuhan lingkungan dalam pengembangan proyek dan kegiatan usaha.',
     focus: ['Environmental Consulting', 'Environmental Assessment', 'Compliance', 'Monitoring', 'Sustainability'],
     whoItHelps: ['Korporasi', 'Industri', 'Instansi Pemerintah', 'Pengembang & Proyek'],
     roleInGroup:

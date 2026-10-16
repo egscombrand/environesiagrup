@@ -26,8 +26,8 @@ export async function generateMetadata({
   // a site root should lead with the brand, not the word "Beranda".
   return buildMetadata({
     title:
-      'Environesia Company Group — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',
-    description: `${BRAND_TAGLINE}. Environesia Company Group menaungi lima entitas di bidang lingkungan dan manufaktur apparel.`,
+      'Environesia — Konsultasi, Pengujian, Pelatihan & Sertifikasi Lingkungan',
+    description: `${BRAND_TAGLINE}. Environesia menaungi lima entitas di bidang lingkungan dan manufaktur apparel.`,
     locale,
     path: '/',
   });

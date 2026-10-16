@@ -92,7 +92,7 @@ function TimelineSlide({
 }
 
 /**
- * "Rekam Jejak & Tonggak Environesia Group" — an interactive horizontal
+ * "Rekam Jejak & Tonggak Environesia" — an interactive horizontal
  * carousel, not a passive scroll list. One milestone is always the
  * active/centered item, its image visibly larger than its neighbors;
  * Prev/Next (flanking the big year number), clicking a side slide,
@@ -296,7 +296,7 @@ export function PerjalananTimeline({ milestones }: { milestones: Milestone[] }) 
                 className="absolute -top-[7px] left-1/2 h-3.5 w-3.5 -translate-x-1/2 rotate-45 border-l border-t bg-paper"
                 style={{ borderColor: `${ACCENT}59` }}
               />
-              <p className="max-h-[200px] overflow-y-auto text-center text-[14px] leading-[1.65] text-pine-ink/75">
+              <p className="max-h-[200px] overflow-y-auto text-center text-small text-pine-ink/75">
                 {activeMilestone.description}
               </p>
             </motion.div>

@@ -32,7 +32,7 @@ export function toEditable(c: ReviewCandidate, index: number): EditableCandidate
     location: c.location ?? '',
     year: c.year ? String(c.year) : '',
     service: c.service ?? '',
-    brand: c.brand ?? 'Environesia Company Group',
+    brand: c.brand ?? 'Environesia',
     description: c.description ?? '',
     source_page: c.source_page,
     confidence: c.confidence,

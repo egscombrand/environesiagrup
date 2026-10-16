@@ -29,7 +29,7 @@ describe('extractBlockRecords — labeled format ("Nama Proyek: ...")', () => {
       location: 'Jawa Barat',
       year: 2023,
       service: 'AMDAL',
-      brand: 'Environesia Company Group',
+      brand: 'Environesia',
       source_page: 1,
       confidence: 'high',
     });
@@ -67,7 +67,7 @@ describe('extractBlockRecords — labeled format ("Nama Proyek: ...")', () => {
     const withoutBrand = extractBlockRecords([page(1, 'Nama Proyek: Uji Lab GreenLab Indonesia')]);
 
     expect(withBrand[0].brand).toBe('GreenLab');
-    expect(withoutBrand[0].brand).toBe('Environesia Company Group');
+    expect(withoutBrand[0].brand).toBe('Environesia');
   });
 
   it('sets sector to "Perlu Ditinjau" when nothing (label or keyword) matches a real sector', () => {
@@ -108,7 +108,7 @@ describe('extractBlockRecords — organization-anchored blocks (no labels at all
       sector: 'Energi & Ketenagalistrikan',
       confidence: 'high',
     });
-    expect(records[0].brand).toBe('Environesia Company Group');
+    expect(records[0].brand).toBe('Environesia');
   });
 
   it('never stores Nilai Kontrak / Contract Value in any field, under any spelling', () => {
@@ -176,7 +176,7 @@ describe('extractBlockRecords — never rejects a project for incomplete data (c
     // just low confidence so the admin knows to take a closer look.
     expect(records[0].confidence).toBe('low');
     expect(records[0].sector).toBe('Perlu Ditinjau');
-    expect(records[0].brand).toBe('Environesia Company Group');
+    expect(records[0].brand).toBe('Environesia');
   });
 
   it('captures a project from a bare heading line with no organization prefix at all', () => {

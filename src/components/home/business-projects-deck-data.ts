@@ -38,7 +38,7 @@ export type EntityProjectGroup = {
  */
 export const BUSINESS_PROJECTS_DATA: EntityProjectGroup[] = [
   {
-    entitySlug: 'environesia',
+    entitySlug: 'environesia-consultant',
     projects: [
       {
         projectType: 'Pemantauan Lingkungan',

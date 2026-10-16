@@ -1,31 +1,29 @@
 'use client';
 
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import type { VisiMisiContent } from '@/lib/cms/visi-misi-content';
+import { segmentsOf } from '@/lib/cms/sejarah-content';
 
 const IDENTITY = '#2A7793';
 const ACCENT = '#0CB19F';
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const COMMITMENTS = [
-  {
-    title: 'Integritas dalam setiap keputusan',
-    description: 'Menjaga kejujuran, keterbukaan, dan objektivitas dalam menjalankan pekerjaan.',
-  },
-  {
-    title: 'Peduli terhadap lingkungan',
-    description:
-      'Menerapkan prinsip pengelolaan lingkungan bukan hanya dalam layanan yang kami berikan, tetapi juga dalam cara kami menjalankan operasional.',
-  },
-  {
-    title: 'Keselamatan sebagai bagian dari pekerjaan',
-    description: 'Memastikan aspek keselamatan dan kesehatan kerja menjadi bagian dari setiap aktivitas, terutama pekerjaan di lapangan.',
-  },
-  {
-    title: 'Bertanggung jawab terhadap hasil',
-    description:
-      'Setiap pekerjaan kami tempatkan sebagai tanggung jawab yang harus dapat dipertanggungjawabkan kepada klien dan pemangku kepentingan.',
-  },
-];
+/** Text with `**…**` shown in the accent colour. */
+function RichText({ text, accent }: { text: string; accent?: string }) {
+  return (
+    <>
+      {segmentsOf(text).map((segment, i) =>
+        segment.bold ? (
+          <span key={i} style={accent ? { color: accent } : undefined}>
+            {segment.text}
+          </span>
+        ) : (
+          <span key={i}>{segment.text}</span>
+        )
+      )}
+    </>
+  );
+}
 
 // Number → label → body, in that order — `staggerChildren` fires child
 // variants in declaration order, so as long as each chapter nests its
@@ -131,7 +129,7 @@ function ChapterConnector({ reducedMotion }: { reducedMotion: boolean }) {
  * scroll into view, and is skipped entirely under `prefers-reduced-motion`
  * (content renders in its final state immediately).
  */
-export function VisiMisiKomitmenExperience() {
+export function VisiMisiKomitmenExperience({ content }: { content: VisiMisiContent }) {
   const reducedMotion = Boolean(useReducedMotion());
 
   return (
@@ -151,14 +149,14 @@ export function VisiMisiKomitmenExperience() {
               className="font-landing-display text-[17px] font-extrabold uppercase tracking-[0.12em]"
               style={{ color: IDENTITY }}
             >
-              Visi
+              {content.chapters[0].label}
             </motion.p>
             <motion.p
               variants={fadeUpVariant}
               className="mt-3 font-landing-display font-bold text-[#111111]"
               style={{ fontSize: 'clamp(26px, 2vw + 12px, 34px)', lineHeight: 1.35 }}
             >
-              Menjadi Perusahaan Ekosistem Lingkungan Terintegrasi Berkelas Dunia <span style={{ color: IDENTITY }}>di Indonesia</span>
+              <RichText text={content.chapters[0].text} accent={IDENTITY} />
             </motion.p>
           </motion.div>
 
@@ -175,15 +173,14 @@ export function VisiMisiKomitmenExperience() {
               className="font-landing-display text-[17px] font-extrabold uppercase tracking-[0.12em]"
               style={{ color: IDENTITY }}
             >
-              Misi
+              {content.chapters[1].label}
             </motion.p>
             <motion.p
               variants={fadeUpVariant}
               className="mt-3 font-landing-display text-[18px] font-normal leading-[1.7] text-[#111111] md:text-[19px]"
               style={{ textAlign: 'justify' }}
             >
-              Misi kami memberikan pelayanan terbaik yang mengedepankan kepuasan pelanggan melalui profesionalisme kerja yang tinggi,
-              ketepatan waktu pelayanan, jaringan kerjasama yang luas, hubungan emosional yang baik antara tim dan pelanggan.
+              <RichText text={content.chapters[1].text} />
             </motion.p>
           </motion.div>
         </div>
@@ -201,14 +198,14 @@ export function VisiMisiKomitmenExperience() {
         >
           <ChapterNumber value="03" center />
           <motion.p variants={fadeUpVariant} className="font-landing-display text-[30px] font-extrabold text-[#111111] md:text-[38px]">
-            Komitmen
+            {content.komitmen.title}
           </motion.p>
           <motion.p
             variants={fadeUpVariant}
             className="mt-3 font-landing-display text-[18px] font-normal leading-[1.6] text-pine-ink/70 md:text-[20px]"
             style={{ textAlign: 'justify' }}
           >
-            Memberikan pelayanan terbaik yang mengedepankan kepuasan pelanggan melalui profesionalisme kerja yang tinggi.
+            {content.komitmen.intro}
           </motion.p>
         </motion.div>
 
@@ -219,13 +216,13 @@ export function VisiMisiKomitmenExperience() {
           viewport={{ once: true, amount: 0.2 }}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.13 } } }}
         >
-          {COMMITMENTS.map((item) => (
+          {content.komitmen.items.map((item) => (
             <motion.div
               key={item.title}
               variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } } }}
               className="h-full rounded-2xl border border-line bg-paper p-7 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(11,43,34,0.06)]"
             >
-              <h3 className="font-landing-display text-[21px] font-bold text-[#111111]">{item.title}</h3>
+              <h3 className="font-landing-display text-h3 font-bold text-[#111111]">{item.title}</h3>
               <p className="mt-2.5 font-landing-display text-[16px] leading-[1.65] text-pine-ink/65" style={{ textAlign: 'justify' }}>
                 {item.description}
               </p>

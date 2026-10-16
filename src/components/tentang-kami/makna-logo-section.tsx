@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion, useAnimation, useReducedMotion } from 'framer-motion';
+import type { MaknaLogoContent } from '@/lib/cms/makna-logo';
 
 const ACCENT = '#0DA19D'; // Simbol — green
 const TYPO_COLOR = '#0F7A6B'; // Tipografi
-const BLUE = '#2E7692'; // Warna — biru
+const BLUE = '#2A7793'; // Warna — biru (Environesia Primary Blue)
 const EASE = [0.16, 1, 0.3, 1] as const;
 const LIQUID_EASE = [0.37, 0, 0.16, 1] as const; // slow start, long unhurried middle
 
@@ -46,49 +47,24 @@ const WORDMARK_ENTER_S = 0.9;
 const COLOR_FLOW_S = 2.2;
 const SETTLE_S = 1.2;
 
-type LogoPart = {
-  id: string;
-  label: string;
-  color: string;
-  description: string;
-};
+// The colour of each part, in order. The text comes from the database; the
+// colours belong to the animation and stay in code.
+const PART_COLORS = [ACCENT, TYPO_COLOR, BLUE, ACCENT] as const;
 
-const PARTS: LogoPart[] = [
-  {
-    id: 'simbol',
-    label: 'Simbol',
-    color: ACCENT,
-    description:
-      'Bentuk pusaran pada simbol Environesia menggambarkan siklus dan pergerakan yang berkelanjutan, cara kerja lingkungan yang terus berputar, saling terhubung, dan tidak pernah berhenti pada satu titik.',
-  },
-  {
-    id: 'tipografi',
-    label: 'Tipografi',
-    color: TYPO_COLOR,
-    description:
-      'Wordmark huruf kecil (lowercase) dengan bentuk yang membulat dan modern mencerminkan sikap yang terbuka dan mudah diajak bekerja sama, tanpa mengurangi kesan profesional sebagai grup usaha.',
-  },
-  {
-    id: 'warna',
-    label: 'Warna',
-    color: BLUE,
-    description:
-      'Gradasi hijau menuju biru menyatukan dua asosiasi utama grup: hijau untuk lingkungan dan keberlanjutan, biru untuk kepercayaan dan profesionalisme dalam setiap pekerjaan yang dijalankan.',
-  },
-  {
-    id: 'kesatuan',
-    label: 'Kesatuan Identitas',
-    color: ACCENT,
-    description:
-      'Simbol dan wordmark dirancang menyatu sebagai satu kesatuan visual, merepresentasikan bagaimana lima entitas di bawah Environesia Group bekerja sebagai satu ekosistem, bukan lini usaha yang berdiri sendiri-sendiri.',
-  },
-];
+const DEFAULT_SYMBOL = '/brand/environesia-symbol.png';
+const DEFAULT_WORDMARK = '/brand/environesia-wordmark.png';
 
 function boxStyle(box: { left: number; top: number; width: number; height: number }): React.CSSProperties {
   return { left: `${box.left}%`, top: `${box.top}%`, width: `${box.width}%`, height: `${box.height}%` };
 }
 
-export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string }) {
+export function MaknaLogoSection({ content, logoAlt }: { content: MaknaLogoContent; logoAlt: string }) {
+  const PARTS = content.parts.map((part, i) => ({
+    id: `part-${i}`,
+    label: part.label,
+    description: part.description,
+    color: PART_COLORS[i],
+  }));
   const [index, setIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -147,7 +123,7 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
         {/* Left — the interactive build-up stage. */}
         <div>
           <p className="font-mono text-label uppercase tracking-[0.14em]" style={{ color: ACCENT }}>
-            Identitas Visual
+            {content.eyebrow}
           </p>
 
           <motion.div
@@ -173,7 +149,7 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
             >
               <div className="relative h-full w-full">
                 <Image
-                  src="/brand/environesia-symbol.png"
+                  src={content.symbolSrc ?? DEFAULT_SYMBOL}
                   alt=""
                   fill
                   quality={100}
@@ -200,7 +176,7 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
                 >
                   <div className="relative h-full w-full">
                     <Image
-                      src="/brand/environesia-wordmark.png"
+                      src={content.wordmarkSrc ?? DEFAULT_WORDMARK}
                       alt=""
                       fill
                       quality={100}
@@ -231,13 +207,13 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
             >
               <div className="absolute" style={boxStyle(SYMBOL_BOX)}>
                 <div className="relative h-full w-full">
-                  <Image src="/brand/environesia-symbol.png" alt="" fill quality={100} sizes="(min-width: 768px) 20vw, 45vw" className="object-contain" />
+                  <Image src={content.symbolSrc ?? DEFAULT_SYMBOL} alt="" fill quality={100} sizes="(min-width: 768px) 20vw, 45vw" className="object-contain" />
                 </div>
               </div>
               {wordmarkShown && (
                 <div className="absolute" style={boxStyle(WORDMARK_BOX)}>
                   <div className="relative h-full w-full">
-                    <Image src="/brand/environesia-wordmark.png" alt="" fill quality={100} sizes="(min-width: 768px) 36vw, 70vw" className="object-contain" />
+                    <Image src={content.wordmarkSrc ?? DEFAULT_WORDMARK} alt="" fill quality={100} sizes="(min-width: 768px) 36vw, 70vw" className="object-contain" />
                   </div>
                 </div>
               )}
@@ -317,7 +293,7 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
 
         {/* Right — one active explanation at a time, chip nav to jump. */}
         <div>
-          <h2 className="font-landing-display text-h2 font-bold text-pine-ink">Makna Logo</h2>
+          <h2 className="font-landing-display text-h2 font-bold text-pine-ink">{content.title}</h2>
 
           {/* 2×2 grid — four parts of one identity to explore one at a
               time, not a row of chips. Number, name, and a shared,
@@ -384,7 +360,7 @@ export function MaknaLogoSection({ logoAlt }: { logoUrl: string; logoAlt: string
                 <p className="font-landing-display text-[20px] font-bold" style={{ color: active.color }}>
                   0{index + 1} {active.label}
                 </p>
-                <p className="mt-2 max-w-[520px] text-[15px] leading-[1.6] text-pine-ink/70">{active.description}</p>
+                <p className="mt-2 max-w-[520px] text-body text-pine-ink/70">{active.description}</p>
               </motion.div>
             </AnimatePresence>
           </div>

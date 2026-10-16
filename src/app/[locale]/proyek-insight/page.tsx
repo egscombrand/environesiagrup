@@ -11,7 +11,7 @@ export async function generateMetadata({
 
   return buildMetadata({
     title: 'Proyek & Insight',
-    description: 'Portofolio proyek, klien dan mitra, serta berita Environesia Company Group.',
+    description: 'Portofolio proyek, klien dan mitra, serta berita Environesia.',
     locale,
     path: '/proyek-insight',
   });

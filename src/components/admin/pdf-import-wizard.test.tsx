@@ -41,7 +41,7 @@ function candidate(overrides: Partial<ReviewCandidate> = {}): ReviewCandidate {
     location: 'Jawa Barat',
     year: 2022,
     service: 'AMDAL',
-    brand: 'Environesia Company Group',
+    brand: 'Environesia',
     description: null,
     source_page: 1,
     confidence: 'high',

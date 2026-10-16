@@ -15,7 +15,19 @@ export type FieldType =
   | 'color'
   | 'entity-select'
   | 'entity-multiselect'
-  | 'icon';
+  | 'icon'
+  /**
+   * The resource's slug/URL. Rendered as a small "Edit URL/Slug" action
+   * instead of a normal field — see ResourceForm and slug-field.tsx. Only
+   * meaningful on a resource that also sets `slugSource`.
+   */
+  | 'slug'
+  /**
+   * A full WYSIWYG rich text editor (TipTap) storing sanitized HTML — for
+   * content too long/structured for a markdown textarea ('richtext'). See
+   * rich-text-editor.tsx and lib/admin/sanitize-html.ts.
+   */
+  | 'html';
 
 export type FieldConfig = {
   name: string;
@@ -67,6 +79,15 @@ export type ResourceConfig = {
   softDelete: boolean;
   authorScoped: boolean;
   defaultSort: { column: string; ascending: boolean };
+  /**
+   * Restricts this resource to rows where `column = value` — for splitting
+   * one physical table into several distinct editors/listings (e.g. "posts"
+   * into Siaran Pers vs Berita Perusahaan). Enforced on every read and
+   * write in crud.ts: list and get filter by it, create and update force it
+   * onto the row regardless of what was submitted, so one resource's data
+   * can never leak into or be edited through the other's editor.
+   */
+  scope?: { column: string; value: string };
   /** Optional many-to-many relation (e.g. pillar_entities) managed alongside the main row. */
   relation?: {
     table: string;

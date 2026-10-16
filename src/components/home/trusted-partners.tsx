@@ -127,11 +127,11 @@ export async function TrustedPartnersSection({ locale, title }: { locale: string
           <p className="font-mono text-label uppercase tracking-[0.14em]" style={{ color: ACCENT }}>
             {t.beranda.trustedPartnersEyebrow}
           </p>
-          <h2 className="mt-2 font-landing-display text-h2 font-bold" style={{ color: '#2A7793' }}>
+          <h2 className="mt-2 font-landing-display text-h2 font-bold" style={{ color: '#1A1A1A' }}>
             {title ?? 'Kepercayaan Pelanggan adalah Bahan Bakar Kami untuk Terus Berkarya'}
           </h2>
           <p className="mt-4 font-landing-body text-body text-pine-ink/70">
-            Kepercayaan yang diberikan oleh pelanggan dan berbagai mitra menjadi dorongan bagi Environesia Group
+            Kepercayaan yang diberikan oleh pelanggan dan berbagai mitra menjadi dorongan bagi Environesia
             untuk terus memberikan layanan terbaik, menjaga standar profesionalisme, dan menghadirkan solusi
             lingkungan yang memberikan nilai nyata dan berkelanjutan.
           </p>

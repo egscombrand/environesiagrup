@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/metadata';
 import { TentangKamiHubView } from '@/components/tentang-kami/hub-view';
 import { findTentangKamiRoute } from '@/lib/tentang-kami-routes';
+import { getSejarah } from '@/lib/cms/sejarah';
 
 // URL stays /tentang-kami/sejarah — it renders the same shared Tentang Kami
 // experience as the hub, just pre-selected to this tab, so a direct link,
@@ -14,7 +15,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildMetadata({ title: ROUTE.label, description: ROUTE.metaDescription, locale, path: `/tentang-kami/${ROUTE.slug}` });
+  const content = await getSejarah();
+  return buildMetadata({ title: content.metaTitle, description: content.metaDescription, locale, path: `/tentang-kami/${ROUTE.slug}` });
 }
 
 export default async function SejarahPage({ params }: { params: Promise<{ locale: string }> }) {

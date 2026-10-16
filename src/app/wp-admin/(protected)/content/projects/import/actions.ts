@@ -141,7 +141,7 @@ export async function saveImportChunkAction(
     if (!p.project_name?.trim()) continue;
 
     const slug = await ensureUniqueSlug(supabase, 'projects', slugify(p.project_name));
-    const brand = (COMPANY_VALUES as readonly string[]).includes(p.brand) ? p.brand : 'Environesia Company Group';
+    const brand = (COMPANY_VALUES as readonly string[]).includes(p.brand) ? p.brand : 'Environesia';
     const sector = (SECTOR_VALUES as readonly string[]).includes(p.sector) ? p.sector : null;
 
     const values = {

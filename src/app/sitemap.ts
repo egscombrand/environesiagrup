@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 import { getPublishedEntitySlugs } from '@/lib/cms/entities';
+import { getPublishedJobSlugs } from '@/lib/cms/jobs';
 import { getPublishedPillarSlugs } from '@/lib/cms/pillars';
 import { getPublishedPostSlugs } from '@/lib/cms/posts';
 import { getPublishedProjectSlugs } from '@/lib/cms/projects';
@@ -31,8 +32,9 @@ function priorityFor(path: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [entitySlugs, pillarSlugs, postSlugs, projectSlugs] = await Promise.all([
+  const [entitySlugs, jobSlugs, pillarSlugs, postSlugs, projectSlugs] = await Promise.all([
     getPublishedEntitySlugs(),
+    getPublishedJobSlugs(),
     getPublishedPillarSlugs(),
     getPublishedPostSlugs(),
     getPublishedProjectSlugs(),
@@ -41,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = [
     ...STATIC_PATHS,
     ...entitySlugs.map((slug) => `/entitas/${slug}`),
+    ...jobSlugs.map((slug) => `/karier/${slug}`),
     ...pillarSlugs.map((slug) => `/bisnis/${slug}`),
     ...postSlugs.map((slug) => `/berita/${slug}`),
     ...projectSlugs.map((slug) => `/proyek/${slug}`),

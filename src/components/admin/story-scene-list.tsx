@@ -65,10 +65,11 @@ export function StorySceneList({ entityId, scenes }: { entityId: string; scenes:
   if (ids.length === 0) return null;
 
   return (
-    <div className="rounded-[14px] border border-line bg-paper p-3">
-      <div className="mb-2 grid grid-cols-[1fr_120px_140px] gap-4 px-3">
-        <span className="font-mono text-label uppercase text-slate">Headline</span>
-        <span className="font-mono text-label uppercase text-slate">Status</span>
+    <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-3">
+      <div className="mb-2 grid grid-cols-[48px_1fr_120px_140px] gap-4 px-3">
+        <span />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Keterangan</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Status</span>
         <span />
       </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

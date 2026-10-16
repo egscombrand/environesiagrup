@@ -24,10 +24,12 @@ export default async function EditNavigationPage({
   const topLevelSiblings = items.filter((i) => i.menu === item.menu && i.parent_id === null && i.id !== item.id);
 
   return (
-    <div>
-      <p className="font-mono text-label uppercase text-slate">Website / Navigation</p>
-      <h1 className="mt-2 font-display text-h2 text-ink">Edit Item Menu</h1>
-      <div className="mt-8">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Website / Navigation</p>
+        <h1 className="mt-2 font-display text-h2 text-ink">Edit Item Menu</h1>
+      </div>
+      <div className="mt-8 min-h-0 flex-1">
         <NavigationForm
           initialValues={item}
           siblingOptions={topLevelSiblings.map((i) => ({ id: i.id, label: i.label }))}

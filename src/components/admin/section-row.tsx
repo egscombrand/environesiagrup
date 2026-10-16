@@ -48,7 +48,7 @@ const SECTION_CONTENT_LINKS: Record<string, string> = {
   milestones: '/wp-admin/content/milestones',
   leadership: '/wp-admin/content/leadership',
   documents: '/wp-admin/content/documents',
-  news: '/wp-admin/content/posts',
+  news: '/wp-admin/content/siaran-pers',
 };
 
 export function SectionRow({
@@ -76,7 +76,7 @@ export function SectionRow({
   const contentHref = SECTION_CONTENT_LINKS[section.section_key];
 
   return (
-    <div className="rounded-[14px] border border-line bg-paper">
+    <div className="rounded-[12px] border border-[#e3e8ee] bg-white">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <label className="relative inline-flex cursor-pointer items-center">
@@ -94,7 +94,7 @@ export function SectionRow({
               className="peer sr-only"
             />
             <div className="h-5 w-9 rounded-full bg-line peer-checked:bg-success" />
-            <div className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-paper transition-transform motion-reduce:transition-none peer-checked:translate-x-4" />
+            <div className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform motion-reduce:transition-none peer-checked:translate-x-4" />
           </label>
           <p className="font-display text-h3 text-ink">{label}</p>
         </div>
@@ -102,7 +102,7 @@ export function SectionRow({
           {contentHref ? (
             <Link
               href={contentHref}
-              className="mr-1 inline-flex shrink-0 items-center gap-1 rounded-[8px] border border-line px-2.5 py-1.5 text-small font-medium text-ink hover:bg-stone"
+              className="mr-1 inline-flex shrink-0 items-center gap-1 rounded-[8px] border border-[#e3e8ee] px-2.5 py-1.5 text-small font-medium text-ink hover:bg-[#f4f6f9]"
             >
               Manage Content
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -113,7 +113,7 @@ export function SectionRow({
             disabled={pending || isFirst}
             onClick={() => startTransition(async () => { await moveSectionAction(section.id, 'up', pageId); router.refresh(); })}
             aria-label="Move up"
-            className="rounded-[8px] p-1.5 text-slate hover:bg-stone hover:text-ink disabled:opacity-30"
+            className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#f4f6f9] hover:text-ink disabled:opacity-30"
           >
             <ChevronUp className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -122,7 +122,7 @@ export function SectionRow({
             disabled={pending || isLast}
             onClick={() => startTransition(async () => { await moveSectionAction(section.id, 'down', pageId); router.refresh(); })}
             aria-label="Move down"
-            className="rounded-[8px] p-1.5 text-slate hover:bg-stone hover:text-ink disabled:opacity-30"
+            className="rounded-[8px] p-1.5 text-[#64748b] hover:bg-[#f4f6f9] hover:text-ink disabled:opacity-30"
           >
             <ChevronDown className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -131,7 +131,7 @@ export function SectionRow({
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
             aria-label="Edit title override"
-            className={`rounded-[8px] p-1.5 hover:bg-forest/10 hover:text-forest ${expanded ? 'bg-forest/10 text-forest' : 'text-slate'}`}
+            className={`rounded-[8px] p-1.5 hover:bg-[#2a7793]/10 hover:text-[#2a7793] ${expanded ? 'bg-[#2a7793]/10 text-[#2a7793]' : 'text-[#64748b]'}`}
           >
             <PenLine className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -146,27 +146,27 @@ export function SectionRow({
             router.refresh();
             setExpanded(false);
           }}
-          className="space-y-3 border-t border-line px-4 py-4"
+          className="space-y-3 border-t border-[#e3e8ee] px-4 py-4"
         >
           <div>
-            <label className="font-mono text-label uppercase text-slate">Title (override)</label>
+            <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Title (override)</label>
             <input
               type="text"
               name="title_override"
               defaultValue={section.title_override ?? ''}
-              className="mt-1 w-full rounded-[10px] border border-line bg-paper px-3 py-2 text-body text-ink outline-none focus:border-forest"
+              className="mt-1 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-body text-ink outline-none focus:border-[#2a7793]"
             />
           </div>
           <div>
-            <label className="font-mono text-label uppercase text-slate">Subtitle (override)</label>
+            <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Subtitle (override)</label>
             <input
               type="text"
               name="subtitle_override"
               defaultValue={section.subtitle_override ?? ''}
-              className="mt-1 w-full rounded-[10px] border border-line bg-paper px-3 py-2 text-body text-ink outline-none focus:border-forest"
+              className="mt-1 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-3 py-2 text-body text-ink outline-none focus:border-[#2a7793]"
             />
           </div>
-          <button type="submit" className="rounded-[10px] bg-forest px-4 py-2 text-small font-medium text-paper hover:opacity-90">
+          <button type="submit" className="rounded-[10px] bg-[#2a7793] px-4 py-2 text-small font-medium text-white hover:opacity-90">
             Save
           </button>
         </form>

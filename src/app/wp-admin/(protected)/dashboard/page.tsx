@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Building2, FolderKanban, Newspaper, FileText, Briefcase, Plus } from 'lucide-react';
+import { Briefcase, Building2, FileText, FolderKanban, House, Newspaper, type LucideIcon } from 'lucide-react';
 import { requireProfile } from '@/lib/admin/auth';
 import { getRecentActivity } from '@/lib/admin/activity';
 
@@ -19,12 +19,23 @@ async function countRows(
   return count ?? 0;
 }
 
-const QUICK_ACTIONS = [
-  { label: 'New Article', href: '/wp-admin/content/posts/new', icon: Newspaper },
-  { label: 'New Project', href: '/wp-admin/content/projects/new', icon: FolderKanban },
-  { label: 'New Entity', href: '/wp-admin/content/entities/new', icon: Building2 },
-  { label: 'New Job', href: '/wp-admin/content/jobs/new', icon: Briefcase },
-  { label: 'Upload Document', href: '/wp-admin/content/documents/new', icon: FileText },
+// Shortcuts only to editors that exist today, in the same order as the sidebar
+// Website tree, so the dashboard and the menu point at the same places.
+const SHORTCUTS: { label: string; hint: string; href: string; icon: LucideIcon }[] = [
+  { label: 'Homepage', hint: 'Urutan dan isi beranda', href: '/wp-admin/site/pages', icon: House },
+  { label: 'Entitas & Kapabilitas', hint: 'Entitas dalam grup', href: '/wp-admin/content/entities', icon: Building2 },
+  { label: 'Portofolio Proyek', hint: 'Proyek dan referensi', href: '/wp-admin/content/projects', icon: FolderKanban },
+  { label: 'Siaran Pers', hint: 'Berita dan siaran pers', href: '/wp-admin/content/siaran-pers', icon: Newspaper },
+  { label: 'Karier', hint: 'Lowongan yang tayang', href: '/wp-admin/content/jobs', icon: Briefcase },
+];
+
+// Soft pastel surfaces for the stat tiles, cycled in order.
+const KPI_TONES = [
+  { surface: 'bg-[#eef6fb]', icon: 'text-[#2a7793]' },
+  { surface: 'bg-[#fff6ea]', icon: 'text-[#d97706]' },
+  { surface: 'bg-[#e9f9f6]', icon: 'text-[#0d9488]' },
+  { surface: 'bg-[#fdf0f0]', icon: 'text-[#dc2626]' },
+  { surface: 'bg-[#f2effe]', icon: 'text-[#6d4fd1]' },
 ];
 
 const ACTION_VERBS: Record<string, string> = {
@@ -102,42 +113,53 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <p className="font-mono text-label uppercase text-slate">Overview</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Dashboard</p>
       <h1 className="mt-1 font-display text-h2 text-ink">
         {greeting()}, {profile.username}
       </h1>
-      <p className="mt-1 text-body text-slate">Manage your website content and business information from one place.</p>
+      <p className="mt-1 text-body text-[#64748b]">Kelola konten website dan informasi bisnis dari satu tempat.</p>
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        {QUICK_ACTIONS.map((action) => (
-          <Link
-            key={action.href}
-            href={action.href}
-            className="inline-flex items-center gap-1.5 rounded-[10px] border border-line bg-paper px-3.5 py-2 text-small text-ink hover:border-forest/30 hover:bg-forest/5"
-          >
-            <Plus className="h-3.5 w-3.5 text-slate" aria-hidden="true" />
-            {action.label}
-          </Link>
-        ))}
+      <div className="mt-8">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Shortcut</p>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {SHORTCUTS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group flex items-center gap-3 rounded-[12px] border border-[#e3e8ee] bg-white px-4 py-3.5 transition-colors hover:border-[#2a7793]/30 hover:bg-[#2a7793]/[0.03] motion-reduce:transition-none"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[#f4f6f9] text-[#2a7793]">
+                <item.icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-small font-medium text-ink">{item.label}</span>
+                <span className="block truncate text-label text-[#64748b]">{item.hint}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
-        {kpis.map((kpi) => (
-          <div key={kpi.label} className="rounded-[14px] border border-line bg-paper p-5">
-            <div className="flex items-start justify-between">
-              <p className="font-mono text-label uppercase text-slate">{kpi.label}</p>
-              <kpi.icon className="h-4 w-4 shrink-0 text-slate" strokeWidth={1.75} aria-hidden="true" />
+        {kpis.map((kpi, index) => {
+          const tone = KPI_TONES[index % KPI_TONES.length];
+          return (
+            <div key={kpi.label} className={`rounded-[14px] p-5 ${tone.surface}`}>
+              <span className={`flex h-10 w-10 items-center justify-center rounded-[12px] bg-white/80 ${tone.icon}`}>
+                <kpi.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
+              </span>
+              <p className="mt-4 text-[13px] font-medium text-[#475569]">{kpi.label}</p>
+              <p className="mt-1 font-display text-[28px] font-semibold leading-none text-[#0f172a]">{kpi.value}</p>
             </div>
-            <p className="mt-3 font-display text-h2 text-ink">{kpi.value}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-[14px] border border-line bg-paper p-5 lg:col-span-2">
+        <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-5 lg:col-span-2">
           <p className="font-display text-h3 text-ink">Recent Activity</p>
           {activity.length === 0 ? (
-            <p className="mt-6 text-small text-slate">
+            <p className="mt-6 text-small text-[#64748b]">
               No activity recorded yet. Actions you take across wp-admin will show up here.
             </p>
           ) : (
@@ -148,23 +170,23 @@ export default async function DashboardPage() {
                     <span className="font-medium">{item.actorName}</span>{' '}
                     {ACTION_VERBS[item.action] ?? item.action} {item.resource.toLowerCase()}
                   </p>
-                  <p className="shrink-0 font-mono text-label uppercase text-slate">{timeAgo(item.createdAt)}</p>
+                  <p className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">{timeAgo(item.createdAt)}</p>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div className="rounded-[14px] border border-line bg-paper p-5">
+        <div className="rounded-[12px] border border-[#e3e8ee] bg-white p-5">
           <p className="font-display text-h3 text-ink">Posts by Status</p>
           <div className="mt-4 space-y-3">
             {contentStatus.map((s) => (
               <div key={s.label}>
                 <div className="flex items-center justify-between text-small">
                   <span className="text-ink">{s.label}</span>
-                  <span className="text-slate">{s.value}</span>
+                  <span className="text-[#64748b]">{s.value}</span>
                 </div>
-                <div className="mt-1.5 h-1.5 rounded-full bg-stone">
+                <div className="mt-1.5 h-1.5 rounded-full bg-[#f4f6f9]">
                   <div
                     className={`h-1.5 rounded-full ${s.className}`}
                     style={{ width: `${(s.value / postStatusTotal) * 100}%` }}
@@ -174,19 +196,19 @@ export default async function DashboardPage() {
             ))}
           </div>
 
-          <div className="mt-6 border-t border-line pt-4">
-            <p className="font-mono text-label uppercase text-slate">Projects</p>
+          <div className="mt-6 border-t border-[#e3e8ee] pt-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">Projects</p>
             <div className="mt-2 flex items-center justify-between text-small">
               <span className="text-ink">Published</span>
-              <span className="text-slate">{publishedProjects}</span>
+              <span className="text-[#64748b]">{publishedProjects}</span>
             </div>
             <div className="mt-1 flex items-center justify-between text-small">
               <span className="text-ink">Draft</span>
-              <span className="text-slate">{draftProjects}</span>
+              <span className="text-[#64748b]">{draftProjects}</span>
             </div>
             <div className="mt-3 flex items-center justify-between text-small">
               <span className="text-ink">Leadership profiles</span>
-              <span className="text-slate">{totalLeadership}</span>
+              <span className="text-[#64748b]">{totalLeadership}</span>
             </div>
           </div>
         </div>

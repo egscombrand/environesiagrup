@@ -12,7 +12,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Tentang Kami',
     description:
-      'Environesia Company Group bergerak di bidang lingkungan dan manufaktur terintegrasi.',
+      'Environesia bergerak di bidang lingkungan dan manufaktur terintegrasi.',
     locale,
     path: '/tentang-kami',
   });

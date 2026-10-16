@@ -76,8 +76,8 @@ export function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className="rounded-[10px] border border-forest/30 bg-forest/5 px-4 py-4">
-        <p className="text-small font-medium text-forest">Password updated successfully</p>
+      <div className="rounded-[10px] border border-[#2a7793]/30 bg-[#2a7793]/5 px-4 py-4">
+        <p className="text-small font-medium text-[#2a7793]">Password updated successfully</p>
         <p className="mt-1 text-small text-ink">Mengarahkan ke halaman masuk…</p>
       </div>
     );
@@ -93,7 +93,7 @@ export function ResetPasswordForm() {
         </p>
         <Link
           href="/wp-admin/forgot-password"
-          className="mt-3 inline-block text-small text-forest hover:underline"
+          className="mt-3 inline-block text-small text-[#2a7793] hover:underline"
         >
           ← Minta link baru
         </Link>
@@ -104,7 +104,7 @@ export function ResetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div>
-        <label htmlFor={passwordId} className="font-mono text-label uppercase text-slate">
+        <label htmlFor={passwordId} className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           New password
         </label>
         <div className="relative mt-2">
@@ -117,14 +117,14 @@ export function ResetPasswordForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={pending}
-            className="w-full rounded-[10px] border border-line bg-paper px-4 py-3 pr-12 text-body text-ink outline-none transition-colors focus:border-forest disabled:opacity-60"
+            className="w-full rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-3 pr-12 text-body text-ink outline-none transition-colors focus:border-[#2a7793] disabled:opacity-60"
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
             aria-pressed={showPassword}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-small text-slate hover:text-ink"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-small text-[#64748b] hover:text-ink"
           >
             {showPassword ? 'Sembunyikan' : 'Tampilkan'}
           </button>
@@ -132,7 +132,7 @@ export function ResetPasswordForm() {
       </div>
 
       <div>
-        <label htmlFor={confirmId} className="font-mono text-label uppercase text-slate">
+        <label htmlFor={confirmId} className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#64748b]">
           Confirm password
         </label>
         <input
@@ -144,11 +144,11 @@ export function ResetPasswordForm() {
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           disabled={pending}
-          className="mt-2 w-full rounded-[10px] border border-line bg-paper px-4 py-3 text-body text-ink outline-none transition-colors focus:border-forest disabled:opacity-60"
+          className="mt-2 w-full rounded-[10px] border border-[#e3e8ee] bg-white px-4 py-3 text-body text-ink outline-none transition-colors focus:border-[#2a7793] disabled:opacity-60"
         />
       </div>
 
-      {!ready ? <p className="text-small text-slate">Memverifikasi link reset…</p> : null}
+      {!ready ? <p className="text-small text-[#64748b]">Memverifikasi link reset…</p> : null}
 
       {error ? (
         <p role="alert" className="text-small text-[#A8482D]">
@@ -159,7 +159,7 @@ export function ResetPasswordForm() {
       <button
         type="submit"
         disabled={pending || !ready}
-        className="w-full rounded-[10px] bg-forest px-4 py-3 text-small font-medium text-paper transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-[10px] bg-[#2a7793] px-4 py-3 text-small font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending ? 'Updating…' : 'Update Password'}
       </button>

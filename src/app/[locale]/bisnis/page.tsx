@@ -33,7 +33,7 @@ export default async function BisnisPage({
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.bisnis.eyebrow}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.bisnis.judul}</h1>

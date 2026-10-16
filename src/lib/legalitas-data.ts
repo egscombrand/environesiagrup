@@ -1,4 +1,4 @@
-// Real, verified legal/credential data for Environesia Company Group,
+// Real, verified legal/credential data for Environesia,
 // given directly — hardcoded (not CMS-driven) because there is no
 // `legalitas`/credentials table yet. Structured as entity → cards →
 // documents: one large editorial card per issuing body/institution (not

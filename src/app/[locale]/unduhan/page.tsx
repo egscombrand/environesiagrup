@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: 'Unduhan',
-    description: 'Dokumen resmi Environesia Company Group.',
+    description: 'Dokumen resmi Environesia.',
     locale,
     path: '/unduhan',
   });
@@ -39,7 +39,7 @@ export default async function UnduhanPage({ params }: { params: Promise<{ locale
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.unduhan.judul}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.unduhan.judul}</h1>

@@ -30,6 +30,9 @@ const FOOTER_ITEMS = [
 vi.mock('@/lib/cms/entities', () => ({
   getPublishedEntitySlugs: vi.fn().mockResolvedValue([]),
 }));
+vi.mock('@/lib/cms/jobs', () => ({
+  getPublishedJobSlugs: vi.fn().mockResolvedValue([]),
+}));
 vi.mock('@/lib/cms/pillars', () => ({
   getPublishedPillarSlugs: vi.fn().mockResolvedValue([]),
 }));

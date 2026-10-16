@@ -17,7 +17,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
       href={href(item.url, locale)}
       target={item.open_new_tab ? '_blank' : undefined}
       rel={item.open_new_tab ? 'noreferrer' : undefined}
-      className="font-landing-body text-[15px] font-medium tracking-[0.01em] text-pine-ink transition-colors hover:text-emerald-pulse group-data-[overlay]/hdr:text-canvas group-data-[overlay]/hdr:hover:text-canvas/70 group-data-[overlay]/hdr:[text-shadow:0_1px_2px_rgba(0,0,0,0.85),0_1px_6px_rgba(0,0,0,0.45)] motion-reduce:transition-none"
+      className="font-landing-body text-[16px] font-medium leading-tight tracking-[-0.01em] text-pine-ink transition-colors hover:text-emerald-pulse group-data-[overlay]/hdr:text-canvas group-data-[overlay]/hdr:hover:text-canvas/70 group-data-[overlay]/hdr:[text-shadow:0_1px_2px_rgba(0,0,0,0.85),0_1px_6px_rgba(0,0,0,0.45)] motion-reduce:transition-none"
     >
       {label}
     </Link>
@@ -48,7 +48,7 @@ export function NavItem({ item, locale }: { item: NavigationNode; locale: string
               href={href(child.url, locale)}
               target={child.open_new_tab ? '_blank' : undefined}
               rel={child.open_new_tab ? 'noreferrer' : undefined}
-              className="block rounded-[10px] px-3 py-2 font-landing-body text-small text-pine-ink hover:bg-sage-mist/40 hover:text-emerald-pulse"
+              className="block rounded-[10px] px-3 py-2 font-landing-body text-small leading-tight tracking-[-0.01em] text-pine-ink hover:bg-sage-mist/40 hover:text-emerald-pulse"
             >
               {navigationLabel(child, locale)}
             </Link>

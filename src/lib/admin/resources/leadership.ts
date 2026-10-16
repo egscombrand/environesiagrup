@@ -28,7 +28,7 @@ export const leadershipResource: ResourceConfig = {
   ],
   fields: [
     { name: 'name', label: 'Nama', type: 'text', required: true, section: 'Basic Information' },
-    { name: 'slug', label: 'Slug', type: 'text', section: 'Basic Information' },
+    { name: 'slug', label: 'Slug', type: 'slug', section: 'Basic Information' },
     { name: 'position', label: 'Jabatan', type: 'text', required: true, section: 'Basic Information' },
     {
       name: 'type',

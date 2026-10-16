@@ -14,7 +14,7 @@ export async function generateMetadata({
 
   return buildMetadata({
     title: 'Kontak',
-    description: 'Hubungi Environesia Company Group di kantor pusat kami di Sleman, Yogyakarta.',
+    description: 'Hubungi Environesia di kantor pusat kami di Sleman, Yogyakarta.',
     locale,
     path: '/kontak',
   });
@@ -33,7 +33,7 @@ export default async function KontakPage({
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.kontak.eyebrow}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.kontak.judul}</h1>

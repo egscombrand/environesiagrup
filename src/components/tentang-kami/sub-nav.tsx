@@ -99,7 +99,7 @@ export function TentangKamiSubNav({
   return (
     <nav
       aria-label="Navigasi Tentang Kami"
-      className="sticky z-[9990] w-full border-b border-pine-ink/10 bg-stone/50"
+      className="sticky z-[9990] w-full border-b border-pine-ink/10 bg-stone"
       style={{ top: headerHeight }}
     >
       {/* Wider than the site's standard 1280px content cap — 6 real tab
@@ -107,7 +107,7 @@ export function TentangKamiSubNav({
           scrolling or shrinking text; the standard cap left too little
           space at ordinary desktop widths. */}
       <div className="mx-auto max-w-[1560px] px-4 py-2.5 md:px-8 md:py-3">
-        <ul className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-2 min-[1400px]:flex-nowrap min-[1400px]:justify-center min-[1400px]:gap-2">
+        <ul className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-2 min-[1400px]:flex-nowrap min-[1400px]:justify-center min-[1400px]:gap-2">
           {TENTANG_KAMI_ROUTES.map((route) => {
             const href = `/${locale}/tentang-kami/${route.slug}`;
             const active = currentActiveSlug === route.slug;
@@ -124,7 +124,7 @@ export function TentangKamiSubNav({
                       onSelectTab(route.slug);
                     }
                   }}
-                  className="group relative flex h-full items-center gap-2 rounded-[11px] border px-2.5 py-2.5 transition-colors duration-[180ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-3.5 min-[1400px]:px-3.5"
+                  className="group relative flex h-full items-center justify-center gap-1.5 rounded-[11px] border px-1.5 py-2 text-center transition-colors duration-[180ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:gap-2 sm:px-3.5 sm:py-2.5 min-[1400px]:px-3.5"
                   style={{
                     borderColor: active ? `${ACCENT}4D` : 'rgba(11,43,34,0.10)',
                     ['--tw-ring-color' as string]: `${ACCENT}80`,
@@ -149,7 +149,7 @@ export function TentangKamiSubNav({
 
                   {Icon ? (
                     <Icon
-                      className="relative h-[18px] w-[18px] shrink-0 transition-colors duration-[180ms] min-[1400px]:h-5 min-[1400px]:w-5"
+                      className="relative hidden h-[18px] w-[18px] shrink-0 transition-colors duration-[180ms] sm:block min-[1400px]:h-5 min-[1400px]:w-5"
                       style={{ color: active ? ACCENT : 'rgba(11,43,34,0.55)' }}
                       strokeWidth={1.75}
                       aria-hidden="true"
@@ -157,10 +157,10 @@ export function TentangKamiSubNav({
                   ) : null}
 
                   <span
-                    className={`relative tracking-[0.005em] transition-colors duration-[180ms] min-[1400px]:whitespace-nowrap ${
+                    className={`relative leading-tight tracking-[0.005em] transition-colors duration-[180ms] min-[1400px]:whitespace-nowrap ${
                       active
-                        ? 'text-[14px] font-semibold min-[1400px]:text-[15px]'
-                        : 'text-[14px] font-medium min-[1400px]:text-[15px]'
+                        ? 'text-[13px] font-semibold sm:text-[14px] min-[1400px]:text-[15px]'
+                        : 'text-[13px] font-medium sm:text-[14px] min-[1400px]:text-[15px]'
                     }`}
                     style={{ color: active ? ACCENT : '#0B2B22' }}
                   >

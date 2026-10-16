@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { makeEntity } from '@/lib/cms/fixtures';
 
 vi.mock('@/lib/cms/entities', () => ({
-  getPublishedEntities: vi.fn(),
+  getPublishedCoreEntities: vi.fn(),
 }));
 vi.mock('@/lib/cms/settings', () => ({
   getSiteSettings: vi.fn().mockResolvedValue({ id: 1, capabilities_subtext: null } as never),
@@ -12,19 +12,19 @@ vi.mock('@/lib/cms/navigation', () => ({
   getPublishedNavigationUrlsBySlug: vi.fn().mockResolvedValue({}),
 }));
 
-const { getPublishedEntities } = await import('@/lib/cms/entities');
+const { getPublishedCoreEntities } = await import('@/lib/cms/entities');
 const { getPublishedNavigationUrlsBySlug } = await import('@/lib/cms/navigation');
 const { CapabilitiesGrid } = await import('./capabilities-grid');
 
 describe('CapabilitiesGrid', () => {
   it('renders nothing when there are no published entities', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([]);
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([]);
     const result = await CapabilitiesGrid({ locale: 'id' });
     expect(result).toBeNull();
   });
 
   it('renders every published entity as its own card, never hardcoded', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([
       makeEntity({
         id: 'e1',
         name: 'Environesia',
@@ -52,7 +52,7 @@ describe('CapabilitiesGrid', () => {
   });
 
   it('shows a real "Baca Selengkapnya" link only when a navigation item resolves this entity\'s profile URL', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([
       makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia', capability_title: 'Judul' }),
       makeEntity({ id: 'e2', name: 'GreenLab', slug: 'greenlab', capability_title: 'Judul Lain' }),
     ]);
@@ -66,7 +66,7 @@ describe('CapabilitiesGrid', () => {
   });
 
   it('a card with no logo has no broken image, but still shows the company name', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([
       makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia', logo_path: null }),
     ]);
 
@@ -76,7 +76,7 @@ describe('CapabilitiesGrid', () => {
   });
 
   it('typography hierarchy: section heading is always bigger than every capability title, consistently for every card', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([
       makeEntity({
         id: 'e1',
         name: 'Environesia',
@@ -121,7 +121,7 @@ describe('CapabilitiesGrid', () => {
   });
 
   it('a card with no capability copy yet renders without crashing', async () => {
-    vi.mocked(getPublishedEntities).mockResolvedValue([
+    vi.mocked(getPublishedCoreEntities).mockResolvedValue([
       makeEntity({ id: 'e1', name: 'Environesia', slug: 'environesia', capability_title: null, capability_description: null }),
     ]);
 

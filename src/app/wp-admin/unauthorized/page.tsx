@@ -17,7 +17,7 @@ export default async function UnauthorizedPage() {
     >
       <Link
         href="/wp-admin/dashboard"
-        className="block w-full rounded-[10px] bg-forest px-4 py-3 text-center text-small font-medium text-paper transition-opacity hover:opacity-90"
+        className="block w-full rounded-[10px] bg-[#2a7793] px-4 py-3 text-center text-small font-medium text-white transition-opacity hover:opacity-90"
       >
         Kembali ke Dashboard
       </Link>

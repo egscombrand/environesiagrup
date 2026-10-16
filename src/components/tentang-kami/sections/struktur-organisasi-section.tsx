@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import type { getPublishedEntities } from '@/lib/cms/entities';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
 import { messagesFor } from '@/i18n/messages';
+import { getStruktur } from '@/lib/cms/struktur-organisasi';
+import { STRUKTUR_FALLBACK } from '@/lib/cms/struktur-organisasi-content';
 
 /**
  * Framed as the group's own structure — how its entities connect and
@@ -15,12 +16,9 @@ import { messagesFor } from '@/i18n/messages';
  * the group level; a proper group-structure visual can replace it later
  * without changing this section's shape.
  */
-export async function StrukturOrganisasiSection(props: {
-  locale: string;
-  entities?: Awaited<ReturnType<typeof getPublishedEntities>>;
-}) {
-  const { locale } = props;
+export async function StrukturOrganisasiSection({ locale }: { locale: string }) {
   const t = messagesFor(locale);
+  const content = await getStruktur();
 
   return (
     <>
@@ -30,7 +28,7 @@ export async function StrukturOrganisasiSection(props: {
       <Section className="pb-4 pt-10 md:pb-4 md:pt-14">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.tentangKami.judul}</p>
-          <h1 className="mt-4 font-landing-display text-display font-bold text-pine-ink">Environesia Group</h1>
+          <h1 className="mt-4 font-landing-display text-display font-bold text-pine-ink">{content.title}</h1>
         </Reveal>
       </Section>
 
@@ -44,8 +42,8 @@ export async function StrukturOrganisasiSection(props: {
           <div className="w-full overflow-hidden rounded-[8px] border border-line">
             <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
               <Image
-                src="/Struktur EGS 2026.jpg.jpeg"
-                alt="Struktur Organisasi dan Tata Kerja PT Environesia Global Saraya"
+                src={content.imageSrc ?? STRUKTUR_FALLBACK.defaultImageSrc}
+                alt={content.imageAlt}
                 fill
                 sizes="(min-width: 1280px) 1216px, 100vw"
                 className="object-contain"

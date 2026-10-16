@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildMetadata({
     title: 'Komisaris',
-    description: 'Dewan komisaris Environesia Company Group.',
+    description: 'Dewan komisaris Environesia.',
     locale,
     path: '/pimpinan/komisaris',
   });
@@ -31,7 +31,7 @@ export default async function KomisarisPage({
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.pimpinan.judul}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.pimpinan.komisaris}</h1>

@@ -7,7 +7,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { routing } from '@/i18n/routing';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
-import { RichText } from '@/components/cms/rich-text';
+import { ARTICLE_HTML_CLASS, SanitizedHtml } from '@/components/cms/sanitized-html';
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' });
 
@@ -86,7 +86,7 @@ export default async function BeritaDetailPage({
         <Reveal>
           <div className="mx-auto max-w-2xl">
             {post.content ? (
-              <RichText content={post.content} />
+              <SanitizedHtml html={post.content} className={ARTICLE_HTML_CLASS} />
             ) : (
               <p className="text-body text-slate">{post.excerpt}</p>
             )}

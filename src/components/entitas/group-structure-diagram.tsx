@@ -14,7 +14,7 @@ export function GroupStructureDiagram({ entities, locale }: { entities: Entity[]
     <figure>
       <div className="flex justify-center">
         <div className="rounded-[14px] bg-forest px-8 py-4 font-landing-display text-[20px] font-bold text-paper">
-          Environesia Group
+          Environesia
         </div>
       </div>
 

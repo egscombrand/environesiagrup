@@ -10,7 +10,7 @@ function candidate(overrides: Partial<ReviewCandidate> = {}): ReviewCandidate {
     location: 'Jawa Barat',
     year: 2022,
     service: 'AMDAL',
-    brand: 'Environesia Company Group',
+    brand: 'Environesia',
     description: null,
     source_page: 1,
     confidence: 'high',
@@ -20,9 +20,9 @@ function candidate(overrides: Partial<ReviewCandidate> = {}): ReviewCandidate {
 }
 
 describe('toEditable', () => {
-  it('defaults brand to "Environesia Company Group" when the candidate has none, never "Belum Ditentukan"', () => {
+  it('defaults brand to "Environesia" when the candidate has none, never "Belum Ditentukan"', () => {
     const row = toEditable(candidate({ brand: undefined }), 0);
-    expect(row.brand).toBe('Environesia Company Group');
+    expect(row.brand).toBe('Environesia');
   });
 
   it('keeps a specific entity brand exactly as given', () => {

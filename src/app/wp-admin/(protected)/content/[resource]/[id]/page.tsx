@@ -49,36 +49,49 @@ export default async function EditResourcePage({
           .data ?? [])
       : null;
 
+  // h-full + flex-col: PageHeader never scrolls, ResourceForm gets a real
+  // bounded height to scroll its own content within (see EditorFrame in
+  // editor-layout.tsx and admin-shell.tsx for where that h-full comes from).
+  // Projects is the one resource with extra page content below the form
+  // (ProjectGallery) — there, the form gets a fixed viewport-relative height
+  // instead of "all remaining space", so the gallery still has room to flow
+  // normally underneath it, with the page (not the form) scrolling to reach it.
   return (
-    <div>
-      <PageHeader
-        eyebrow={`Content / ${resource.title}`}
-        title={`Edit ${resource.singular}`}
-        action={
-          resourceSlug === 'entities' ? (
-            <Link
-              href={`/wp-admin/content/entities/${id}/story`}
-              className="inline-flex items-center gap-1.5 rounded-[10px] border border-line px-4 py-2 text-small font-medium text-ink hover:bg-stone"
-            >
-              <BookOpen className="h-4 w-4" aria-hidden="true" />
-              Kelola Cerita Perusahaan
-            </Link>
-          ) : undefined
-        }
-      />
+    <div className={galleryImages ? 'flex min-h-0 flex-col' : 'flex h-full min-h-0 flex-col'}>
+      <div className="shrink-0">
+        <PageHeader
+          eyebrow={`Content / ${resource.title}`}
+          title={`Edit ${resource.singular}`}
+          action={
+            resourceSlug === 'entities' ? (
+              <Link
+                href={`/wp-admin/content/entities/${id}/story`}
+                className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#e3e8ee] px-4 py-2 text-small font-medium text-ink hover:bg-[#f4f6f9]"
+              >
+                <BookOpen className="h-4 w-4" aria-hidden="true" />
+                Kelola Galeri Perusahaan
+              </Link>
+            ) : undefined
+          }
+        />
+      </div>
 
-      <div className="mt-8">
+      <div className={galleryImages ? 'mt-8 h-[70vh] min-h-0 shrink-0' : 'mt-8 min-h-0 flex-1'}>
         <ResourceForm
           fields={resource.fields}
           initialValues={row}
           entities={entities}
+          slugSource={resource.slugSource}
           action={updateAction.bind(null, resourceSlug, id)}
           cancelHref={`/wp-admin/content/${resourceSlug}`}
-          successMessage="Changes saved successfully."
         />
       </div>
 
-      {galleryImages ? <ProjectGallery projectId={id} images={galleryImages} /> : null}
+      {galleryImages ? (
+        <div className="mt-8 shrink-0">
+          <ProjectGallery projectId={id} images={galleryImages} />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -119,12 +119,39 @@ export async function BusinessProjectsDeck(props: { locale: string; title?: stri
             directory (/proyek-insight) — the standalone /proyek page is
             legacy and now just redirects there. */}
         <Reveal>
-          <div className="mx-auto mt-16 max-w-2xl">
+          <div className="mx-auto mt-16 max-w-4xl">
+            {/* Two explicit lines, not one wrapped string: "...10 Negara
+                Mitra" must always read as a single first line, with "Kami
+                Menghadirkan Dampak" as the second — never split between
+                "10" and "Negara Mitra" (the wrap point the browser picks
+                by default at most widths). `whitespace-nowrap` on the
+                first line forces that.
+
+                Font-size is a `clamp()`, not fixed/stepped values: the
+                first line's rendered (unwrapped) width scales linearly
+                with font-size, and the space available for it changes
+                continuously with viewport width (including the jump in
+                Section's own side padding at the `md` breakpoint) — a
+                plain `vw`-based formula tracks that smoothly across every
+                width, instead of a few fixed breakpoints that can overflow
+                right at their own edges. It still tops out at the
+                original 32px (unchanged on tablet/desktop, where there's
+                always room) and only shrinks on phones narrow enough to
+                need it, per "boleh menyesuaikan ukuran font agar tetap
+                rapi" on small screens. */}
             <p
-              className="font-landing-display text-[28px] font-extrabold md:text-[32px]"
+              className="font-landing-display font-extrabold"
               style={{ color: CLOSING_COLOR, lineHeight: 1.3 }}
             >
-              Di Seluruh Penjuru Negeri Hingga 10 Negara Mitra Kami Menghadirkan Dampak
+              <span
+                className="block whitespace-nowrap"
+                style={{ fontSize: 'clamp(11px, 3.9vw - 2px, 32px)' }}
+              >
+                Di Seluruh Penjuru Negeri Hingga 10 Negara Mitra
+              </span>
+              <span className="block" style={{ fontSize: 'clamp(11px, 3.9vw - 2px, 32px)' }}>
+                Kami Menghadirkan Dampak
+              </span>
             </p>
             <Link
               href={`/${locale}/proyek-insight`}

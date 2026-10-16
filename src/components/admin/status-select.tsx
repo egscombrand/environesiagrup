@@ -26,7 +26,7 @@ export function StatusSelect({
           router.refresh();
         });
       }}
-      className="rounded-[8px] border border-line bg-paper px-2 py-1 text-small text-ink disabled:opacity-60"
+      className="rounded-[8px] border border-[#e3e8ee] bg-white px-2 py-1 text-small text-ink disabled:opacity-60"
     >
       {OPTIONS.map((option) => (
         <option key={option} value={option}>

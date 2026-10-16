@@ -5,7 +5,7 @@
 //
 // No AI/LLM involved, and — this is the governing rule — a block of text
 // that reads as a project is NEVER dropped for being incomplete. Missing
-// fields become null (or "Environesia Company Group" for brand, or "Perlu
+// fields become null (or "Environesia" for brand, or "Perlu
 // Ditinjau" for an unclear sector); the project itself still always makes
 // it into the result, to be completed by the admin in Review. The only
 // thing ever actually discarded is a Contract Value line, and a stray
@@ -151,12 +151,12 @@ function classifyBrand(explicitValue: string | null): (typeof COMPANY_VALUES)[nu
   // Only ever picks a specific entity (GreenLab, Bikin Indonesia Berdaya,
   // ...) when a label explicitly names one, exactly as stated — never
   // inferred from body text. Everything in this portfolio is still a real
-  // Environesia Company Group project even when no specific entity is
+  // Environesia project even when no specific entity is
   // named, so that's the default — never the unhelpful "Belum Ditentukan".
-  if (!explicitValue) return 'Environesia Company Group';
+  if (!explicitValue) return 'Environesia';
   const needle = explicitValue.trim().toLowerCase();
   const match = COMPANY_VALUES.find((c) => c !== 'Belum Ditentukan' && needle.includes(c.toLowerCase()));
-  return match ?? 'Environesia Company Group';
+  return match ?? 'Environesia';
 }
 
 function parseYear(raw: string | null): number | null {

@@ -25,23 +25,27 @@ function mapScene(row: StorySceneRow): StoryScene {
 export async function getPublishedStoryScenesByEntity(entityIds: string[]): Promise<Record<string, StoryScene[]>> {
   if (entityIds.length === 0) return {};
 
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from('story_scenes')
-    .select('*')
-    .in('entity_id', entityIds)
-    .eq('status', 'published')
-    .order('entity_id', { ascending: true })
-    .order('sort_order', { ascending: true });
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from('story_scenes')
+      .select('*')
+      .in('entity_id', entityIds)
+      .eq('status', 'published')
+      .order('entity_id', { ascending: true })
+      .order('sort_order', { ascending: true });
 
-  if (error) throw new Error(`Failed to load story scenes: ${error.message}`);
+    if (error) return {};
 
-  const grouped: Record<string, StoryScene[]> = {};
-  for (const row of data ?? []) {
-    const scene = mapScene(row);
-    (grouped[scene.entity_id] ??= []).push(scene);
+    const grouped: Record<string, StoryScene[]> = {};
+    for (const row of data ?? []) {
+      const scene = mapScene(row);
+      (grouped[scene.entity_id] ??= []).push(scene);
+    }
+    return grouped;
+  } catch {
+    return {};
   }
-  return grouped;
 }
 
 /** Admin: every non-deleted scene for one entity (RLS-scoped session), in `sort_order`. */

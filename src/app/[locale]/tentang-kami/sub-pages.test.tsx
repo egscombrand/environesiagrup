@@ -4,6 +4,51 @@ import { describe, expect, it, vi } from 'vitest';
 import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
 import { makeMilestone } from '@/lib/cms/fixtures';
 
+vi.mock('server-only', () => ({}));
+vi.mock('@/lib/cms/legalitas-page', () => ({ getLegalitasPage: vi.fn().mockResolvedValue({ title: 'Legalitas & Sertifikasi', description: '', noteLabel: 'Legal Entity First', noteText: '', metaTitle: 'Legalitas & Sertifikasi', metaDescription: '' }) }));
+vi.mock('@/lib/cms/penghargaan', () => ({ getPenghargaan: vi.fn().mockResolvedValue({ title: 'Penghargaan', description: '', metaTitle: 'Penghargaan', metaDescription: '' }) }));
+vi.mock('@/lib/supabase/public', () => ({ createPublicClient: vi.fn() }));
+vi.mock('@/lib/cms/media', () => ({
+  publicMediaUrl: (path: string | null | undefined) => (path ? `https://media.test/${path}` : undefined),
+}));
+vi.mock('@/lib/cms/leadership-profile', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/cms/leadership-profile')>('@/lib/cms/leadership-profile');
+  return { ...actual, getDirektur: vi.fn().mockResolvedValue(actual.buildDirektur([], new Map(), null)) };
+});
+vi.mock('@/lib/cms/struktur-organisasi', async () => {
+  const { STRUKTUR_FALLBACK } = await import('@/lib/cms/struktur-organisasi-content');
+  return {
+    getStruktur: vi.fn().mockResolvedValue({ title: STRUKTUR_FALLBACK.title, imageSrc: null, imageAlt: STRUKTUR_FALLBACK.imageAlt }),
+  };
+});
+vi.mock('@/lib/cms/visi-misi', async () => {
+  const { VISI_MISI_FALLBACK } = await import('@/lib/cms/visi-misi-content');
+  return { getVisiMisi: vi.fn().mockResolvedValue(VISI_MISI_FALLBACK) };
+});
+vi.mock('@/lib/cms/sejarah', async () => {
+  const { SEJARAH_FALLBACK } = await import('@/lib/cms/sejarah-content');
+  return { getSejarah: vi.fn().mockResolvedValue({ ...SEJARAH_FALLBACK, photos: [null, null] }) };
+});
+vi.mock('@/lib/cms/makna-logo', () => ({
+  getMaknaLogo: vi.fn().mockResolvedValue({
+    eyebrow: 'Identitas Visual',
+    title: 'Makna Logo',
+    parts: [
+      { label: 'Simbol', description: '' },
+      { label: 'Tipografi', description: '' },
+      { label: 'Warna', description: '' },
+      { label: 'Kesatuan Identitas', description: '' },
+    ],
+    symbolSrc: null,
+    wordmarkSrc: null,
+  }),
+}));
+vi.mock('@/lib/cms/legal', async () => {
+  // The page reads the database; the test uses the same data the fallback serves.
+  const data = await vi.importActual<typeof import('@/lib/legalitas-data')>('@/lib/legalitas-data');
+  return { getLegalEntities: async () => data.LEGALITAS_ENTITIES };
+});
+
 let mockPathname = '/id/tentang-kami/sejarah';
 vi.mock('next/navigation', () => ({ usePathname: () => mockPathname }));
 
@@ -14,7 +59,7 @@ vi.mock('@/lib/cms/entities', () => ({
 vi.mock('@/lib/cms/settings', () => ({
   getSiteSettings: vi.fn().mockResolvedValue({
     id: 1,
-    site_name: 'Environesia Company Group',
+    site_name: 'Environesia',
     logoUrl: 'https://example.com/logo.png',
   }),
 }));
@@ -83,7 +128,7 @@ describe('Tentang Kami sub-pages', () => {
     mockPathname = '/id/tentang-kami/struktur-organisasi';
     render(await StrukturOrganisasiPage({ params }));
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Environesia Group' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Environesia' })).toBeInTheDocument();
     expect(
       screen.getByRole('img', { name: 'Struktur Organisasi dan Tata Kerja PT Environesia Global Saraya' })
     ).toBeInTheDocument();
@@ -101,7 +146,7 @@ describe('Tentang Kami sub-pages', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'Dewan Direksi' })).toBeInTheDocument();
 
     expect(screen.getByText('Ir. Saprian, S.T., M.Sc., M.T., IPM., ASEAN Eng.')).toBeInTheDocument();
-    expect(screen.getByText('Director Environesia Group')).toBeInTheDocument();
+    expect(screen.getByText('Director Environesia')).toBeInTheDocument();
     expect(screen.getByText('Nurul Lahtifah, S.T.')).toBeInTheDocument();
     expect(screen.getByText('Director Corporate Services and Innovation')).toBeInTheDocument();
     expect(screen.getByText('Yusuf Wiryawan, S.T.M.Ling.M.T.')).toBeInTheDocument();
@@ -159,19 +204,19 @@ describe('Tentang Kami sub-pages', () => {
     expect(dialog).toHaveTextContent('Profil lengkap akan segera hadir.');
   });
 
-  it('Leadership Entitas Grup shows Fauzan Madani separately from Dewan Direksi, never labeled a Director of Environesia Group', async () => {
+  it('Leadership Entitas Grup shows Fauzan Madani separately from Dewan Direksi, never labeled a Director of Environesia', async () => {
     mockPathname = '/id/tentang-kami/direktur';
     render(await DirekturPage({ params }));
 
     expect(screen.getByRole('heading', { level: 2, name: 'Leadership Entitas Grup' })).toBeInTheDocument();
     expect(
-      screen.getByText('Kepemimpinan pada entitas yang menjadi bagian dari Environesia Group.')
+      screen.getByText('Kepemimpinan pada entitas yang menjadi bagian dari Environesia.')
     ).toBeInTheDocument();
 
-    expect(screen.getAllByText('PT Indonesia Bikin Berdaya').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Bikin Indonesia Berdaya').length).toBeGreaterThan(0);
     expect(screen.getByText('Fauzan Madani')).toBeInTheDocument();
     // His jabatan is the plain "Direktur" of his own entity — never the
-    // "Director Environesia Group" label used for Saprian above.
+    // "Director Environesia" label used for Saprian above.
     expect(screen.getByText('Direktur')).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -181,7 +226,7 @@ describe('Tentang Kami sub-pages', () => {
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveTextContent('Fauzan Madani');
     expect(dialog).toHaveTextContent('Direktur');
-    expect(dialog).toHaveTextContent('PT Indonesia Bikin Berdaya');
+    expect(dialog).toHaveTextContent('Bikin Indonesia Berdaya');
     expect(dialog).toHaveTextContent('Profil lengkap akan segera hadir.');
   });
 

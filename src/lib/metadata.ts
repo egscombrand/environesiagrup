@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
 
-export const SITE_NAME = 'Environesia Company Group';
+export const SITE_NAME = 'Environesia';
 
 const OG_LOCALES: Record<string, string> = {
   id: 'id_ID',

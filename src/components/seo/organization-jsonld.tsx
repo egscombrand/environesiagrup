@@ -1,10 +1,10 @@
-import { getPublishedEntities } from '@/lib/cms/entities';
+import { getPublishedCoreEntities } from '@/lib/cms/entities';
 import { SITE_URL, BRAND_TAGLINE } from '@/lib/site';
 import { SITE_NAME } from '@/lib/metadata';
 import { getSiteSettings } from '@/lib/cms/settings';
 
 export async function OrganizationJsonLd({ locale }: { locale: string }) {
-  const [entities, settings] = await Promise.all([getPublishedEntities(), getSiteSettings()]);
+  const [entities, settings] = await Promise.all([getPublishedCoreEntities(), getSiteSettings()]);
 
   const payload = {
     '@context': 'https://schema.org',

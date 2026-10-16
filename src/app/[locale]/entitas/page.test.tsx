@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { ENTITIES } from '@/lib/cms/__fixtures__/site-content';
 
 vi.mock('@/lib/cms/entities', () => ({
-  getPublishedEntities: vi.fn().mockResolvedValue(ENTITIES),
+  getPublishedCoreEntities: vi.fn().mockResolvedValue(ENTITIES),
 }));
 
 const { default: EntitasPage } = await import('./page');
@@ -14,9 +14,11 @@ describe('EntitasPage', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'Entitas Kami' })).toBeInTheDocument();
     // GroupStructureDiagram was rewritten from inline SVG to HTML/CSS (Task 2) so it can wrap
-    // long entity names; it no longer exposes an `img` role. "Environesia Group" is the group
-    // label only the diagram renders on this page, so it stands in as proof the diagram mounted.
-    expect(screen.getByText('Environesia Group')).toBeInTheDocument();
+    // long entity names; it no longer exposes an `img` role. Its root label is "Environesia",
+    // rendered as a `div` — disambiguated by tag from the "Environesia" entity card below,
+    // which renders the same text inside a `p` — so this still stands in as proof the
+    // diagram mounted, not just that the entity list below it did.
+    expect(screen.getByText('Environesia', { selector: 'div' })).toBeInTheDocument();
 
     ['Environesia', 'GreenLab', 'GreenSkill', 'LSP Praktisi Lingkungan Indonesia', 'Bikin Indonesia Berdaya'].forEach(
       (nama) => {

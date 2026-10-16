@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getPublishedEntities } from '@/lib/cms/entities';
+import { getPublishedCoreEntities } from '@/lib/cms/entities';
 import { buildMetadata } from '@/lib/metadata';
 import { Section } from '@/components/layout/section';
 import { Reveal } from '@/components/motion/reveal';
@@ -16,7 +16,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: 'Entitas Kami',
     description:
-      'Lima entitas Environesia Company Group di bidang lingkungan dan manufaktur apparel.',
+      'Lima entitas Environesia di bidang lingkungan dan manufaktur apparel.',
     locale,
     path: '/entitas',
   });
@@ -29,11 +29,11 @@ export default async function EntitasPage({
 }) {
   const { locale } = await params;
   const t = messagesFor(locale);
-  const entities = await getPublishedEntities();
+  const entities = await getPublishedCoreEntities();
 
   return (
     <>
-      <Section>
+      <Section className="grid min-h-[50vh] items-center">
         <Reveal>
           <p className="font-mono text-label uppercase text-slate">{t.entitas.eyebrow}</p>
           <h1 className="mt-4 font-display text-display text-ink">{t.entitas.judul}</h1>
