@@ -4,12 +4,13 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { fontSans } from '@/lib/fonts';
+import { fontSans, fontReadable } from '@/lib/fonts';
 import { SITE_NAME, ogLocale } from '@/lib/metadata';
 import { BRAND_TAGLINE } from '@/lib/site';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { OrganizationJsonLd } from '@/components/seo/organization-jsonld';
+import { AccessibilityWidget } from '@/components/accessibility/accessibility-widget';
 import '../globals.css';
 
 export async function generateMetadata({
@@ -55,7 +56,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={fontSans.variable}>
+    <html lang={locale} className={`${fontSans.variable} ${fontReadable.variable}`}>
       <body className="font-body antialiased">
         <OrganizationJsonLd locale={locale} />
         <a
@@ -65,9 +66,15 @@ export default async function LocaleLayout({
           Lewati ke konten utama
         </a>
         <NextIntlClientProvider messages={messages}>
-          <Header locale={locale} />
-          <main id="main-content" className="pt-[var(--header-h)]">{children}</main>
-          <Footer locale={locale} />
+          {/* "Zoom Halaman" (see globals.css) scales only this wrapper, not
+              <html> — the accessibility trigger/panel below stays a true
+              sibling outside it so zoom can never drag it off-screen. */}
+          <div id="a11y-zoom-scope">
+            <Header locale={locale} />
+            <main id="main-content" className="pt-[var(--header-h)]">{children}</main>
+            <Footer locale={locale} />
+          </div>
+          <AccessibilityWidget locale={locale} />
         </NextIntlClientProvider>
       </body>
     </html>

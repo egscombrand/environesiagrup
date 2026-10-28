@@ -68,34 +68,46 @@
      negative letter-spacing; paragraphs and Caption use normal (0) —
      per the spec's own "letter spacing negatif hanya untuk heading"
      guidance, confirmed again in this pass. */
-  --text-display: clamp(32px, 5vw, 48px); /* H1 */
+  /* Every size below is wrapped in calc(... * var(--a11y-text-scale, 1)) so
+     the Accessibility Center's "Ukuran Teks" control can actually resize
+     real heading/paragraph text. This is deliberate and was NOT true
+     before: these tokens used to be plain px/clamp() values that root
+     <html> font-size scaling could never reach (px is an absolute unit),
+     which was the real cause of a reported bug — changing "Ukuran Teks"
+     visibly shifted rem-based layout spacing and the floating button's own
+     size while barely touching real heading/paragraph text at all, which
+     read as "the page zooms instead of the text." The fix: stop scaling
+     root font-size altogether (see the html rule below) and scale each
+     typography token directly instead, so spacing/layout/icon sizes never
+     move and only text does. */
+  --text-display: calc(clamp(32px, 5vw, 48px) * var(--a11y-text-scale, 1)); /* H1 */
   --text-display--line-height: 1.125; /* 54px at 48px */
   --text-display--letter-spacing: -0.03em;
 
-  --text-h2: clamp(26px, 3vw, 32px);
+  --text-h2: calc(clamp(26px, 3vw, 32px) * var(--a11y-text-scale, 1));
   --text-h2--line-height: 1.25; /* 40px at 32px */
   --text-h2--letter-spacing: -0.02em;
 
-  --text-h3: clamp(22px, 2.5vw, 24px);
+  --text-h3: calc(clamp(22px, 2.5vw, 24px) * var(--a11y-text-scale, 1));
   --text-h3--line-height: 1.292; /* 31px at 24px */
   --text-h3--letter-spacing: -0.02em;
 
-  --text-h4: clamp(18px, 2vw, 20px);
+  --text-h4: calc(clamp(18px, 2vw, 20px) * var(--a11y-text-scale, 1));
   --text-h4--line-height: 1.4; /* 28px at 20px */
   --text-h4--letter-spacing: -0.01em;
 
   /* P1 — lead/intro paragraphs. */
-  --text-p1: clamp(17px, 1vw, 18px);
+  --text-p1: calc(clamp(17px, 1vw, 18px) * var(--a11y-text-scale, 1));
   --text-p1--line-height: 1.611; /* 29px at 18px */
   --text-p1--letter-spacing: 0;
 
   /* P2 (body) and P3 (small) are flat (same desktop/mobile size) per the
      spec's own responsive table. */
-  --text-body: 16px;
+  --text-body: calc(16px * var(--a11y-text-scale, 1));
   --text-body--line-height: 1.625; /* 26px */
   --text-body--letter-spacing: 0;
 
-  --text-small: 14px;
+  --text-small: calc(14px * var(--a11y-text-scale, 1));
   --text-small--line-height: 1.5; /* 21px */
   --text-small--letter-spacing: 0;
 
@@ -103,11 +115,11 @@
      Label below (uppercase eyebrow tags, which keep their wide tracking —
      changing that would un-style ~50 files' kicker labels for no reason;
      this spec's "Caption" is a different, new role those never used). */
-  --text-caption: 12px;
+  --text-caption: calc(12px * var(--a11y-text-scale, 1));
   --text-caption--line-height: 1.5; /* 18px */
   --text-caption--letter-spacing: 0;
 
-  --text-label: 12px;
+  --text-label: calc(12px * var(--a11y-text-scale, 1));
   --text-label--line-height: 1.4;
   --text-label--letter-spacing: 0.08em;
 }
@@ -424,4 +436,262 @@ button:focus-visible {
   min-width: 44px;
   height: 44px;
   transform: translate(-50%, -50%);
+}
+
+/* =========================================================================
+   Accessibility Center — every effect a real CSS rule keyed off a
+   `data-a11y-*` attribute or `--a11y-*` custom property that
+   accessibility-context.tsx sets on <html>. See that file's comments for
+   why invert/dark-mode/color-filter are combined into one `--a11y-filter`
+   variable instead of three separate `filter` rules (CSS `filter` doesn't
+   stack across separate selector matches).
+   ========================================================================= */
+
+html {
+  filter: var(--a11y-filter, none);
+  letter-spacing: var(--a11y-letter-spacing, 0);
+  word-spacing: var(--a11y-word-spacing, 0);
+}
+
+/* "Ukuran Teks" (text size) deliberately does NOT touch root font-size
+   anymore — rem-based spacing, container widths, and icon sizes across the
+   whole site are all defined relative to root font-size, so scaling it
+   used to resize the entire layout (and the floating accessibility button
+   itself) while barely affecting real text, which read as the page
+   "zooming" instead of the text growing. Scoping the scale to actual
+   text-bearing elements' own font-size instead leaves every rem-based
+   measurement untouched and only changes what a user actually asked to
+   change. The project's own --text-* design tokens (globals.css's @theme
+   block) carry the same multiplier for headings/paragraphs that use them;
+   this rule covers everything else (nav, buttons, form labels, etc.) that
+   uses a plain Tailwind text utility instead. */
+:where(p, li, dt, dd, blockquote, figcaption, caption, h1, h2, h3, h4, h5, h6, label, a, button, legend) {
+  font-size: calc(1em * var(--a11y-text-scale, 1));
+}
+
+/* "Zoom Halaman" scales the real page content the way browser zoom does —
+   but it's applied to this wrapper (see src/app/[locale]/layout.tsx),
+   never to <html> itself. CSS `zoom` on an ancestor also visually scales
+   and repositions `position: fixed` descendants (unlike real browser
+   zoom, which keeps them viewport-anchored) — with zoom on <html>, the
+   floating accessibility button was being dragged out of the viewport at
+   high zoom levels, making it impossible to find or reach, which is the
+   opposite of what an accessibility control should do. Scoping zoom to a
+   wrapper around just the page content, with the button as a true sibling
+   outside it, keeps the button genuinely fixed at every zoom level. */
+#a11y-zoom-scope {
+  zoom: var(--a11y-zoom-scale, 1);
+}
+
+html[data-a11y-media-reinvert] img,
+html[data-a11y-media-reinvert] video,
+html[data-a11y-media-reinvert] svg,
+html[data-a11y-media-reinvert] picture {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* High contrast — was previously only 3 rules (body, links, form controls),
+   which read as "a few buttons turned yellow." Expanded to cover every
+   surface category the spec calls out: text, background, links (with
+   distinct hover/focus/visited states), buttons, borders, inputs,
+   placeholders, dropdown/selected state, and cards. Scoped to the common
+   surface-utility classes already used across this codebase (bg-white,
+   bg-paper, bg-stone, bg-sage-mist, bg-canvas, plus generic `rounded-*`
+   bordered cards) rather than literally every element, so hero photography
+   and brand-colored CTAs aren't blanket-flattened — but the genuinely
+   "surface" layer (cards, panels, dropdowns) now gets the real contrast
+   treatment, not just form controls. */
+html[data-a11y-high-contrast] body {
+  background: #000 !important;
+  color: #fff !important;
+}
+html[data-a11y-high-contrast] * {
+  border-color: #ffffff !important;
+}
+html[data-a11y-high-contrast] .bg-white,
+html[data-a11y-high-contrast] [class*="bg-paper"],
+html[data-a11y-high-contrast] [class*="bg-stone"],
+html[data-a11y-high-contrast] [class*="bg-sage-mist"],
+html[data-a11y-high-contrast] [class*="bg-canvas"] {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+}
+html[data-a11y-high-contrast] a {
+  color: #8fd8ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+html[data-a11y-high-contrast] a:visited {
+  color: #d6b3ff !important;
+}
+html[data-a11y-high-contrast] a:hover {
+  color: #ffd60a !important;
+}
+html[data-a11y-high-contrast] a:focus-visible,
+html[data-a11y-high-contrast] button:focus-visible,
+html[data-a11y-high-contrast] input:focus-visible,
+html[data-a11y-high-contrast] select:focus-visible,
+html[data-a11y-high-contrast] textarea:focus-visible {
+  outline: 3px solid #ffd60a !important;
+  outline-offset: 2px !important;
+}
+html[data-a11y-high-contrast] button,
+html[data-a11y-high-contrast] input,
+html[data-a11y-high-contrast] textarea,
+html[data-a11y-high-contrast] select {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+html[data-a11y-high-contrast] button:hover:not(:disabled) {
+  background: #1a1a1a !important;
+}
+html[data-a11y-high-contrast] button:disabled,
+html[data-a11y-high-contrast] input:disabled,
+html[data-a11y-high-contrast] select:disabled {
+  color: #8a8a8a !important;
+  border-color: #555555 !important;
+}
+html[data-a11y-high-contrast] ::placeholder {
+  color: #aaaaaa !important;
+  opacity: 1 !important;
+}
+html[data-a11y-high-contrast] select option:checked,
+html[data-a11y-high-contrast] [aria-selected="true"],
+html[data-a11y-high-contrast] [aria-checked="true"] {
+  background: #ffd60a !important;
+  color: #000 !important;
+}
+
+html[data-a11y-readable-font] body {
+  font-family: var(--font-a11y-readable-src), ui-sans-serif, sans-serif !important;
+}
+
+/* Bold Text — thickens real body copy without force-bolding every UI
+   label/badge that's deliberately a different weight already. */
+html[data-a11y-bold-text] :where(p, li, dt, dd, blockquote, figcaption, caption, label, a) {
+  font-weight: 700 !important;
+}
+
+/* Link highlighting — color + underline together (not underline alone,
+   which was too subtle to "recognize a link at a glance" as the spec
+   requires), with distinct hover/focus/visited states, and consistent
+   wherever a real <a> exists (nav, article content, footer). A
+   neutral-but-brand-consistent teal, not raw text color, so it reads
+   clearly against both light and photo-overlay backgrounds. */
+html[data-a11y-highlight-links] a {
+  color: #0f9e8e !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+  font-weight: 600 !important;
+}
+html[data-a11y-highlight-links] a:visited {
+  color: #0a7a6d !important;
+}
+html[data-a11y-highlight-links] a:hover {
+  color: #0b8276 !important;
+}
+html[data-a11y-highlight-links] a:focus-visible {
+  outline: 2px solid #0f9e8e !important;
+  outline-offset: 2px !important;
+}
+
+/* Stop Animations and Reduce Motion used to share one identical rule —
+   genuinely the same effect under two names, which the spec explicitly
+   calls out as not allowed. They're split here with a real, measurable
+   difference: Stop Animations is the hard "nuclear" reset (near-zero
+   duration, one iteration — nothing visibly moves). Reduce Motion instead
+   caps everything to a short, fixed, non-looping duration, so simple
+   interaction feedback (a hover fade, a focus transition) is still
+   visible, just fast and non-distracting, rather than entirely gone.
+   Neither reaches Framer Motion's JS-driven animation (documented
+   limitation — those already follow the OS prefers-reduced-motion
+   setting via this codebase's useReducedMotion() calls instead). */
+html[data-a11y-stop-animations] *,
+html[data-a11y-stop-animations] *::before,
+html[data-a11y-stop-animations] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-a11y-reduce-motion] *,
+html[data-a11y-reduce-motion] *::before,
+html[data-a11y-reduce-motion] *::after {
+  animation-duration: 0.2s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.2s !important;
+  scroll-behavior: auto !important;
+}
+
+/* Reduce Visual Effects — distinct again from both of the above: it never
+   touches animation/transition timing, only decorative depth effects. */
+html[data-a11y-reduce-effects] *,
+html[data-a11y-reduce-distraction] * {
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Cursor size — the actual cursor image is built in JS (see
+   accessibility-context.tsx's buildCursorValue) at the exact size the
+   slider is set to, and handed to this rule through --a11y-cursor. Only
+   applied once the user moves the slider above 100% (native cursor stays
+   untouched at the default). Browser cursor-image size support varies, so
+   very large custom cursors may be capped by the browser itself — a real,
+   known limitation, not something this rule can work around. */
+html[data-a11y-cursor-scaled],
+html[data-a11y-cursor-scaled] * {
+  cursor: var(--a11y-cursor, auto) !important;
+}
+
+html[data-a11y-strong-focus] a:focus-visible,
+html[data-a11y-strong-focus] button:focus-visible,
+html[data-a11y-strong-focus] input:focus-visible,
+html[data-a11y-strong-focus] select:focus-visible,
+html[data-a11y-strong-focus] textarea:focus-visible,
+html[data-a11y-strong-focus] [tabindex]:focus-visible {
+  outline: 3px solid #f2a93b !important;
+  outline-offset: 3px !important;
+}
+
+html[data-a11y-large-targets] button,
+html[data-a11y-large-targets] a,
+html[data-a11y-large-targets] input,
+html[data-a11y-large-targets] select {
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Dims header/footer chrome (not the main content) to reduce peripheral
+   distraction while reading — restores to full opacity on hover/focus, so
+   nothing inside ever becomes genuinely hard to see or reach. */
+html[data-a11y-reading-focus] header,
+html[data-a11y-reading-focus] footer {
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+html[data-a11y-reading-focus] header:hover,
+html[data-a11y-reading-focus] header:focus-within,
+html[data-a11y-reading-focus] footer:hover,
+html[data-a11y-reading-focus] footer:focus-within {
+  opacity: 1;
+}
+
+html[data-a11y-text-width] #main-content {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Line-height step — targeted at plain paragraph/list text specifically
+   (with !important, since most paragraphs here carry their own Tailwind
+   `leading-*` utility that would otherwise win) rather than every element,
+   so headings and UI chrome keep their own deliberate line-height. */
+p,
+li {
+  line-height: calc(1.6 + var(--a11y-line-height-extra, 0)) !important;
 }
