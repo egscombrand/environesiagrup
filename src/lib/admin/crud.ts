@@ -73,7 +73,20 @@ export async function listResourceRows(resource: ResourceConfig, supabase: Supab
   query = query.order(resource.defaultSort.column, { ascending: resource.defaultSort.ascending });
 
   const { data, error } = await query;
-  if (error) throw new Error(`Failed to load ${resource.table}: ${error.message}`);
+  if (error) {
+    // Table name, column, and the PostgREST error code/message are safe to
+    // log (no row data, no credentials) — this is what actually shows up
+    // in Vercel's Runtime Logs, since the thrown Error below is what a
+    // production error.tsx boundary sees (message redacted client-side,
+    // but this line is the one that survives server-side either way).
+    console.error('[admin/crud] listResourceRows failed', {
+      table: resource.table,
+      code: error.code,
+      message: error.message,
+      hint: error.hint,
+    });
+    throw new Error(`Failed to load ${resource.table}: ${error.message}`);
+  }
   return (data ?? []) as Record<string, unknown>[];
 }
 
@@ -85,7 +98,16 @@ export async function getResourceRow(
   let query = dyn(supabase).from(resource.table).select('*').eq('id', id);
   if (resource.scope) query = query.eq(resource.scope.column, resource.scope.value);
   const { data, error } = await query.maybeSingle();
-  if (error) throw new Error(`Failed to load ${resource.singular}: ${error.message}`);
+  if (error) {
+    console.error('[admin/crud] getResourceRow failed', {
+      table: resource.table,
+      id,
+      code: error.code,
+      message: error.message,
+      hint: error.hint,
+    });
+    throw new Error(`Failed to load ${resource.singular}: ${error.message}`);
+  }
   if (!data) return null;
 
   const row = data as Record<string, unknown>;
